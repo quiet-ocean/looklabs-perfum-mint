@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="127px" height="250px" viewBox="0 0 127 250" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>Page 1</title>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <path d="M35.8212787,57 L91.1577446,57 C110.330425,57 126,72.9560295 126,92.4367374 L126,213.563263 C126,233.043971 110.330425,249 91.1577446,249 L35.8212787,249 C16.6695754,248.978894 1,233.043971 1,213.542157 L1,92.4367374 C1,72.9349236 16.6695754,57 35.8212787,57 Z" id="Path" stroke="#01DFD9"></path>
+        <path d="M44,10 C50.5,11.2789116 57,11.9183673 63.5,11.9183673 C70,11.9183673 76.5,11.2789116 83,10 L83,57 L44,57 L44,10 Z" id="Rectangle" stroke="#01DFD9"></path>
+        <path d="" id="Path-2" stroke="#01DFD9" fill="#333333"></path>
+        <line x1="44" y1="10" x2="83" y2="10" id="Path-3" stroke="#01DFD9" fill="#333333"></line>
+    </g>
+</svg>

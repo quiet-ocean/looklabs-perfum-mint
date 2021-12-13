@@ -1,0 +1,13 @@
+"babel": {
+  "presets": [
+    "react-app"
+  ],
+  "plugins": [
+    [
+      "styled-jsx/babel",
+      {
+          "optimizeForSpeed": true 
+      }
+    ]
+  ]
+}

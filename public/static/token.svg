@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="90px" height="90px" viewBox="0 0 90 90" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>token</title>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="token" transform="translate(1.000000, 1.000000)" fill-rule="nonzero">
+            <path d="M44,-7.10542736e-15 C19.699471,-7.10542736e-15 -7.10542736e-15,19.699471 -7.10542736e-15,44 C-7.10542736e-15,68.300529 19.699471,88 44,88 C68.300529,88 88,68.300529 88,44 C88,32.3304744 83.364299,21.1389023 75.1126984,12.8873016 C66.8610977,4.63570098 55.6695256,-7.10542736e-15 44,-7.10542736e-15 Z M44,0.88 C67.8145184,0.88 87.12,20.1854816 87.12,44 C87.12,67.8145184 67.8145184,87.12 44,87.12 C20.1854816,87.12 0.88,67.8145184 0.88,44 C0.885520397,20.1877686 20.1877686,0.885520397 44,0.88" id="Shape" stroke="#979797" stroke-width="0.1"></path>
+            <polygon id="Path" stroke="#FFFFFF" points="44.46 56.78 44.46 28 51.54 28 51.54 50.6 70 50.6 70 56.82"></polygon>
+            <polygon id="Path" stroke="#FFFFFF" points="16.29 56.78 16.29 50.56 34.78 50.56 34.78 28 41.86 28 41.86 56.78"></polygon>
+        </g>
+    </g>
+</svg>

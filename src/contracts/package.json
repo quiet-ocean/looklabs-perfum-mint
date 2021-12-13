@@ -1,0 +1,35 @@
+{
+    "name": "elite-contracts",
+    "version": "1.0.0",
+    "description": "elite smart contracts",
+    "main": "index.js",
+    "author": "j8@looklabs.com",
+    "license": "PRIVATE",
+    "private": true,
+    "dependencies": {
+        "@openzeppelin/contracts": "^4.4.0",
+        "@openzeppelin/truffle-upgrades": "^1.5.0",
+        "@truffle/hdwallet-provider": "^1.2.6",
+        "colors": "^1.4.0",
+        "ethers": "^5.5.2",
+        "node-fetch": "^2.6.1",
+        "secp256k1": "*",
+        "truffle": "^5.3.6",
+        "truffle-contract-size": "^2.0.1"
+    },
+    "scripts": {
+        "lint": "prettier --write './**/*.{js,jsx,ts,tsx}'",
+        "populate:rinkeby": "truffle exec --network rinkeby devops/dev.js",
+        "populate:rinkeby:dev": "truffle exec --network rinkeby devops/dev.js",
+        "populate:live": "truffle exec --network live devops/live.js",
+        "migrate:populate": "truffle migrate --network development --reset && yarn populate",
+        "migrate:rinkeby": "truffle migrate --network rinkeby --reset",
+        "migrate:live": "truffle migrate --network live"
+    },
+    "devDependencies": {
+        "dotenv": "^9.0.2",
+        "hardhat": "^2.6.4",
+        "prettier": "^2.2.1",
+        "truffle-plugin-verify": "^0.5.11"
+    }
+}
