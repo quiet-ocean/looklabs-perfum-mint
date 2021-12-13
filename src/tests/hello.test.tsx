@@ -1,22 +1,13 @@
-import React, { createContext, useReducer } from 'react'
-import { render, cleanup, fireEvent } from '@testing-library/react'
-import { initialCartState } from '../state/constants'
-import { Context, Store } from '../state'
-import { Root } from '../layouts/Root'
+// # use describe, it pattern
+import { render, screen } from '@testing-library/react';
+import { App } from '../App';
 
-const renderWithContext = (component: any) => {
-    return {
-        ...render (
-            <Store value={Context}>
-                { component }
-            </Store>
-        )
-    }
-}
-afterEach(cleanup)
-
-describe('test service', () => {
-    it('checks if initial state is equal to 0', () => {
-        const { getByTestId } = renderWithContext(<Root />)
-    })    
-})
+describe("<App />", () => {
+    it("Renders <App /> component correctly", () => {
+    //   const { getByText } = render(<App />);
+      let sum = 1 + 2
+      expect(sum).toEqual(3);
+      // expect(getByText(/Getting started with React testing library/i)).toBeInTheDocument();
+    });
+  });
+  

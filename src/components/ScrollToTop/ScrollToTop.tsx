@@ -1,12 +1,12 @@
 import { useState, useEffect } from "react";
-import { useLocation } from "react-router";
+// import { useLocation } from "react-router";
 import { Button } from '@chakra-ui/react'
 import { ChevronUpIcon } from '@chakra-ui/icons'
 
 const ScrollToTop = () => {
 
-    const { pathname } = useLocation();
-    const [showButton, setShowButton] = useState(false)
+    // const { pathname } = useLocation();
+    // const [showButton, setShowButton] = useState(false)
 
     let scrollToTop = () => {
         console.log('scroll to top')
@@ -15,9 +15,9 @@ const ScrollToTop = () => {
             behavior: 'smooth',
         })
     }
-    useEffect(() => {
-        scrollToTop()
-    }, [pathname]);
+    // useEffect(() => {
+    //     scrollToTop()
+    // }, [pathname]);
     useEffect(()=>{
         // window.addEventListener('scroll', (e) => {
         //     if(window.pageYOffset > 300) {
