@@ -66,15 +66,16 @@ const ProductList = () => {
           description: description[item.id],
           type: item.name.toLowerCase() === 'cyber edp' ? 2 : 1,
         };
+        console.log(newItem)
         dispatch({ type: "ADD_PRODUCT", payload: newItem });
       });
     }
   };
 
   useEffect(async () => {
-    // console.log('product lists are ', products)
+    console.log('product lists are ', products)
 
-  }, []);
+  }, [products]);
   useEffect(async () => {
     await loadProduct();
     // console.log('products are ', products)
@@ -88,6 +89,7 @@ const ProductList = () => {
       </Cart> */}
       {
         products?.map((item, key) => {
+          if(item === undefined || item === '') return ''
           if (key === 0) {
             return (
               <Box key={key}>

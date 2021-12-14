@@ -42,8 +42,10 @@ import {
   useForceUpdate,
 } from "@chakra-ui/react";
 
+// const ProductItem = ({product, setLoading}) => {
 const ProductItem = (props) => {
   const { product: ProductProps, setLoading: any } = props
+  console.log(product)
   const {
     boughtTokens,
     cyberName,
