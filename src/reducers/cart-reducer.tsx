@@ -80,25 +80,30 @@ const cartReducer = (state: CartProps = initialCartState, action: ActionProps): 
         case 'DECREASE_QUANTITY':
             let newtotal: BigNumber = state.total
             let __newItems: CartItemProps[] = []
+            let _newIds: number[] = []
             state.items.forEach((item: CartItemProps) => {
                 if(item.product.id.eq(payload)) {
                     newtotal = newtotal.sub(item.product.price)
                     if(item.quantity > 1) {                        
                         __newItems.push({product: item.product, quantity: item.quantity - 1})
+                        _newIds.push(item.product.id.toNumber())
                     } else if ( item.quantity === 1) {
                         console.log('remove a item')
+                        
                     }            
                     return
                 } else {
                     // console.log('mismatching')
                     __newItems.push(item)
+                    _newIds.push(item.product.id.toNumber())
                 }
                 
             })
             return {
                 ...state,
                 total: newtotal,                
-                items: __newItems
+                items: __newItems,
+                ids: _newIds,
             }
         case 'REMOVE_PRODUCT':
             return state

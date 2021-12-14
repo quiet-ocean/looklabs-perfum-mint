@@ -140,16 +140,18 @@ describe("Cart reducer test", () => {
     // expect(total).toEqual(expectedTotal)
     assert.notEqual(total, expectedTotal)
   })
-  xit('handle a product being decreased in cart list', () => {
+  it('handle a product being decreased in cart list', () => {
     addProducts(2)
     // console.log(utils.formatEther(total), utils.formatEther(expectedTotal))
     action = { type: 'DECREASE_QUANTITY', payload: BigNumber.from('4')}
-    total = cartReducer(previousState, action).total
+    let state: CartProps = cartReducer(previousState, action)
+    total = state.total
+    console.log(state)
     // console.log(utils.formatEther(total), utils.formatEther(expectedTotal))
     expectedTotal = utils.parseEther('0.026')
     expect(total).toEqual(expectedTotal)
   })
-  xit('handle decrease action in cart list', () => {
+  it('handle decrease action in cart list', () => {
     addProducts(1)
     console.log(utils.formatEther(total), utils.formatEther(expectedTotal))
     action = { type: 'DECREASE_QUANTITY', payload: BigNumber.from('4')}
