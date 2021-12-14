@@ -1,6 +1,6 @@
 import { useWeb3React } from '@web3-react/core'
 import { Login } from '../'
-import { TokenList } from '../../components'
+import { ProductList } from '../../components'
 import { useAppState } from '../../state'
 
 const Marketplace = () => {
@@ -10,9 +10,9 @@ const Marketplace = () => {
   return (
     <>
       {!user && <Login />}
-      {user && active && <TokenList />}
-    </>
-  )
+      {user && active && <ProductList />}
+      </>
+    )
 }
 
 export { Marketplace }

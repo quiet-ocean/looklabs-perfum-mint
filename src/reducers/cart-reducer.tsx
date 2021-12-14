@@ -9,10 +9,12 @@ const cartReducer = (state: CartProps = initialCartState, action: ActionProps): 
     switch (type) {
         
         case 'ADD_PRODUCT':
-            console.log('add new product', payload)
-            let id: number = BigNumber.from(payload.product?.id).toNumber()
+            // console.log('add new product', payload)
+            // let id: number = BigNumber.from(payload.product?.id).toNumber()
+            let id: number = payload.product?.id.toNumber()
 
             let price: BigNumber = payload.product?.price.mul(Number(payload.quantity))
+            // console.log('price of added product is ', price)
             // let price: BigNumber = BigNumber.from('0')
             let exist: boolean = state.ids.indexOf(id) > -1
             let quantity: number = Number(payload.quantity)
@@ -36,11 +38,12 @@ const cartReducer = (state: CartProps = initialCartState, action: ActionProps): 
                 ...state,
                 nav: state.nav,
                 total: state.total.add(price), 
+                // total: state.total.add(BigNumber.from('0.001').toString()),
                 ids: exist ? state.ids : [...state.ids, id],
                 items: _newItems
             }
-            console.log('add new item', newState_1)
-            console.log(utils.formatEther(newState_1.total))
+            // console.log('add new item', newState_1)
+            // console.log(utils.formatEther(newState_1.total))
             return newState_1
         case 'INCREASE_QUANTITY':
             console.log('increase quantity in cart reducer ', payload)
@@ -84,23 +87,26 @@ const cartReducer = (state: CartProps = initialCartState, action: ActionProps): 
             return newState
         case 'DELETE_PRODUCT':
             let total: BigNumber = state.total;
-            let productId: number = BigNumber.from(payload).toNumber()
+            // let productId: number = BigNumber.from(payload).toNumber()
+            let productId: BigNumber = payload
+            
             let newIds = state.ids.filter((id: any) => {
                 if(id === productId) {
-                    console.log('id exist')
+                    console.log('id exist in id array')
                     return false
                 }
                 return true
             })
             let newItems = state.items.filter((item: CartItemProps, key: number) => {
                 if(item.product.id === payload) {
+                    console.log('id exist in item array')
                     // total =  total.sub(item.product?.price.mul(BigNumber.from(item.quantity)))
                     total =  total.sub(item.product?.price.mul((item.quantity)))
                     return false
                 }
                 return true
             })
-            console.log(utils.formatEther(total))
+            // console.log(utils.formatEther(total))
             return { ...state, items: newItems, total: total, ids: newIds }
         case 'SET_DISCOUNT_AMOUNT':
             return {

@@ -19,27 +19,40 @@ export type UserProps = {
   balance: BigNumber;
 };
 
-export type TokenProps = {
-  id: string;
-  uri: string;
-  price: number;
-  name: string;
-  supply: number;
-  maxUnits: number;
-  media: string;
-};
+// export type TokenProps = {
+// export type ProductProps ={
+//   // id: string;
+//   id: BigNumber;
+//   // uri: string;
+//   price: BigNumber;
+//   name: string;
+//   qty: BigNumber;
+//   // supply: number;
+//   // maxUnits: number;
+//   // media: string;
+//   contractType: BigNumber;
+//   category: BigNumber;
+//   sale: boolean;
+//   url: string;
+// };
 export type ProductProps = {
-  id: string;
-  uri: string;
-  price: number;
+  id: BigNumber;
+  // url: string;
+  price: BigNumber;
   name: string;
+  type: number;
   supply: number;
   maxUnits: number;
-  media: string;
+  // media: string;
+  mediaUrl: string;
+  qty: number;
+  description: string;
+  sale: boolean;
 };
 
 export type TokenCompProps = {
-  token: TokenProps;
+  // token: TokenProps;
+  product: ProductProps;
   isOnSale?: boolean;
   onTransfer?: boolean;
   onBuy?: boolean;
