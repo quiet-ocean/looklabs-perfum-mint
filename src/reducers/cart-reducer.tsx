@@ -58,16 +58,18 @@ const cartReducer = (state: CartProps = initialCartState, action: ActionProps): 
             }
         
         case 'DECREASE_QUANTITY':
-            let newtotal = BigNumber.from('0');
+            // let newtotal = BigNumber.from('0');
+            let newtotal: BigNumber = state.total
             state.items.forEach((item: CartItemProps) => {
                 if(item.product.id === payload && item.quantity > 1) {
-                    newtotal = state.total.sub(item.product.price)
+                    newtotal = newtotal.sub(item.product.price)
                     return
                 }
             })
             return {
                 ...state,
-                total: newtotal.eq(BigNumber.from('0')) ? state.total : newtotal,
+                // total: newtotal.eq(BigNumber.from('0')) ? state.total : newtotal,
+                total: newtotal,
                 items: state.items.map((item: CartItemProps) => {
                     if(item.product.id == payload && item.quantity > 1) {
                         return { product: item.product, quantity: item.quantity - 1}
@@ -106,7 +108,7 @@ const cartReducer = (state: CartProps = initialCartState, action: ActionProps): 
                 }
                 return true
             })
-            // console.log(utils.formatEther(total))
+        // console.log(utils.formatEther(total))
             return { ...state, items: newItems, total: total, ids: newIds }
         case 'SET_DISCOUNT_AMOUNT':
             return {
