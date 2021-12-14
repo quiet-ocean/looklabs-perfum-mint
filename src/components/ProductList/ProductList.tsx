@@ -107,7 +107,7 @@ const ProductList = () => {
                   boderbottom={{ base: "1px solid whtie", md: "none" }}
                   centerContent
                 >
-                  <ProductItem key={key} dataKey={key} product={item} />
+                  <ProductItem key={key} dataKey={key} product={item} setLoading={setLoading}/>
                 </Container>
                 <TextSlider
                   reverse={false}
@@ -120,7 +120,7 @@ const ProductList = () => {
             return (
               <Box key={key}>
                 <Container maxW="100%" centerContent>
-                  <ProductItem key={key} dataKey={key} token={item} />
+                  <ProductItem key={key} dataKey={key} product={item} setLoading={setLoading}/>
                 </Container>
                 {/* Dividier. ToDo - to be exported in component */}
                 {/* skip border if it's last product not to overlap footer */}

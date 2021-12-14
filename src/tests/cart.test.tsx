@@ -6,6 +6,7 @@ import { cartReducer } from '../reducers/cart-reducer'
 import { CartProps, CartItemProps, ProductProps, ActionProps } from '../types'
 import { initialCartState } from '../state/constants'
 import { BigNumber, utils } from 'ethers';
+import { cookieStorageManager } from '@chakra-ui/react';
 
 describe("Cart reducer test", () => {
   let URL = ''
@@ -88,13 +89,15 @@ describe("Cart reducer test", () => {
     products = [product1, product2, product3, product4]
   })
 
+  afterAll(() => {
+
+  })
   beforeEach(() => {
     clear()
-    addProducts(0)
+    // addProducts(0)
   })
 
-  xit("handle a product being added to cart list", () => {
-    
+  it("handle a product being added to cart list", () => {
     let payload: any = { product: product1, quantity:1 }
     let action: ActionProps = {type: 'ADD_PRODUCT', payload: payload}
     let expectedTotal: BigNumber = utils.parseEther('0.001')
@@ -102,25 +105,26 @@ describe("Cart reducer test", () => {
     
     expect(stateTotal).toEqual(expectedTotal)
   })
-  xit('handle 2 products being added to cart list', () => {
-    
+  it('handle 2 products being added to cart list', () => {
     let payload: any = { product: product1, quantity:1 }
     let action: ActionProps = {type: 'ADD_PRODUCT', payload: payload}
     let expectedTotal: BigNumber = utils.parseEther('0.005')
     let previousState: CartProps = cartReducer(initialCartState, action)
     action.payload = { product: product2, quantity: 2 }
-    let stateTotal: BigNumber = cartReducer(previousState, action).total
-    
+    let state: CartProps = cartReducer(previousState, action)
+    let stateTotal: BigNumber = state.total
+    console.log(state)
     expect(stateTotal).toEqual(expectedTotal)
   })
-  xit('handle several products being added to cart list', () => {
-    // addProducts(1)
+  it('handle several products being added to cart list', () => {
     
+    addProducts(1)
+    console.log(previousState)
     expect(total).toEqual(expectedTotal)
   })
   xit('handle products being deleted from cart list', () => {
 
-    // addProducts(1)
+    addProducts(1)
     for(let i = 0; i < 4; i++) {
       action = { type: 'DELETE_PRODUCT', payload: products[i].id }
       previousState = cartReducer(previousState, action)
@@ -137,7 +141,7 @@ describe("Cart reducer test", () => {
     assert.notEqual(total, expectedTotal)
   })
   xit('handle a product being decreased in cart list', () => {
-    // addProducts(2)
+    addProducts(2)
     // console.log(utils.formatEther(total), utils.formatEther(expectedTotal))
     action = { type: 'DECREASE_QUANTITY', payload: BigNumber.from('4')}
     total = cartReducer(previousState, action).total
@@ -145,8 +149,8 @@ describe("Cart reducer test", () => {
     expectedTotal = utils.parseEther('0.026')
     expect(total).toEqual(expectedTotal)
   })
-  it('handle decrease action in cart list', () => {
-    // addProducts(1)
+  xit('handle decrease action in cart list', () => {
+    addProducts(1)
     console.log(utils.formatEther(total), utils.formatEther(expectedTotal))
     action = { type: 'DECREASE_QUANTITY', payload: BigNumber.from('4')}
     for(let i = 0; i < 6; i++) {
@@ -161,9 +165,5 @@ describe("Cart reducer test", () => {
     // console.log(utils.formatEther(expectedTotal))
 
     expect(total).toEqual(expectedTotal)
-  })
-  
-  afterAll(() => {
-
   })
 })

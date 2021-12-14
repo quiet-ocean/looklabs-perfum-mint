@@ -15,20 +15,46 @@ const cartReducer = (state: CartProps = initialCartState, action: ActionProps): 
 
             let exist: boolean = state.ids.indexOf(id) > -1
             let quantity: number = Number(payload.quantity)
+            let _newItems: CartItemProps[] = []
+            let overflow: boolean = false
 
-            let _newItems = exist ? state.items.map((item: CartItemProps, key: number) => {
-                if(item.product.id.eq(payload.product.id)) {
-                    let _newQuantity = item.quantity + Number(payload.quantity)
-                    if(_newQuantity > item.product.qty) {
-                        _newQuantity = item.product.qty
-                        price = payload.product?.price.mul(Number(item.product.qty - item.quantity))
+            let addItem = () => {
+                let flag: boolean = false
+                state.items.forEach((item: CartItemProps) => {
+                    if(item.product.id.eq(payload.product.id)) {
+                        flag = true
+                        let _quantity = quantity + item.quantity
+                        if(_quantity > item.product.qty) {
+                            _quantity = item.product.qty
+                            let diffQty: number = _quantity - item.quantity
+                            price = item.product.price.mul(BigNumber.from(diffQty.toString()))
+                        } else {
+                            price = item.product.price.mul(BigNumber.from(payload.quantity))
+                        }
+                        _newItems.push({product: payload.product, quantity: _quantity})
+                        return
                     } else {
-
+                        _newItems.push(item)
                     }
-                    return { product: item.product, quantity: _newQuantity}
+                })
+                if(!flag) {
+                    _newItems.push({product: payload.product, quantity: quantity})
                 }
-                return item
-            }) : [...state.items, { product: payload.product, quantity: quantity }]
+            }
+            addItem()
+            // let _newItems = exist ? state.items.map((item: CartItemProps, key: number) => {
+            //     if(item.product.id.eq(payload.product.id)) {
+            //         let _newQuantity = item.quantity + Number(payload.quantity)
+            //         if(_newQuantity > item.product.qty) {
+            //             _newQuantity = item.product.qty
+            //             price = payload.product?.price.mul(Number(item.product.qty - item.quantity))
+            //         } else {
+
+            //         }
+            //         return { product: item.product, quantity: _newQuantity}
+            //     }
+            //     return item
+            // }) : [...state.items, { product: payload.product, quantity: quantity }]
 
             let _newState: CartProps = { 
                 ...state,
@@ -93,7 +119,7 @@ const cartReducer = (state: CartProps = initialCartState, action: ActionProps): 
                 return true
             })
             let newItems = state.items.filter((item: CartItemProps, key: number) => {
-                if(item.product.id.equal(payload)) {
+                if(item.product.id.eq(payload)) {
                     // console.log('id exist in item array')
                     // total =  total.sub(item.product?.price.mul(BigNumber.from(item.quantity)))
                     total =  total.sub(item.product?.price.mul((item.quantity)))
@@ -109,12 +135,12 @@ const cartReducer = (state: CartProps = initialCartState, action: ActionProps): 
                 discount: payload
             }
         case 'SET_CYBER_ID':
-            let newState_2 = {
+            let __newState = {
                 ...state,
                 cyberProductId: payload
             }
             // console.log(newState_2)
-            return newState_2
+            return __newState
         case 'REMOVE_ALL':
             return initialCartState
         default:

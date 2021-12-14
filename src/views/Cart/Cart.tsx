@@ -35,6 +35,7 @@ const Cart = () => {
     setIds(state.ids)
   }, []);
   useEffect(() => {
+    console.log(state)
     // console.log("ids ", ids);
     let effect = async () => {
       let dstate = await discount(state)
