@@ -1,5 +1,5 @@
-import { useState, useEffect, useContext, useRef } from 'react'
-import { utils, providers, BigNumber } from 'ethers'
+import { useState, useEffect, useContext } from 'react'
+import { utils } from 'ethers'
 import { useHistory } from 'react-router-dom'
 import {
     VStack,
@@ -98,40 +98,7 @@ const Checkout = () => {
       
     return (
         <Flex direction={{base:'column', md:'row'}} w='100%' h='full'>
-            {(status === CHECKOUT && <Box  w='100%' flexGrow={4} minH='200px'>
-                <Flex direction={{base: 'column', md: 'row'}} >
-                    <VStack spacing='24px' w='100%' p='32px'>
-                        <Box w='full'>
-                            <VStack spacing='15px' w='full' align='stretch'>
-                                <Heading as='h5' fontSize='18px'>customer details</Heading>
-                                <Box w={{base: '100%', md: '50%'}}><AutoCompleteField label={'title'} placeholder={'title'} options={[{value: 'mr', label:'MR'},{value:'gt',label:'GT'}]} w={{base:'100%',md:'50%'}} /></Box>
-                                <TextInput label={'fisrt name'}/>
-                                <TextInput label={'super name'}/>
-                            </VStack>
-                        </Box>
-                        <Box w='full'>
-                            <VStack spacing='15px' w='full' align='stretch'>
-                                <Heading as='h5' fontSize='18px'>delivery details</Heading>
-                                <Box w='100%'><AutoCompleteField label={'country or region'} placeholder={'country'} w={{base:'100%',md:'50%'}} options = {countries} /></Box>
-                                <TextInput label={'street address'}/>
-                                <TextInput label={'street address 2 (optional)'}/>
-                                <TextInput label={'city'} />
-                                <Box w={{base: '100%', md: '50%'}}><AutoCompleteField label={'state/province/region'} placeholder={'state'} w={{base:'100%',md:'50%'}} options = {countries} /></Box>
-                                <TextInput label={'zip code'} w={{base:'100%',md:'50%'}}/>
-                            </VStack>
-                        </Box>
-                    </VStack>
-                    <Box w='100%'>
-                    
-                    </Box>
-                </Flex>
-                <Box p='32px'>
-                    <Button onClick = {() =>{ }} p='24px' bgGradient="linear(to-tr, #fd06b1, #ef313e, #cc672a, #a4a02e, #7dd632, #60ff35)">
-                        <Text color='white'>pay with wallet</Text>
-                    </Button>
-                </Box>
-            </Box>)
-            ||
+            {
             ((status === PROCEEDING || status === CONFIRMED) && <Box  w='100%' border='1px solid'  flex='4' p='24px' minH='200px'>
                 <VStack align='stretch' spacing='16px'>
                     <Box><Text color='white' fontSize='22px'>{subtitle[status]}</Text></Box>

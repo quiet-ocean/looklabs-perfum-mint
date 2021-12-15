@@ -41,6 +41,7 @@ import {
   keyframes,
   useForceUpdate,
 } from "@chakra-ui/react";
+import { isEmpty } from "../../utils";
 
 const ProductItem = ({product, setLoading}) => {
 
@@ -103,7 +104,18 @@ const ProductItem = ({product, setLoading}) => {
     
     const ADDED = 1
     const MINTED = 2
-
+    if(isEmpty(label)) {
+      toast({
+        title: 'Warning.',
+        description: "Label cannot be empty.",
+        position: 'top-right',
+        status: 'warning',
+        duration: 5000,
+        isClosable: true,
+      })
+      // setLoading(false)
+      return
+    }
     // const response = await api.post('/cyber', {
     //   label: label,
     //   address: user?.address,

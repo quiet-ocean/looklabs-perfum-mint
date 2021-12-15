@@ -18,14 +18,14 @@ const CartItem = (props: any) => {
   // const { token, quantity } = props
   // const
   const { product, quantity, deleteProduct } = props;
-  const [isCyber, setIsCyber] = useState(false);
+  // const [isCyber, setIsCyber] = useState(false);
   const { dispatch } = useContext(Context)
   // console.log(product, quantity)
 
   useEffect(() => {
     if (product.type === 2) {
       console.log("product is cyber");
-      setIsCyber(true);
+      // setIsCyber(true);
     } else {
       console.log("product is not cyber");
     }
