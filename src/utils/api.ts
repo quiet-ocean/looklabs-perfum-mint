@@ -1,24 +1,5 @@
-import axios from 'axios';
-import * as dotenv from 'dotenv'
-import env from '../config'
-
-dotenv.config()
-
-export const api = axios.create({
-  // baseURL: process.env.API_URL || 'http://localhost:5001/',
-  // baseURL: 'https://elite.looklabs.xyz/',
-  baseURL: env.API,
-  headers: {
-    'Access-Control-Allow-Origin': '*'
+const env = {
+  //  API: 'https://elite.looklabs.xyz',
+      API: 'http://localhost:4000',
   }
-});
-export const LabelApi = axios.create({
-  baseURL: env.LABEL_API,
-  headers: {
-    'crossDomain': 'true',
-    'Accepts': 'application/json',
-    'Access-Control-Allow-Origin': '*',
-    'Access-Control-Allow-Headers': 'Origin, X-Requested-With, Content-Type, Accept',
-    'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTION',
-  }
-})
+  export default env
