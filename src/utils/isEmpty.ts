@@ -1,7 +1,7 @@
 let isEmpty = (item: any) => {
     if(item === undefined || item === '' || item === {} || item === [])
-        return false
-    return true
+        return true
+    return false
 }
 
 export { isEmpty }
