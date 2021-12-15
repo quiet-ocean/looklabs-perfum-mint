@@ -100,7 +100,7 @@ const TokenItem = ({ token, setLoading }) => {
   };
 
   let checkLabelExist = async (label: string) => {
-    const response = await api.get(`/label?name=${label}`)
+    const response = await api.get(`/cyber/checklabel/${label}`)
     return response.data.exist
   }
   let addLabel = async (label: string, id: number) => {
@@ -108,8 +108,8 @@ const TokenItem = ({ token, setLoading }) => {
     const ADDED = 1
     const MINTED = 2
 
-    const response = await api.post('/label', {
-      name: label,
+    const response = await api.post('/cyber', {
+      label: label,
       address: user?.address,
       productId: id,
       type: ADDED,
