@@ -31,7 +31,6 @@ contract CartERC721 is ERC721Enumerable, Ownable, Proxy {
 
   mapping(uint256 => SoldMetaERC721) private _soldProducts;
 
-  event ProductSold_cartArt721(uint256 productId, address _ownerAddress);
   event ProductBurned_cartArt721(uint256 productId, address _ownerAddress);
 
   constructor(address _proxyAddr) public ERC721('cart.art ERC721', 'LOOK LABS') {
@@ -52,7 +51,7 @@ contract CartERC721 is ERC721Enumerable, Ownable, Proxy {
       uint256 mintIndex = totalSupply() + 1;
       SoldMetaERC721 memory sold = SoldMetaERC721(mintIndex, _productId);
       _mint(_to, mintIndex);
-      cartInstance.productSold(mintIndex, _to, 'ERC721');
+      cartInstance.productSold(mintIndex, _to, _productId);
       _setTokenMeta(mintIndex, sold);
     }
   }

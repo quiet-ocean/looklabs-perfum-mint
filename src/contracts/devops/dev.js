@@ -13,8 +13,7 @@ const start = async callback => {
     const accounts = () =>
       new HDWalletProvider(
         process.env.MNEMONIC ||
-        // `choose vibrant quote furnace goose goat spread oblige thank scissors stumble segment`,
-        `nation crisp canvas powder panda pole spell spell come canyon measure idle`,
+        `choose vibrant quote furnace goose goat spread oblige thank scissors stumble segment`,
         process.env.PROVIDER_URL || `wss://rinkeby.infura.io/ws/v3/7480cbb73c7d4bd4933527b0de354d85`
       )
 
