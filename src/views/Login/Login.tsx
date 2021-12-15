@@ -223,9 +223,9 @@ const Login = () => {
               </Box>
               <Box flex="1">
                 {Object.keys(connectorsByName).map((name: string) => {
-                  const currentConnector =
-                    connectorsByName[name as keyof typeof connectorsByName];
-                  const activating = currentConnector === activatingConnector;
+                  // const currentConnector =
+                    // connectorsByName[name as keyof typeof connectorsByName];
+                  // const activating = currentConnector === activatingConnector;
                   // const connected = currentConnector === connector
 
                   return (

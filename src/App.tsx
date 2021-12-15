@@ -10,17 +10,11 @@ import { BrowserRouter as Router } from "react-router-dom";
 import { Web3ReactProvider } from "@web3-react/core";
 import { Web3Provider } from "@ethersproject/providers";
 // import { Switch, Route } from "react-router-dom";
-import { Connect } from "./layouts";
-import { Marketplace, Cart, Checkout, About, Whitepaper } from "./views";
-import { Header, Footer, Navbar } from "./components";
 
-import { ChakraProvider, VStack, Box } from "@chakra-ui/react";
+import { ChakraProvider } from "@chakra-ui/react";
 import { Store } from "./state";
 import { Theme } from "./theme";
-import { useContext } from "react";
-import { Context } from "./state";
 import { Root } from './layouts/Root'
-// import { ScrollToTop } from './components/ScrollToTop'
 import ScrollToTop from "react-scroll-to-top";
 
 function getLibrary(provider: any): Web3Provider {
