@@ -147,7 +147,7 @@ const ProductList = () => {
             opacity: '0.5',
           }}
         >
-          <Text color='white' zIndex={'2'} fontSize='22px' textAlign='center' marginTop='40%'>Loading...</Text>
+          <Text color='white' zIndex={'2'} fontSize='22px' textAlign='center' marginTop='20%'>Loading...</Text>
         </Box>
         :
         ''

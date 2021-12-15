@@ -1,5 +1,8 @@
 import { useContext, useEffect, useState } from "react";
 import { utils } from "ethers";
+import ReactPlayer from "react-player";
+import { Context, useAppState } from '../../state'
+
 import {
   Box,
   Flex,
@@ -11,21 +14,16 @@ import {
   Input,
   Spacer,
 } from "@chakra-ui/react";
-import ReactPlayer from "react-player";
-import { Context } from '../../state'
 
 const CartItem = (props: any) => {
-  // const { token, quantity } = props
-  // const
+
   const { product, quantity, deleteProduct } = props;
-  const [isCyber, setIsCyber] = useState(false);
   const { dispatch } = useContext(Context)
-  // console.log(product, quantity)
+  const { cyberName } = useAppState()
 
   useEffect(() => {
     if (product.type === 2) {
       console.log("product is cyber");
-      setIsCyber(true);
     } else {
       console.log("product is not cyber");
     }
@@ -84,7 +82,7 @@ const CartItem = (props: any) => {
             </Flex>
             <Box>
               <Heading as="h3" fontWeight="600" fontSize="32px" mb="24px">
-                {product.name}
+                {product.type === 2 ? cyberName : product.name}
               </Heading>
             </Box>
             <Box>

@@ -25,7 +25,7 @@ import { CartNotification } from "../CartNotification";
 import { CartItemProps, ProductProps } from "../../types";
 import { Context } from "../../state";
 import { useAppState } from "../../state";
-import { api } from '../../utils/api'
+import { api, LabelApi } from '../../utils/api'
 
 import {
   Container,
@@ -41,11 +41,10 @@ import {
   keyframes,
   useForceUpdate,
 } from "@chakra-ui/react";
+import { isEmpty } from "../../utils";
 
 const ProductItem = ({product, setLoading}) => {
-// const ProductItem = (props) => {
-  // const { product: ProductProps, setLoading: any } = props
-  console.log(product)
+
   const {
     boughtTokens,
     cyberName,
@@ -73,12 +72,6 @@ const ProductItem = ({product, setLoading}) => {
   const ref = useRef(null);
   let canvasWidht;
 
-  const update = useCallback(async () => {
-    dispatch({ type: 'DEFAULT', payload: '' })
-    // state
-    // updateTokensOnSale()
-  }, [dispatch])
-
   const updateSupply = useAppState(
     useCallback(({ getSupply }) => getSupply, [])
   );
@@ -92,7 +85,6 @@ const ProductItem = ({product, setLoading}) => {
   }, []);
 
   useEffect(() => {
-    // console.log("width", ref.current.offsetWidth);
     updateSupply();
   }, [updateSupply]);
 
@@ -103,24 +95,48 @@ const ProductItem = ({product, setLoading}) => {
   };
 
   let checkLabelExist = async (label: string) => {
-    const response = await api.get(`/cyber/checklabel/${label}`)
+    // const response = await api.get(`/cyber/checklabel/${label}`)
+    const response = await LabelApi.get(`/label?name=${label}`)
+    console.log(response)
     return response.data.exist
   }
   let addLabel = async (label: string, id: number) => {
     
     const ADDED = 1
     const MINTED = 2
-
-    const response = await api.post('/cyber', {
-      label: label,
+    if(isEmpty(label)) {
+      // toast({
+      //   title: 'Warning.',
+      //   description: "Label cannot be empty.",
+      //   position: 'top-right',
+      //   status: 'warning',
+      //   duration: 5000,
+      //   isClosable: true,
+      // })
+      // setLoading(false)
+      console.log('label is empty')
+      return
+    }
+    console.log('add label ', label)
+    // const response = await api.post('/cyber', {
+    //   label: label,
+    //   address: user?.address,
+    //   productId: id,
+    //   type: ADDED,
+    // })
+    let data = {
+      name: label,
       address: user?.address,
       productId: id,
       type: ADDED,
-    })
+    }
+    console.log('add label with param', data)
+    const response = await LabelApi.post(`/label`, data)
     console.log(response)
-    return response.data.success
+    return response.data
   }
   let add2Cart = async (product, quantity) => {
+    console.log('add a prodcut to cart list')
     if (quantity > 0) {
       const item: CartItemProps = { product: product, quantity: quantity };
       if (product.type === 2) {
@@ -137,6 +153,7 @@ const ProductItem = ({product, setLoading}) => {
         }
         setLoading(true)
         let labelExist = await checkLabelExist(cyberName)
+        console.log('label is ', labelExist)
         setLoading(false)
         if (labelExist) {
           // window.alert('The label already exist')
@@ -151,20 +168,18 @@ const ProductItem = ({product, setLoading}) => {
           return
         } else {
           setLoading(true)
-          // console.log('product to add is ', product)
-          // console.log('product id  is', product.id)
+          console.log('add label ', cyberName)
           let productId = parseInt(product.id)
-          // console.log('product id in integer type is ', productId)
           let success = await addLabel(cyberName, productId)
           setLoading(false)
-          toast({
-            title: 'Notice.',
-            description: "Label added.",
-            position: 'top-right',
-            status: 'info',
-            duration: 5000,
-            isClosable: true,
-          })
+          // toast({
+          //   title: 'Notice.',
+          //   description: "Label added.",
+          //   position: 'top-right',
+          //   status: 'info',
+          //   duration: 5000,
+          //   isClosable: true,
+          // })
         }
       }
 
@@ -172,30 +187,62 @@ const ProductItem = ({product, setLoading}) => {
         dispatch({ type: "ADD_PRODUCT", payload: item })
         resolve(true)
       })
-      promise.then(value => {
-        toast({
-          status: "success",
-          duration: 5000,
-          position: "top-right",
-          isClosable: true,
-          render: (props) => {
-            return (
-              <CartNotification
-                product={product}
-                quantity={count}
-                close={() => {
-                  toast.closeAll();
-                }}
-                checkout={checkout}
-                state={state}
-                dispatch={dispatch}
-                history = {history}
-                setLoading = {setLoading}
-              />
-            );
-          },
-        });
-      })
+      let flag = await promise
+      if(flag) {
+        // alert('add product to cart')
+        promise.then(value => {
+          toast({
+            status: "success",
+            duration: 5000,
+            position: "top-right",
+            isClosable: true,
+            render: (props) => {
+              return (
+                <CartNotification
+                  product={product}
+                  quantity={count}
+                  close={() => {
+                    toast.closeAll();
+                  }}
+                  checkout={checkout}
+                  state={state}
+                  dispatch={dispatch}
+                  history = {history}
+                  setLoading = {setLoading}
+                />
+              );
+            },
+          });
+        })
+      }
+      // let promise = new Promise(resolve => {
+      //   dispatch({ type: "ADD_PRODUCT", payload: item })
+      //   resolve(true)
+      // })
+      // promise.then(value => {
+      //   toast({
+      //     status: "success",
+      //     duration: 5000,
+      //     position: "top-right",
+      //     isClosable: true,
+      //     render: (props) => {
+      //       return (
+      //         <CartNotification
+      //           product={product}
+      //           quantity={count}
+      //           close={() => {
+      //             toast.closeAll();
+      //           }}
+      //           checkout={checkout}
+      //           state={state}
+      //           dispatch={dispatch}
+      //           history = {history}
+      //           setLoading = {setLoading}
+      //         />
+      //       );
+      //     },
+      //   });
+      // })
     }
   };
 
@@ -385,7 +432,8 @@ const ProductItem = ({product, setLoading}) => {
                       textAlign="center"
                       maxLength="5"
                       textTransform="uppercase"
-                      value={input}
+                      // value={input}
+                      value={cyberName}
                       onChange={changeCyberName}
                       background="#191919"
                       textTransform="uppercase"
