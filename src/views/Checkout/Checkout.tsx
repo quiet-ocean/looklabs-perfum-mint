@@ -18,7 +18,7 @@ import {
 import { TextInput, AutoCompleteField } from '../../components'
 
 import { useAppState, Context } from '../../state'
-import { api } from '../../utils/api'
+import { api, LabelApi } from '../../utils/api'
 
 const countries = [
     { value: "ghana", label: "Ghana" },
@@ -79,15 +79,15 @@ const Checkout = () => {
             let getTransactionConfirmations = async (): Promise<ReceiptProps> => {
                 let receipt = await transaction.wait()
 
-                console.log(receipt.logs[0].topics[0])
-                console.log(receipt.logs[0].topics[1])
-                console.log(receipt.logs[0].topics[2])
-                console.log(receipt.logs[0].topics[3])
+                // console.log(receipt.logs[0].topics[0])
+                // console.log(receipt.logs[0].topics[1])
+                // console.log(receipt.logs[0].topics[2])
+                // console.log(receipt.logs[0].topics[3])
 
-                console.log(parseInt(receipt.logs[0].topics[0]))
-                console.log(parseInt(receipt.logs[0].topics[1]))
-                console.log(parseInt(receipt.logs[0].topics[2]))
-                console.log(parseInt(receipt.logs[0].topics[3]))
+                // console.log(parseInt(receipt.logs[0].topics[0]))
+                // console.log(parseInt(receipt.logs[0].topics[1]))
+                // console.log(parseInt(receipt.logs[0].topics[2]))
+                // console.log(parseInt(receipt.logs[0].topics[3]))
 
                 let hexId = receipt.logs[0].topics[3]
                 // console.log(BigNumber.from(hexId).toNumber())
@@ -110,15 +110,22 @@ const Checkout = () => {
                         if(state.cyberProductId > -1) {
                             console.log('cyber label exist')
                             console.log('cyber product id is ' + state.cyberProductId + ' is updated as token id is ' + result.tokenId)
-                            let params = {productId: state.cyberProductId, tokenId: result.tokenId, cyberLabel: cyberName }
+                            let params = {productId: state.cyberProductId, tokenId: result.tokenId, cyberLabel: cyberName, address: '' }
                             console.log(params)
-                            api.post(`/cyber/update`, params)
-                                .then((response) => {
-                                    console.log(response)
-                                })
-                                .catch(error => {
-                                    console.log(error)
-                                })                      
+                            // LabelApi.put(`/label`, params)
+                            //     .then(response => {
+                            //         console.log(response)
+                            //     })
+                            //     .catch(error => {
+                            //         console.log(error)
+                            //     })
+                            // api.post(`/cyber/update`, params)
+                            //     .then((response) => {
+                            //         console.log(response)
+                            //     })
+                            //     .catch(error => {
+                            //         console.log(error)
+                            //     })
                         } else {
                             console.log('cyber label not exist')
                         }

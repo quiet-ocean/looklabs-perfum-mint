@@ -25,7 +25,7 @@ module.exports = {
         process.env.PROVIDER_URL || `wss://rinkeby.infura.io/ws/v3/972cedb404854169847a6ecff2d82ee5`
       ),
       network_id: 4,
-      gas: 20000000,
+      gas: 25000000,
       gasPrice: 1580000000
     },
 

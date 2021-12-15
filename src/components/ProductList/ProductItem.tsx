@@ -25,7 +25,7 @@ import { CartNotification } from "../CartNotification";
 import { CartItemProps, ProductProps } from "../../types";
 import { Context } from "../../state";
 import { useAppState } from "../../state";
-import { api } from '../../utils/api'
+import { api, LabelApi } from '../../utils/api'
 
 import {
   Container,
@@ -43,9 +43,7 @@ import {
 } from "@chakra-ui/react";
 
 const ProductItem = ({product, setLoading}) => {
-// const ProductItem = (props) => {
-  // const { product: ProductProps, setLoading: any } = props
-  console.log(product)
+
   const {
     boughtTokens,
     cyberName,
@@ -73,12 +71,6 @@ const ProductItem = ({product, setLoading}) => {
   const ref = useRef(null);
   let canvasWidht;
 
-  const update = useCallback(async () => {
-    dispatch({ type: 'DEFAULT', payload: '' })
-    // state
-    // updateTokensOnSale()
-  }, [dispatch])
-
   const updateSupply = useAppState(
     useCallback(({ getSupply }) => getSupply, [])
   );
@@ -92,7 +84,6 @@ const ProductItem = ({product, setLoading}) => {
   }, []);
 
   useEffect(() => {
-    // console.log("width", ref.current.offsetWidth);
     updateSupply();
   }, [updateSupply]);
 
@@ -103,7 +94,9 @@ const ProductItem = ({product, setLoading}) => {
   };
 
   let checkLabelExist = async (label: string) => {
-    const response = await api.get(`/cyber/checklabel/${label}`)
+    // const response = await api.get(`/cyber/checklabel/${label}`)
+    const response = await LabelApi.get(`/label?name=${label}`)
+
     return response.data.exist
   }
   let addLabel = async (label: string, id: number) => {
@@ -111,14 +104,19 @@ const ProductItem = ({product, setLoading}) => {
     const ADDED = 1
     const MINTED = 2
 
-    const response = await api.post('/cyber', {
-      label: label,
+    // const response = await api.post('/cyber', {
+    //   label: label,
+    //   address: user?.address,
+    //   productId: id,
+    //   type: ADDED,
+    // })
+    const response = await LabelApi.post(`/label`, {
+      name: label,
       address: user?.address,
       productId: id,
       type: ADDED,
     })
-    console.log(response)
-    return response.data.success
+    return response.data
   }
   let add2Cart = async (product, quantity) => {
     if (quantity > 0) {
@@ -151,10 +149,7 @@ const ProductItem = ({product, setLoading}) => {
           return
         } else {
           setLoading(true)
-          // console.log('product to add is ', product)
-          // console.log('product id  is', product.id)
           let productId = parseInt(product.id)
-          // console.log('product id in integer type is ', productId)
           let success = await addLabel(cyberName, productId)
           setLoading(false)
           toast({
