@@ -48,6 +48,7 @@ contract Product is Ownable {
   mapping(uint256 => DiscountProduct) public discountedProducts;
 
   event NewProduct(uint256 productId);
+  event ProductSold(uint256 _productId, uint256 _tokenId, address _ownerAddress, string _name, uint256 _qty);
   event ProductUpdated(uint256 productId);
   event DeleteProduct(uint256 productId);
   event SoldOut(uint256 productId);

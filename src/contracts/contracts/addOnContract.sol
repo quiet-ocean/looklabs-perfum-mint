@@ -12,6 +12,7 @@ pragma experimental ABIEncoderV2;
 import '../node_modules/@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol';
 import '../node_modules/@openzeppelin/contracts/access/Ownable.sol';
 import '../node_modules/@openzeppelin/contracts/utils/math/SafeMath.sol';
+
 import './Proxy.sol';
 import './GenesisCart.sol';
 
@@ -29,7 +30,6 @@ contract addOnContract is ERC721Enumerable, Ownable, Proxy {
 
   mapping(uint256 => SoldMeta) private _soldProducts;
 
-  event ProductSold_cartArt_coder(uint256 productId, address _ownerAddress);
   event ProductBurned_cartArt_coder(uint256 productId, address _ownerAddress);
 
   constructor(address _proxyAddr) public ERC721('Coder', 'LOOK LABS') {
@@ -303,7 +303,7 @@ contract addOnContract is ERC721Enumerable, Ownable, Proxy {
     for (uint256 i = 0; i < _qty; i++) {
       uint256 mintIndex = totalSupply() + 1;
       _mint(_to, mintIndex);
-      emit ProductSold_cartArt_coder(mintIndex, _to);
+      cartInstance.productSold(mintIndex, _to, _productId);
       SoldMeta memory sold = SoldMeta(mintIndex, _productId);
       _setTokenMeta(mintIndex, sold);
     }

@@ -30,8 +30,6 @@ contract CartERC1155 is ERC1155Supply, Ownable, Proxy {
   }
 
   mapping(uint256 => SoldMetaERC1155) private _soldProducts;
-
-  event ProductSold_cartArt1155(uint256 productId, address _ownerAddress);
   event ProductBurned_cartArt1155(uint256 productId, address _ownerAddress);
 
   constructor(address _proxyAddr) public ERC1155('') {
@@ -59,7 +57,7 @@ contract CartERC1155 is ERC1155Supply, Ownable, Proxy {
     }
 
     _mint(_to, _counderId, _qty, '0x0');
-    emit ProductSold_cartArt1155(_counderId, _to);
+    cartInstance.productSold(_counderId, _to, _productId);
     SoldMetaERC1155 memory sold = SoldMetaERC1155(_productId, _counderId, _msgSender());
     _soldProducts[_productId] = sold;
   }

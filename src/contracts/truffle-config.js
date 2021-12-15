@@ -17,32 +17,22 @@ module.exports = {
       //   // process.env.WALLET_PROVIDER_URL
       // ).getAddress(0),
     },
-  
+
     rinkeby: {
-
       provider: () => new HDWalletProvider(
-        // process.env.MNEMONIC || `choose vibrant quote furnace goose goat spread oblige thank scissors stumble segment`,
-        `nation crisp canvas powder panda pole spell spell come canyon measure idle`,
+        process.env.MNEMONIC || `choose vibrant quote furnace goose goat spread oblige thank scissors stumble segment`,
         // `https://rinkeby.infura.io/v3/7480cbb73c7d4bd4933527b0de354d85`
-        process.env.PROVIDER_URL || `wss://rinkeby.infura.io/ws/v3/7480cbb73c7d4bd4933527b0de354d85`
-        ),
-      network_id: 4,       // Ropsten's id
-      // gas: 20000000,        // Ropsten has a lower block limit than mainnet
-      gas: 25000000,
-      // gasPrice: 1580000000,
-      gasPrice: 20000000,
-      confirmations: 2,    // # of confs to wait between deployments. (default: 0)
-      // timeoutBlocks: 10,
-      // timeoutBlocks: 200,  // # of blocks before a deployment times out  (minimum/default: 50)
-      // skipDryRun: true     // Skip dry run before migrations? (default: false for public nets )
-
+        process.env.PROVIDER_URL || `wss://rinkeby.infura.io/ws/v3/972cedb404854169847a6ecff2d82ee5`
+      ),
+      network_id: 4,
+      gas: 20000000,
+      gasPrice: 1580000000
     },
 
     live: {
       provider: function () {
         return new HDWalletProvider(
-          // process.env.MNEMONIC || `choose vibrant quote furnace goose goat spread oblige thank scissors stumble segment`,
-          `nation crisp canvas powder panda pole spell spell come canyon measure idle`,
+          process.env.MNEMONIC || `choose vibrant quote furnace goose goat spread oblige thank scissors stumble segment`,
           // `https://rinkeby.infura.io/v3/7480cbb73c7d4bd4933527b0de354d85`
           process.env.PROVIDER_URL || `wss://rinkeby.infura.io/ws/v3/7480cbb73c7d4bd4933527b0de354d85`
         )

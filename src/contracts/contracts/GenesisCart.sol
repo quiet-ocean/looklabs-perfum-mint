@@ -17,7 +17,7 @@ import './CartERC721.sol';
 import './CartERC1155.sol';
 import './addOnContract.sol';
 
-contract GenesisCart is Ownable, Product {
+contract GenesisCart is Ownable, Product, Proxy {
   using Helper for uint256[];
   using SafeMath for uint256;
   using SafeMath for uint8;
@@ -27,21 +27,13 @@ contract GenesisCart is Ownable, Product {
 
   address public vault;
 
-  event SetStoreContract(address _contract);
-  event ProductSold(uint256 _productId, address _ownerAddress, string _type);
-
   constructor() {
     instanceERC721 = new CartERC721(address(this));
     instanceERC1155 = new CartERC1155(address(this));
     instanceAddOnContract = new addOnContract(address(this));
-
-    address instanceERC721Address = address(instanceERC721);
-    address instanceERC1155Address = address(instanceERC1155);
-    address instanceAddOnContractAddress = address(instanceAddOnContract);
-
-    emit SetStoreContract(instanceERC721Address);
-    emit SetStoreContract(instanceERC1155Address);
-    emit SetStoreContract(instanceAddOnContractAddress);
+    _approveChildContract(address(instanceERC721));
+    _approveChildContract(address(instanceERC1155));
+    _approveChildContract(address(instanceAddOnContract));
   }
 
   function checkOut(uint256[] memory _products, uint256[] memory _qty) public payable {
@@ -50,14 +42,6 @@ contract GenesisCart is Ownable, Product {
     for (uint256 i = 0; i < _products.length; i++) {
       uint256 _productQTY = _qty[i];
       uint256 _productId = _products[i];
-
-      // to be exported to a pranet function from sub contracts
-
-      products[_productId].qty = products[_productId].qty - 1;
-      if (products[_productId].qty == 0) {
-        emit SoldOut(_productId);
-      }
-      //
 
       if (products[_productId].contractType == 1) {
         instanceERC721.buy(msg.sender, _productQTY, _productId);
@@ -109,13 +93,22 @@ contract GenesisCart is Ownable, Product {
    * Only GenesisFactory owner can run
    */
 
-  // TODO not to be public
   function productSold(
-    uint256 _productId,
+    uint256 _tokenId,
     address _ownerAddress,
-    string memory _type
-  ) public {
-    emit ProductSold(_productId, _ownerAddress, _type);
+    uint256 _productId
+  ) public onlyChildren {
+    emit ProductSold(
+      _productId,
+      _tokenId,
+      _ownerAddress,
+      products[_productId].name,
+      products[_productId].qty
+    );
+    products[_productId].qty = products[_productId].qty - 1;
+    if (products[_productId].qty == 0) {
+      emit SoldOut(_productId);
+    }
   }
 
   function setVault(address _newVaultAddress) public onlyOwner {
@@ -130,18 +123,6 @@ contract GenesisCart is Ownable, Product {
   function withdrawAll() public payable onlyOwner {
     require(address(vault) != address(0), 'no vault');
     require(payable(vault).send(address(this).balance), "didn't withdraw all");
-  }
-
-  function setProductQTY() public onlyOwner {}
-
-  // Public token url functions
-
-  function getERC1155URL(uint256 _tokenId) public view returns (string memory _url) {
-    return instanceERC1155.uri(_tokenId);
-  }
-
-  function getERC721URL(uint256 _tokenId) public view returns (string memory _url) {
-    return instanceERC721.tokenURI(_tokenId);
   }
 
   function getMetaURI(uint256 _id) public view returns (string memory _name) {
