@@ -16,7 +16,6 @@ import {
 import { TextInput, AutoCompleteField } from '../../components'
 
 import { useAppState, Context } from '../../state'
-import { api, LabelApi } from '../../utils/api'
 
 const countries = [
     { value: "ghana", label: "Ghana" },
