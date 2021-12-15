@@ -25,7 +25,7 @@ import { CartNotification } from "../CartNotification";
 import { CartItemProps, ProductProps } from "../../types";
 import { Context } from "../../state";
 import { useAppState } from "../../state";
-import { api, LabelApi } from '../../utils/api'
+import { api } from '../../utils/api'
 
 import {
   Container,
@@ -95,8 +95,7 @@ const ProductItem = ({product, setLoading}) => {
   };
 
   let checkLabelExist = async (label: string) => {
-    // const response = await api.get(`/cyber/checklabel/${label}`)
-    const response = await LabelApi.get(`/label?name=${label}`)
+    const response = await api.get(`/label?name=${label}`)
     console.log(response)
     return response.data.exist
   }
@@ -131,7 +130,7 @@ const ProductItem = ({product, setLoading}) => {
       type: ADDED,
     }
     console.log('add label with param', data)
-    const response = await LabelApi.post(`/label`, data)
+    const response = await api.post(`/label`, data)
     console.log(response)
     return response.data
   }

@@ -1,5 +1,9 @@
-const env = {
-  //  API: 'https://elite.looklabs.xyz',
-      API: 'http://localhost:4000',
-  }
-  export default env
+import axios from 'axios'
+import * as dotenv from 'dotenv'
+import env from '../config'
+
+dotenv.config()
+
+export const api = axios.create({
+  baseURL: env.API,
+})
