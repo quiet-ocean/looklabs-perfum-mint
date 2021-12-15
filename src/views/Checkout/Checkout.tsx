@@ -1,9 +1,7 @@
 import { useState, useEffect, useContext, useRef } from 'react'
 import { utils, providers, BigNumber } from 'ethers'
 import { useHistory } from 'react-router-dom'
-// import web3 from 'web3   '
 import {
-    // Container,
     VStack,
     HStack,
     Flex,
@@ -30,24 +28,6 @@ const countries = [
     { value: "germany", label: "Germany" }
 ]
 
-// const states = {
-//     'ghana': [],
-//     'nigeria': [],
-//     'kenya': [],
-//     'southAfrica': [],
-//     'unitedStates': [],
-//     'canada': [],
-//     'germany': [],
-// }
-// const token = {
-//     id: 2,
-//     name: 'CYBER EAU DE PARFUM 1',
-//     media: '/static/comfy5402_gloss.mp4',
-//     price: 5,
-//     uri: '',
-//     supply: 1337,
-//     maxUnits: 10,
-// }
 type ReceiptProps = {confirmations: number, tokenId: number}
 const Checkout = () => {
 
@@ -62,12 +42,7 @@ const Checkout = () => {
     const history = useHistory()
     const subtitle = ['checkout','transction processing...', 'transaction confirmed']
     const [status, setStatus] = useState(1) // status - checkout, processing, confirmed
-    // const [progress, setProgress] = useState(0.1)
-    // const [confirmations, setConfirmations] = useState(0)
     const [time, setTime] = useState('')
-    // const speed = 0.01
-
-    // const transactionRef = useRef(useAppState.getState().transaction)
     const [loading, setLoading] = useState<boolean>(false)
     const [fee, setFee] = useState<string>('0')
 
@@ -79,23 +54,10 @@ const Checkout = () => {
             let getTransactionConfirmations = async (): Promise<ReceiptProps> => {
                 let receipt = await transaction.wait()
 
-                // console.log(receipt.logs[0].topics[0])
-                // console.log(receipt.logs[0].topics[1])
-                // console.log(receipt.logs[0].topics[2])
-                // console.log(receipt.logs[0].topics[3])
-
-                // console.log(parseInt(receipt.logs[0].topics[0]))
-                // console.log(parseInt(receipt.logs[0].topics[1]))
-                // console.log(parseInt(receipt.logs[0].topics[2]))
-                // console.log(parseInt(receipt.logs[0].topics[3]))
-
                 let hexId = receipt.logs[0].topics[3]
                 // console.log(BigNumber.from(hexId).toNumber())
                 let id = parseInt(hexId)
                 console.log(id, cyberName)
-                // console.log(utils.hexValue(receipt.logs[0].topics[3]))
-                // console.log(BigNumber.from(receipt.logs]0))
-                // console.log((receipt.logs[0].topics[3].toNumber()))
                 console.log('receipt', receipt)
                 setFee(utils.formatEther(receipt.gasUsed.mul(transaction.maxFeePerGas.add(transaction.maxPriorityFeePerGas))))
                 let result = { confirmations: receipt.confirmations, tokenId: id }
@@ -108,24 +70,9 @@ const Checkout = () => {
                 if(result.confirmations > 0) {
                     if(result.tokenId) {
                         if(state.cyberProductId > -1) {
-                            console.log('cyber label exist')
-                            console.log('cyber product id is ' + state.cyberProductId + ' is updated as token id is ' + result.tokenId)
                             let params = {productId: state.cyberProductId, tokenId: result.tokenId, cyberLabel: cyberName, address: '' }
                             console.log(params)
-                            // LabelApi.put(`/label`, params)
-                            //     .then(response => {
-                            //         console.log(response)
-                            //     })
-                            //     .catch(error => {
-                            //         console.log(error)
-                            //     })
-                            // api.post(`/cyber/update`, params)
-                            //     .then((response) => {
-                            //         console.log(response)
-                            //     })
-                            //     .catch(error => {
-                            //         console.log(error)
-                            //     })
+                            
                         } else {
                             console.log('cyber label not exist')
                         }
