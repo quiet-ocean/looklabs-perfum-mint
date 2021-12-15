@@ -380,7 +380,8 @@ const ProductItem = ({product, setLoading}) => {
                       textAlign="center"
                       maxLength="5"
                       textTransform="uppercase"
-                      value={input}
+                      // value={input}
+                      value={cyberName}
                       onChange={changeCyberName}
                       background="#191919"
                       textTransform="uppercase"
