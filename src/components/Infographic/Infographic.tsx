@@ -1,3 +1,4 @@
+import React from 'react'
 import { Text, Box, Flex, Container, Stack, Image, Heading } from "@chakra-ui/react";
 
 const Infographic: React.FC = () => {
@@ -435,7 +436,7 @@ const Infographic: React.FC = () => {
                 </div>
             </div>
 
-            <style jsx={true}>{`
+            <style>{`
         @media screen and (min-width: 62em) {
           .cart-art-container {
             margin-top: 6rem !important;

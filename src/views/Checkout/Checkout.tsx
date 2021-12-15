@@ -90,7 +90,7 @@ const Checkout = () => {
                 console.log(parseInt(receipt.logs[0].topics[3]))
 
                 let hexId = receipt.logs[0].topics[3]
-                console.log(BigNumber.from(hexId).toNumber())
+                // console.log(BigNumber.from(hexId).toNumber())
                 let id = parseInt(hexId)
                 console.log(id, cyberName)
                 // console.log(utils.hexValue(receipt.logs[0].topics[3]))

@@ -41,7 +41,7 @@ const Connect: FC = ({ children }) => {
   const { activatingConnector } = useAppState()
   const { library, chainId, account, error } = useWeb3React()
 
-  // console.log(library, chainId, account, error)
+  console.log(library, chainId, account, error)
 
   const { setContract, setUser } = useAppState(
     useCallback(

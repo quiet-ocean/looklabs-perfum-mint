@@ -1,4 +1,4 @@
-export * from "./TokenList";
+export * from "./ProductList";
 export * from "./Header";
 export * from "./MetamaskLogin";
 export * from "./UserMenu";
