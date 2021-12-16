@@ -40,7 +40,8 @@ contract CartERC1155 is ERC1155Supply, Ownable, Proxy {
   function buy(
     address _to,
     uint256 _qty,
-    uint256 _productId
+    uint256 _productId,
+    string memory _data
   ) public onlyProxy {
     require(
       _qty > 0 && _qty <= 10,
@@ -57,7 +58,7 @@ contract CartERC1155 is ERC1155Supply, Ownable, Proxy {
     }
 
     _mint(_to, _counderId, _qty, '0x0');
-    cartInstance.productSold(_counderId, _to, _productId);
+    cartInstance.productSold(_counderId, _to, _productId, _data);
     SoldMetaERC1155 memory sold = SoldMetaERC1155(_productId, _counderId, _msgSender());
     _soldProducts[_productId] = sold;
   }
