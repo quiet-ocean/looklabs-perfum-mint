@@ -315,6 +315,7 @@ const useAppState = create<StateContext>((set, get) => ({
       prds: BigNumber[]
       success: boolean
       cyberId: number
+      data: string[]
     }
     let promise = new Promise<TempProps>((resolve, reject) => {
       let quantities: any[] = []
@@ -322,6 +323,7 @@ const useAppState = create<StateContext>((set, get) => ({
       let cyberLabel: any = ''
       let success: boolean = true
       let cyberId = -1
+      let labelArray: string[] = []
 
       state.items.forEach(async (item: CartItemProps, key: number) => {
         if (
@@ -337,6 +339,9 @@ const useAppState = create<StateContext>((set, get) => ({
             console.log('cyber label is ', cyberName)
             cyberLabel = cyberName
             cyberId = parseInt(item.product.id)
+            labelArray.push(cyberLabel)
+          } else {
+            labelArray.push('')
           }
         } else {
           // setLoading(false)
@@ -352,6 +357,7 @@ const useAppState = create<StateContext>((set, get) => ({
           prds: productIds,
           cl: cyberName,
           cyberId: cyberId,
+          data: labelArray
         })
       })
     })
@@ -362,6 +368,7 @@ const useAppState = create<StateContext>((set, get) => ({
     let quantities = t.qtys
     let cyberLabel: string = t.cl
     let cyberId: number = t.cyberId
+    let data: string[] = t.data
     // return
 
     let product
@@ -411,7 +418,8 @@ const useAppState = create<StateContext>((set, get) => ({
         // console.log(dispatch)
         // return
         contract
-          ?.checkOut(productIds, quantities, [cyberLabel, '', ''], {
+          // ?.checkOut(productIds, quantities, [cyberLabel, '', ''], {
+            ?.checkOut(productIds, quantities, data, {
             value: price,
           })
           .then(async (tx: any) => {

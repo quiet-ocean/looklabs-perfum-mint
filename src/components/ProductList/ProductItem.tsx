@@ -42,6 +42,7 @@ import {
   useForceUpdate,
 } from "@chakra-ui/react";
 import { isEmpty } from "../../utils";
+import env from '../../config'
 
 const ProductItem = ({product, setLoading}) => {
 
@@ -246,7 +247,7 @@ const ProductItem = ({product, setLoading}) => {
   };
 
   const increase = () => {
-    if (count < product.qty) {
+    if (count < product.qty && count < env.MAX_QTY) {
       setCount(count + 1);
     }
   };
