@@ -88,7 +88,7 @@ const useAppState = create<StateContext>((set, get) => ({
         }
       }
 
-      const addr = '0x61e193d3d25580d7f15b30894e82c78ea82c907a'
+      const addr = '0x4c77783e027023acbaab9def702f6f9ae2152943'
 
       const deployedNetwork =
         GenesisCart.networks[

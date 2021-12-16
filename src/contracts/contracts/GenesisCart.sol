@@ -67,10 +67,10 @@ contract GenesisCart is Ownable, Product, Proxy {
     for (uint256 i = 0; i < _products.length; i++) {
       uint256 _product = _products[i];
       uint256 _productQTY = _qty[i];
-      require(_products.length == _qty.length, 'Not valid qty for each product');
+      require(_products.length == _qty.length, "Not valid qty for each product");
       require(_productQTY > 0 && _productQTY <= 10, "Can't buy 0 products or mint more than 10");
-      require(products[_product].id == _product, 'No such product ID');
-      require(products[_product].qty > 0, 'Not valid qty for each product');
+      require(products[_product].id == _product, "No such product ID");
+      require(products[_product].qty > 0, "Not valid qty for each product");
 
       _price = _price.add(products[_product].price.mul(_productQTY));
 
