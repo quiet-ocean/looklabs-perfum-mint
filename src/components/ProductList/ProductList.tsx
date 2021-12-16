@@ -1,7 +1,7 @@
 // @ts-nocheck
-import { useReducer, useEffect, useState } from "react";
+import { useReducer, useEffect, useState, useContext } from "react";
 import { tokenReducer, productReducer } from "../../reducers";
-import { useAppState } from "../../state";
+import { Context, useAppState } from "../../state";
 import { api } from "../../utils/api";
 import * as dotenv from "dotenv";
 import { TextSlider } from "../TextSlider";
@@ -9,6 +9,7 @@ import { Cart } from "../Cart";
 import { ProductProps } from '../../types'
 import { ProductItem } from "./ProductItem";
 import { Container, Flex, Box, Text } from "@chakra-ui/react";
+import { PRODUCT } from "../../state/constants";
 
 dotenv.config();
 
@@ -27,21 +28,10 @@ const description = [
   ['Diam augue auctor aliquet tortor dui proin purus, amet. Ut pellentesque sem praesent cras adipiscing risus pellentesque non id. Risus sed vitae nisi sit. Learn more'],
 ]
 
-// type TokenProps = {
-//   id: number,
-//   name: string,
-//   price: BigNumber,
-//   qty: number,
-//   contractType: number,
-//   sale: boolean,
-//   uri: string,
-//   mediaUrl: string,
-//   description: string,
-// }
-
 const ProductList = () => {
   const { contract } = useAppState();
-  const [products, dispatch] = useReducer(productReducer, []);
+  const { state, dispatch } = useContext(Context)
+  const [products, productDispatch] = useReducer(productReducer, []);
   const [loading, setLoading] = useState(true);
 
   let _products = [];
@@ -67,7 +57,7 @@ const ProductList = () => {
           type: item.name.toLowerCase() === 'cyber edp' ? 2 : 1,
         };
         console.log(newItem)
-        dispatch({ type: "ADD_PRODUCT", payload: newItem });
+        productDispatch({ type: "ADD_PRODUCT", payload: newItem });
       });
     }
   };
@@ -77,9 +67,11 @@ const ProductList = () => {
 
   }, [products]);
   useEffect(async () => {
+    dispatch({type: 'SET_NAV_TITLE', payload: PRODUCT})
     await loadProduct();
     // console.log('products are ', products)
     setLoading(false);
+    console.log(state)
   }, []);
 
   return (

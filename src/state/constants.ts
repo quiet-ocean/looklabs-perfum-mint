@@ -9,3 +9,5 @@ export const initialCartState: CartProps = {
     discount: BigNumber.from("0"),
     cyberProductId: -1,
 }
+export const PRODUCT = 'product'
+export const CART = 'cart'

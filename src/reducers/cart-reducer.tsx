@@ -111,7 +111,7 @@ const cartReducer = (state: CartProps = initialCartState, action: ActionProps): 
         case 'REMOVE_PRODUCT':
             return state
 
-        case 'SET_NAV':
+        case 'SET_NAV_TITLE':
             const nav: string = payload
             let newState = {...state, nav: payload}
             return newState

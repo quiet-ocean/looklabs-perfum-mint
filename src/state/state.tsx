@@ -3,6 +3,7 @@ import create from 'zustand'
 import { BigNumber, Contract, utils, providers } from 'ethers'
 import axios from 'axios'
 import { api } from '../utils/api'
+import { abi } from './abi'
 // import { TokenProps } from '../types'
 import { ContractPropsDetails, UserProps, CartItemProps } from '../types/types'
 
@@ -87,6 +88,8 @@ const useAppState = create<StateContext>((set, get) => ({
         }
       }
 
+      const addr = '0x61e193d3d25580d7f15b30894e82c78ea82c907a'
+
       const deployedNetwork =
         GenesisCart.networks[
           String(networkid(chainId)) as keyof typeof GenesisCart.networks
@@ -96,10 +99,15 @@ const useAppState = create<StateContext>((set, get) => ({
       }
 
       const { address } = deployedNetwork
+      // const contract = new Contract(
+      //   address,
+      //   GenesisCart.abi,
+      //   library.getSigner(),
+      // )
       const contract = new Contract(
-        address,
-        GenesisCart.abi,
-        library.getSigner(),
+        addr,
+        abi,
+        library.getSigner()
       )
 
       const name = 'ELITE DROP'
@@ -394,16 +402,16 @@ const useAppState = create<StateContext>((set, get) => ({
         // let price = eth.sub(BigNumber.from(utils.parseEther('0.0001').toString()))
         console.log('pay price', utils.formatEther(price))
         // let calculatedPrice: BigNumber = await contract?.calculatePrice([0,1,2,3], [1,1,1,1])
-        let calculatedPrice: BigNumber = await contract?.calculatePrice(
-          productIds,
-          quantities,
-        )
-        console.log('calucated price is ', utils.formatEther(calculatedPrice))
-        if (price.lt(calculatedPrice)) {
-          console.log('price is lower than calculated price')
-          setLoading(false)
-          return
-        }
+        // let calculatedPrice: BigNumber = await contract?.calculatePrice(
+        //   productIds,
+        //   quantities,
+        // )
+        // console.log('calucated price is ', utils.formatEther(calculatedPrice))
+        // if (price.lt(calculatedPrice)) {
+        //   console.log('price is lower than calculated price')
+        //   setLoading(false)
+        //   return
+        // }
         // return
         // tx = await contract?.checkOut(productIds, quantities, {value: eth})
         let tx: any
@@ -417,6 +425,7 @@ const useAppState = create<StateContext>((set, get) => ({
         // }
         // console.log(dispatch)
         // return
+        console.log(productIds, quantities, data, utils.formatEther(price))
         contract
           // ?.checkOut(productIds, quantities, [cyberLabel, '', ''], {
             ?.checkOut(productIds, quantities, data, {
