@@ -1,6 +1,7 @@
 import { ActionProps, CartItemProps, CartProps } from '../types'
 import { utils, BigNumber } from 'ethers'
 import { initialCartState } from '../state/constants'
+import env from '../config'
 
 const cartReducer = (state: CartProps = initialCartState, action: ActionProps): CartProps => {
     const type = action.type
@@ -11,19 +12,21 @@ const cartReducer = (state: CartProps = initialCartState, action: ActionProps): 
         case 'ADD_PRODUCT':
             let id: number = payload.product?.id.toNumber()
 
-            let price: BigNumber = payload.product?.price.mul(Number(payload.quantity))
-
             let exist: boolean = state.ids.indexOf(id) > -1
             let quantity: number = Number(payload.quantity)
+            quantity = quantity > env.MAX_QTY ? env.MAX_QTY : quantity          
+            let price: BigNumber = payload.product?.price.mul(quantity)
             let _newItems: CartItemProps[] = []
             let overflow: boolean = false
 
             let addItem = () => {
                 let flag: boolean = false
                 state.items.forEach((item: CartItemProps) => {
-                    if(item.product.id.eq(payload.product.id)) {
+                    if(item.product.id.eq(payload.product.id)) {                        
                         flag = true
                         let _quantity = quantity + item.quantity
+                        _quantity = _quantity > env.MAX_QTY ? env.MAX_QTY : _quantity
+
                         if(_quantity > item.product.qty) {
                             _quantity = item.product.qty
                             let diffQty: number = _quantity - item.quantity
