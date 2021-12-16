@@ -26,7 +26,6 @@ import { CartItemProps, ProductProps } from "../../types";
 import { Context } from "../../state";
 import { useAppState } from "../../state";
 import { api } from '../../utils/api'
-import env from '../../config'
 
 import {
   Container,
@@ -247,7 +246,7 @@ const ProductItem = ({product, setLoading}) => {
   };
 
   const increase = () => {
-    if (count < product.qty && count < env.MAX_QTY) {
+    if (count < product.qty) {
       setCount(count + 1);
     }
   };

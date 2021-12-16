@@ -293,7 +293,8 @@ contract addOnContract is ERC721Enumerable, Ownable, Proxy {
   function buy(
     address _to,
     uint256 _qty,
-    uint256 _productId
+    uint256 _productId,
+    string memory _data
   ) public onlyProxy {
     require(
       _qty > 0 && _qty <= 10,
@@ -303,7 +304,7 @@ contract addOnContract is ERC721Enumerable, Ownable, Proxy {
     for (uint256 i = 0; i < _qty; i++) {
       uint256 mintIndex = totalSupply() + 1;
       _mint(_to, mintIndex);
-      cartInstance.productSold(mintIndex, _to, _productId);
+      cartInstance.productSold(mintIndex, _to, _productId, _data);
       SoldMeta memory sold = SoldMeta(mintIndex, _productId);
       _setTokenMeta(mintIndex, sold);
     }

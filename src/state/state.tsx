@@ -7,11 +7,11 @@ import { api } from '../utils/api'
 import { ContractPropsDetails, UserProps, CartItemProps } from '../types/types'
 
 interface DiscountProps {
-  discount: boolean;
-  total: BigNumber;
+  discount: boolean
+  total: BigNumber
   // amounts: AmountObject;
-  items: any[];
-  count: number;
+  items: any[]
+  count: number
 }
 
 export interface StateContext {
@@ -46,7 +46,13 @@ export interface StateContext {
   getCyberId(): void
   setTransactionHash(tx: any): void
   getTransactionHash(): any
-  checkout(state: any, toast: any, history: any, dispatch: any, setLoading: any): void
+  checkout(
+    state: any,
+    toast: any,
+    history: any,
+    dispatch: any,
+    setLoading: any,
+  ): void
   discount(state: any): Promise<DiscountProps>
 }
 
@@ -240,33 +246,41 @@ const useAppState = create<StateContext>((set, get) => ({
     return transactionHash
   },
   discount: async (state: any): Promise<DiscountProps> => {
-    
     let min: number = 10
     let productIds: any[] = []
     // let amount: BigNumber = BigNumber.from('0')
     let total: BigNumber = BigNumber.from('0')
     let items: any[] = []
-    let flag: boolean = false  
-    return await new Promise(resolve=>{
-      
-      state.items.forEach((item: CartItemProps)=>{
+    let flag: boolean = false
+    return await new Promise((resolve) => {
+      state.items.forEach((item: CartItemProps) => {
         let index: number = productIds.indexOf(item.product.id)
-        if(index === -1){
+        if (index === -1) {
           // console.log('new id founed')
           productIds.push(item.product.id)
           min = min < item.quantity ? min : item.quantity
           // console.log(utils.formatEther(item.product.price))
           // console.log(utils.formatEther(item.product.price.div(BigNumber.from('5'))))
           total = total.add(item.product.price.div(BigNumber.from('5')))
-          let amount: BigNumber = (item.product.price.div(BigNumber.from('5')))
+          let amount: BigNumber = item.product.price.div(BigNumber.from('5'))
           // amounts[item.product.id.toString()] = amount
-          
-          items = items && items.length > 0 ? [ ...items, item.product ] : [ item.product ]
+
+          items =
+            items && items.length > 0
+              ? [...items, item.product]
+              : [item.product]
         }
         flag = productIds.length === 4 ? true : false
       })
       // amount = amount.mul(BigNumber.from(min))
-      resolve({discount: flag, items: items, total: BigNumber.from(utils.parseEther('0.001').toString()).mul(BigNumber.from(min)), count: min})
+      resolve({
+        discount: flag,
+        items: items,
+        total: BigNumber.from(utils.parseEther('0.001').toString()).mul(
+          BigNumber.from(min),
+        ),
+        count: min,
+      })
       // resolve({discount: flag, items: items, total: total, count: min})
     })
   },
@@ -291,13 +305,18 @@ const useAppState = create<StateContext>((set, get) => ({
     // console.log('discount state', dstate)
 
     // console.log('continue')
-    if(dstate.discount) {
-      dispatch({type: 'SET_DISCOUNT_AMOUNT', payload: dstate.total})
+    if (dstate.discount) {
+      dispatch({ type: 'SET_DISCOUNT_AMOUNT', payload: dstate.total })
       // console.log('discount amount', utils.formatEther(dstate.total))
     }
-    type TempProps = {cl: any, qtys: any[], prds: BigNumber[], success: boolean, cyberId: number }
+    type TempProps = {
+      cl: any
+      qtys: any[]
+      prds: BigNumber[]
+      success: boolean
+      cyberId: number
+    }
     let promise = new Promise<TempProps>((resolve, reject) => {
-      
       let quantities: any[] = []
       let productIds: BigNumber[] = []
       let cyberLabel: any = ''
@@ -305,11 +324,16 @@ const useAppState = create<StateContext>((set, get) => ({
       let cyberId = -1
 
       state.items.forEach(async (item: CartItemProps, key: number) => {
-        if(item.product || item.product.id !== undefined || item.product.id !== '' || item.quantity > 0) {
+        if (
+          item.product ||
+          item.product.id !== undefined ||
+          item.product.id !== '' ||
+          item.quantity > 0
+        ) {
           quantities.push(item.quantity)
           productIds.push(item.product.id)
           // console.log(item.product)
-          if(item.product.type === 2) {
+          if (item.product.type === 2) {
             console.log('cyber label is ', cyberName)
             cyberLabel = cyberName
             cyberId = parseInt(item.product.id)
@@ -322,10 +346,16 @@ const useAppState = create<StateContext>((set, get) => ({
           // return
           success = false
         }
-        resolve({success: success, qtys: quantities, prds: productIds, cl: cyberName, cyberId: (cyberId) })
+        resolve({
+          success: success,
+          qtys: quantities,
+          prds: productIds,
+          cl: cyberName,
+          cyberId: cyberId,
+        })
       })
     })
-    
+
     let t: TempProps = await promise
     console.log(t)
     let productIds = t.prds
@@ -333,12 +363,10 @@ const useAppState = create<StateContext>((set, get) => ({
     let cyberLabel: string = t.cl
     let cyberId: number = t.cyberId
     // return
-    
-    
-    let product
-    
-    if(balance.lt(state.total)) {
 
+    let product
+
+    if (balance.lt(state.total)) {
       toast({
         title: 'Notice.',
         description: 'Your balance is not enough to pay.',
@@ -350,7 +378,7 @@ const useAppState = create<StateContext>((set, get) => ({
       setLoading(false)
     } else {
       // if(quantity && state.ids && state.ids.length > 0 && eth){
-      if(quantities.length > 0 && productIds.length > 0 && eth) {
+      if (quantities.length > 0 && productIds.length > 0 && eth) {
         console.log(quantities, productIds, utils.formatEther(eth))
         //  let price = eth.sub()
         // let price = eth.sub(state.discount.div(BigNumber.from('4')))
@@ -359,9 +387,16 @@ const useAppState = create<StateContext>((set, get) => ({
         // let price = eth.sub(BigNumber.from(utils.parseEther('0.0001').toString()))
         console.log('pay price', utils.formatEther(price))
         // let calculatedPrice: BigNumber = await contract?.calculatePrice([0,1,2,3], [1,1,1,1])
-        let calculatedPrice: BigNumber = await contract?.calculatePrice(productIds, quantities)
+        let calculatedPrice: BigNumber = await contract?.calculatePrice(
+          productIds,
+          quantities,
+        )
         console.log('calucated price is ', utils.formatEther(calculatedPrice))
-        if(price.lt(calculatedPrice)) { console.log('price is lower than calculated price'); setLoading(false); return }
+        if (price.lt(calculatedPrice)) {
+          console.log('price is lower than calculated price')
+          setLoading(false)
+          return
+        }
         // return
         // tx = await contract?.checkOut(productIds, quantities, {value: eth})
         let tx: any
@@ -375,48 +410,50 @@ const useAppState = create<StateContext>((set, get) => ({
         // }
         // console.log(dispatch)
         // return
-        contract?.checkOut(productIds, quantities, {value: price}).then(async (tx: any) => {
-          console.log('check transaction', tx)
-          setTransaction(tx)
-          if (tx && tx?.hash) {
-            if(t.success) {
-              // console.log('successed' + cyberLabel)
-              if(cyberLabel !== '' && cyberId > -1) {
-                console.log('set cyber id to ', cyberId)
-                console.log(dispatch)
-                dispatch({type: 'SET_CYBER_ID', payload: cyberId})
-                // return
-                // let response = await api.post(`/cyber/update`, {t})
-                // console.log('delete ',cyberLabel)
-                // let response = await api.get(`/cyber/del/${cyberLabel}`)
-                // console.log(response)
-                // if(response.status === 200) {
-                //   console.log(response.data)
-                // } else {
-                //   console.log('delete label is faild')
-                //   setLoading(false)
-                //   return;
-                // }
+        contract
+          ?.checkOut(productIds, quantities, [cyberLabel, '', ''], {
+            value: price,
+          })
+          .then(async (tx: any) => {
+            console.log('check transaction', tx)
+            setTransaction(tx)
+            if (tx && tx?.hash) {
+              if (t.success) {
+                // console.log('successed' + cyberLabel)
+                if (cyberLabel !== '' && cyberId > -1) {
+                  console.log('set cyber id to ', cyberId)
+                  console.log(dispatch)
+                  dispatch({ type: 'SET_CYBER_ID', payload: cyberId })
+                  // return
+                  // let response = await api.post(`/cyber/update`, {t})
+                  // console.log('delete ',cyberLabel)
+                  // let response = await api.get(`/cyber/del/${cyberLabel}`)
+                  // console.log(response)
+                  // if(response.status === 200) {
+                  //   console.log(response.data)
+                  // } else {
+                  //   console.log('delete label is faild')
+                  //   setLoading(false)
+                  //   return;
+                  // }
+                } else {
+                  console.log('cannot find cyber name')
+                }
+                // dispatch({ type: 'REMOVE_ALL' })
+                setTransactionHash(tx.hash)
+                setLoading(false)
+                history?.push('/checkout')
               } else {
-                console.log('cannot find cyber name')
+                setLoading(false)
+                return
               }
-              // dispatch({ type: 'REMOVE_ALL' })
-              setTransactionHash(tx.hash)
-              setLoading(false)
-              history?.push('/checkout')
-            } else {
-              setLoading(false)
-              return
-            }        
-          }
-        })
-        .catch((error: any) => {
-          console.log(error)
-          setLoading(false)
-          console.log('transaction rejected')
-        })
-        
-        
+            }
+          })
+          .catch((error: any) => {
+            console.log(error)
+            setLoading(false)
+            console.log('transaction rejected')
+          })
       } else {
         setLoading(false)
         console.log('checkout transaction parameters have error')

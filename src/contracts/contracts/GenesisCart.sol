@@ -36,19 +36,20 @@ contract GenesisCart is Ownable, Product, Proxy {
     _approveChildContract(address(instanceAddOnContract));
   }
 
-  function checkOut(uint256[] memory _products, uint256[] memory _qty) public payable {
+  function checkOut(uint256[] memory _products, uint256[] memory _qty, string[] memory _data) public payable {
     require(msg.value >= calculatePrice(_products, _qty), 'Not enough balance');
 
     for (uint256 i = 0; i < _products.length; i++) {
       uint256 _productQTY = _qty[i];
       uint256 _productId = _products[i];
+      string memory _productData = _data[i];
 
       if (products[_productId].contractType == 1) {
-        instanceERC721.buy(msg.sender, _productQTY, _productId);
+        instanceERC721.buy(msg.sender, _productQTY, _productId, _productData);
       } else if (products[_productId].contractType == 2) {
-        instanceERC1155.buy(msg.sender, _productQTY, _productId); // hoodie & fashion
+        instanceERC1155.buy(msg.sender, _productQTY, _productId, _productData); // hoodie & fashion
       } else {
-        instanceAddOnContract.buy(msg.sender, _productQTY, _productId); // mint coder pass
+        instanceAddOnContract.buy(msg.sender, _productQTY, _productId, _productData); // mint coder pass
       }
     }
   }
@@ -96,14 +97,16 @@ contract GenesisCart is Ownable, Product, Proxy {
   function productSold(
     uint256 _tokenId,
     address _ownerAddress,
-    uint256 _productId
+    uint256 _productId,
+    string memory _data
   ) public onlyChildren {
     emit ProductSold(
       _productId,
       _tokenId,
       _ownerAddress,
       products[_productId].name,
-      products[_productId].qty
+      products[_productId].qty,
+      _data
     );
     products[_productId].qty = products[_productId].qty - 1;
     if (products[_productId].qty == 0) {
