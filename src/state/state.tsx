@@ -88,7 +88,7 @@ const useAppState = create<StateContext>((set, get) => ({
         }
       }
 
-      const addr = '0x4c77783e027023acbaab9def702f6f9ae2152943'
+      // const addr = '0x4c77783e027023acbaab9def702f6f9ae2152943'
 
       const deployedNetwork =
         GenesisCart.networks[
@@ -99,16 +99,16 @@ const useAppState = create<StateContext>((set, get) => ({
       }
 
       const { address } = deployedNetwork
-      // const contract = new Contract(
-      //   address,
-      //   GenesisCart.abi,
-      //   library.getSigner(),
-      // )
       const contract = new Contract(
-        addr,
-        abi,
-        library.getSigner()
+        address,
+        GenesisCart.abi,
+        library.getSigner(),
       )
+      // const contract = new Contract(
+      //   addr,
+      //   abi,
+      //   library.getSigner()
+      // )
 
       const name = 'ELITE DROP'
       const symbol = '$ELITE'
