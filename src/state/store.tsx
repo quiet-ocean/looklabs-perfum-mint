@@ -1,5 +1,4 @@
 import React, {
-    // useEffect, 
     createContext,
     useReducer,
     Dispatch,
@@ -15,11 +14,8 @@ interface ContextType {
     state: CartProps; dispatch: Dispatch<ActionProps>
 }
 const Context = createContext<ContextType>({ 
-    // state: {} as any,
-    // dispatch: {} as Dispatch<ReducerAction<Reducer<any, any>>>
     state: initialCartState,   
     dispatch: () => {}
-    // dispatch: {} as Dispatch<ReducerAction<Reducer<any, any>>>
 })
 
 const Store = ({ children, value = {} as ContextType }: { children: React.ReactNode; value?: {} }) => {
