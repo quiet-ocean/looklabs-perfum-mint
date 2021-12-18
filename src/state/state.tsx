@@ -294,7 +294,6 @@ const useAppState = create<StateContext>((set, get) => ({
           productIds.push(item.product.id)
 
           if (item.product.type === 2) {
-            console.log('cyber label is ', cyberName)
             cyberLabel = cyberName
             cyberId = parseInt(item.product.id)
             labelArray.push(cyberLabel)
@@ -317,7 +316,6 @@ const useAppState = create<StateContext>((set, get) => ({
     })
 
     let t: TempProps = await promise
-    console.log(t)
     let productIds = t.prds
     let quantities = t.qtys
     let cyberLabel: string = t.cl
@@ -347,14 +345,13 @@ const useAppState = create<StateContext>((set, get) => ({
             value: price,
           })
           .then(async (tx: any) => {
-            console.log('check transaction', tx)
             setTransaction(tx)
             if (tx && tx?.hash) {
               if (t.success) {
                 if (cyberLabel !== '' && cyberId > -1) {
                   dispatch({ type: 'SET_CYBER_ID', payload: cyberId })
                 } else {
-                  console.log('cannot find cyber name')
+
                 }
                 setTransactionHash(tx.hash)
                 setLoading(false)
@@ -368,7 +365,6 @@ const useAppState = create<StateContext>((set, get) => ({
           .catch((error: any) => {
             console.log(error)
             setLoading(false)
-            console.log('transaction rejected')
           })
       } else {
         setLoading(false)

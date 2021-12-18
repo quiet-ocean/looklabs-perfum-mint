@@ -51,21 +51,15 @@ const ProductList = () => {
           description: description[item.id],
           type: item.name.toLowerCase() === 'cyber edp' ? 2 : 1,
         };
-        console.log(newItem)
         productDispatch({ type: "ADD_PRODUCT", payload: newItem });
       });
     }
   };
 
   useEffect(async () => {
-    console.log('product lists are ', products)
-
-  }, [products]);
-  useEffect(async () => {
     dispatch({type: 'SET_NAV_TITLE', payload: PRODUCT})
     await loadProduct();
     setLoading(false);
-    console.log(state)
   }, []);
 
   return (
