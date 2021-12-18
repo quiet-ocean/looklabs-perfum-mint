@@ -2,8 +2,6 @@ import GenesisCart from '../contracts/build/contracts/GenesisCart.json'
 import create from 'zustand'
 import { BigNumber, Contract, utils, providers } from 'ethers'
 import axios from 'axios'
-import { api } from '../utils/api'
-import { abi } from './abi'
 import { ContractPropsDetails, UserProps, CartItemProps } from '../types/types'
 
 interface DiscountProps {

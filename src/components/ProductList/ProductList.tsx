@@ -41,17 +41,12 @@ const ProductList = () => {
 
     if (_products && _products.length) {
       _products.forEach(async (item, key) => {
-        // TEST PRODUCT, TO REMOVE WHEN THE DB IS WORKING
-        // const response = await api.get(`/product/${item.id}`)
-        // let newItem: TokenProps = {
         let newItem: ProductProps = {
           id: item.id,
           name: item.name,
           price: item.price,
           qty: item.qty,
-          // contractType: item.contractType,
           sale: item.sale,
-          // uri: item.url,
           mediaUrl: "/movies/" + uri[item.id],
           description: description[item.id],
           type: item.name.toLowerCase() === 'cyber edp' ? 2 : 1,
@@ -69,16 +64,12 @@ const ProductList = () => {
   useEffect(async () => {
     dispatch({type: 'SET_NAV_TITLE', payload: PRODUCT})
     await loadProduct();
-    // console.log('products are ', products)
     setLoading(false);
     console.log(state)
   }, []);
 
   return (
     <Flex color="white" direction={{ base: "column", md: "column" }}>
-      {/* <Cart product={null}
-        quantity="100" setLoading={setLoading}>
-      </Cart> */}
       {
         products?.map((item, key) => {
           if(item === undefined || item === '') return ''

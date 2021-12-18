@@ -6,14 +6,12 @@ import {
 } from '@web3-react/injected-connector'
 import { UserRejectedRequestError as UserRejectedRequestErrorWalletConnect } from '@web3-react/walletconnect-connector'
 
-// import { Text, Heading, Box } from 'theme-ui'
 import useSWR from 'swr'
 import { useEagerConnect, useInactiveListener } from '../hooks/web3'
 import { ETHSCAN_API } from '../utils'
 import { useAppState } from '../state'
 import Spinner from 'react-text-spinners'
 import { 
-  // Container, 
   Box, 
   Heading, 
   Text
