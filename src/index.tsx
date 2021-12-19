@@ -30,6 +30,7 @@ import { ScrollToTop } from "./components";
 
 dotenv.config()
 
+// console.log('process env api in root index', process.env.api)
 Sentry.init({
   dsn: 'https://5520fd9f111b475e874da04854b5c4cc@o921599.ingest.sentry.io/5868130',
   integrations: [new Integrations.BrowserTracing()],

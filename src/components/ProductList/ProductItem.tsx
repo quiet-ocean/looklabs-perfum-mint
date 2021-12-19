@@ -1,28 +1,30 @@
 // @ts-nocheck
 import React, {
+  // MouseEvent,
   useState,
   useCallback,
   useEffect,
   useRef,
   Suspense,
   useContext,
-} from "react";
-import { useHistory } from "react-router-dom";
-import { utils } from "ethers";
-import ReactPlayer from "react-player";
-import { Canvas } from "@react-three/fiber";
+} from 'react'
+import { useHistory } from 'react-router-dom'
+import { utils } from 'ethers'
+import ReactPlayer from 'react-player'
+import { Canvas } from '@react-three/fiber'
 import {
   Environment,
   Html,
   OrbitControls,
   PerspectiveCamera,
   useProgress,
-} from "@react-three/drei";
-import Model from "../Voxel/Model";
-import { CartNotification } from "../CartNotification";
-import { CartItemProps, ProductProps } from "../../types";
-import { Context } from "../../state";
-import { useAppState } from "../../state";
+} from '@react-three/drei'
+import Model from '../Voxel/Model'
+import { CartNotification } from '../CartNotification'
+// import axios from 'axios'
+import { CartItemProps, ProductProps } from '../../types'
+import { Context } from '../../state'
+import { useAppState } from '../../state'
 import { api } from '../../utils/api'
 
 import {
@@ -38,12 +40,11 @@ import {
   SimpleGrid,
   keyframes,
   useForceUpdate,
-} from "@chakra-ui/react";
-import { isEmpty } from "../../utils";
+} from '@chakra-ui/react'
+import { isEmpty } from '../../utils'
 import env from '../../config'
 
-const ProductItem = ({product, setLoading}) => {
-
+const ProductItem = ({ product, setLoading }) => {
   const {
     boughtTokens,
     cyberName,
@@ -51,43 +52,47 @@ const ProductItem = ({product, setLoading}) => {
     labelExist,
     user,
     checkout,
-  } = useAppState();
-  const productPrice = Number(utils.formatEther(product.price));
-  const [input, setInput] = useState("");
-  const [count, setCount] = useState(1);
-  const toast = useToast();
-  const { state } = useContext(Context);
-  const { dispatch } = useContext(Context);
-  const [isCyber, setIsCyber] = useState(false);
+  } = useAppState()
+  const productPrice = Number(utils.formatEther(product.price))
+  // const [order, setOrder] = useState<OrderProps>({
+  //   qty: 1,
+  //   productPrice: tokenPrice,
+  // });
+  const [input, setInput] = useState('')
+  const [count, setCount] = useState(1)
+  const toast = useToast()
+  const { state } = useContext(Context)
+  const { dispatch } = useContext(Context)
+  const [isCyber, setIsCyber] = useState(false)
 
-  const cyberSupply = product.qty;
-  const maxUnits = product.maxUnits;
+  const cyberSupply = product.qty
+  const maxUnits = product.maxUnits
 
-  const history = useHistory();
-  const ref = useRef(null);
-  let canvasWidht;
+  const history = useHistory()
+  const ref = useRef(null)
+  let canvasWidht
 
   const updateSupply = useAppState(
-    useCallback(({ getSupply }) => getSupply, [])
-  );
+    useCallback(({ getSupply }) => getSupply, []),
+  )
 
   useEffect(() => {
     if (product.type === 2) {
-      setIsCyber(true);
+      setIsCyber(true)
     } else {
       setIsCyber(false)
     }
-  }, []);
+  }, [])
 
   useEffect(() => {
-    updateSupply();
-  }, [updateSupply]);
+    updateSupply()
+  }, [updateSupply])
 
   let gotoCart = (e: React.MouseEvent) => {
-    e.stopPropagation();
+    e.stopPropagation()
     toast.closeAll()
-    history.push("/cart");
-  };
+    history.push('/cart')
+  }
 
   let checkLabelExist = async (label: string) => {
     const response = await api.get(`/label?name=${label}`)
@@ -95,14 +100,28 @@ const ProductItem = ({product, setLoading}) => {
     return response.data.exist
   }
   let addLabel = async (label: string, id: number) => {
-    
     const ADDED = 1
     const MINTED = 2
-    if(isEmpty(label)) {
+    if (isEmpty(label)) {
+      // toast({
+      //   title: 'Warning.',
+      //   description: "Label cannot be empty.",
+      //   position: 'top-right',
+      //   status: 'warning',
+      //   duration: 5000,
+      //   isClosable: true,
+      // })
+      // setLoading(false)
       console.log('label is empty')
       return
     }
-
+    console.log('add label ', label)
+    // const response = await api.post('/cyber', {
+    //   label: label,
+    //   address: user?.address,
+    //   productId: id,
+    //   type: ADDED,
+    // })
     let data = {
       name: label,
       address: user?.address,
@@ -117,12 +136,12 @@ const ProductItem = ({product, setLoading}) => {
   let add2Cart = async (product, quantity) => {
     console.log('add a prodcut to cart list')
     if (quantity > 0) {
-      const item: CartItemProps = { product: product, quantity: quantity };
+      const item: CartItemProps = { product: product, quantity: quantity }
       if (product.type === 2) {
-        if (cyberName === ''  || cyberName === undefined || cyberName === null) {
+        if (cyberName === '' || cyberName === undefined || cyberName === null) {
           toast({
             title: 'Warning.',
-            description: "Label cannot be empty.",
+            description: 'Label cannot be empty.',
             position: 'top-right',
             status: 'warning',
             duration: 5000,
@@ -135,9 +154,10 @@ const ProductItem = ({product, setLoading}) => {
         console.log('label is ', labelExist)
         setLoading(false)
         if (labelExist) {
+          // window.alert('The label already exist')
           toast({
             title: 'Warning.',
-            description: "Label already exist.",
+            description: 'Label already exist.',
             position: 'top-right',
             status: 'warning',
             duration: 5000,
@@ -150,20 +170,29 @@ const ProductItem = ({product, setLoading}) => {
           let productId = parseInt(product.id)
           let success = await addLabel(cyberName, productId)
           setLoading(false)
+          // toast({
+          //   title: 'Notice.',
+          //   description: "Label added.",
+          //   position: 'top-right',
+          //   status: 'info',
+          //   duration: 5000,
+          //   isClosable: true,
+          // })
         }
       }
 
-      let promise = new Promise(resolve => {
-        dispatch({ type: "ADD_PRODUCT", payload: item })
+      let promise = new Promise((resolve) => {
+        dispatch({ type: 'ADD_PRODUCT', payload: item })
         resolve(true)
       })
       let flag = await promise
-      if(flag) {
-        promise.then(value => {
+      if (flag) {
+        // alert('add product to cart')
+        promise.then((value) => {
           toast({
-            status: "success",
+            status: 'success',
             duration: 5000,
-            position: "top-right",
+            position: 'top-right',
             isClosable: true,
             render: (props) => {
               return (
@@ -171,70 +200,118 @@ const ProductItem = ({product, setLoading}) => {
                   product={product}
                   quantity={count}
                   close={() => {
-                    toast.closeAll();
+                    toast.closeAll()
                   }}
                   checkout={checkout}
                   state={state}
                   dispatch={dispatch}
-                  history = {history}
-                  setLoading = {setLoading}
+                  history={history}
+                  setLoading={setLoading}
                 />
-              );
+              )
             },
-          });
+          })
         })
       }
+      // let promise = new Promise(resolve => {
+      //   dispatch({ type: "ADD_PRODUCT", payload: item })
+      //   resolve(true)
+      // })
+      // promise.then(value => {
+      //   toast({
+      //     status: "success",
+      //     duration: 5000,
+      //     position: "top-right",
+      //     isClosable: true,
+      //     render: (props) => {
+      //       return (
+      //         <CartNotification
+      //           product={product}
+      //           quantity={count}
+      //           close={() => {
+      //             toast.closeAll();
+      //           }}
+      //           checkout={checkout}
+      //           state={state}
+      //           dispatch={dispatch}
+      //           history = {history}
+      //           setLoading = {setLoading}
+      //         />
+      //       );
+      //     },
+      //   });
+      // })
     }
-  };
+  }
 
   const increase = () => {
     if (count < product.qty && count < env.MAX_QTY) {
-      setCount(count + 1);
+      setCount(count + 1)
     }
-  };
+  }
   const decrease = () => {
     if (count > 1) {
-      setCount(count - 1);
+      setCount(count - 1)
     }
-  };
+  }
+  // const checkoutTransfer = async () =>{
+  //   console.log(state)
+  //   checkout(state, toast, history, dispatch)
+  // }
+  // transaction
+
+  // const { setTransaction, setUser, getSupply, getCyberId, mintArt } =
+  //   useAppState(
+  //     useCallback(
+  //       ({ setTransaction, setUser, getSupply, getCyberId, mintArt }) => ({
+  //         setTransaction,
+  //         setUser,
+  //         getSupply,
+  //         getCyberId,
+  //         mintArt,
+  //       }),
+  //       []
+  //     )
+  //   );
+
   function changeCyberName(e) {
-    labelExist(true);
-    const val = e.target.value;
-    const r = new RegExp("^[a-zA-Z0-9$#!&]+$");
+    labelExist(true)
+    const val = e.target.value
+    const r = new RegExp('^[a-zA-Z0-9$#!&]+$')
     if (r.test(val) && val.length <= 5) {
-      setInput(val);
-      setCyberName(val);
+      setInput(val)
+      setCyberName(val)
     } else if (val.length === 0) {
-      setInput("");
-      setCyberName("");
+      setInput('')
+      setCyberName('')
     }
   }
 
   function Loader() {
-    const { progress } = useProgress();
+    const { progress } = useProgress()
     return (
       <Html
         style={{
-          height: "100%",
-          width: "100%",
-          position: "relative",
+          height: '100%',
+          width: '100%',
+          position: 'relative',
         }}
       >
         <div
           style={{
-            position: "absolute",
-            margin: "auto",
-            width: "150px",
-            left: "-50px",
-            top: "-150px",
-            fontSize: "16px",
-            color: "black",
+            position: 'absolute',
+            margin: 'auto',
+            width: '150px',
+            left: '-50px',
+            top: '-150px',
+            fontSize: '16px',
+            color: 'black',
           }}
         >
           {progress}% LOADED.
         </div>
       </Html>
-    );
+    )
   }
   const gradient = keyframes`
 	0% {
@@ -246,26 +323,26 @@ const ProductItem = ({product, setLoading}) => {
 	100% {
 		background-position: 0% 50%;
 	}
-    `;
+    `
 
-  const gradientAnimation = `${gradient} infinite 2s linear`;
+  const gradientAnimation = `${gradient} infinite 2s linear`
 
   return (
     <Container maxW="1600px">
-      <Flex direction={{ base: "column", md: "row" }}>
-        <Box p="40px" w={{ base: "100%", md: "50%" }}>
+      <Flex direction={{ base: 'column', md: 'row' }}>
+        <Box p="40px" w={{ base: '100%', md: '50%' }}>
           <Flex bg="" h="100%" ref={ref}>
             {isCyber ? (
               <Canvas
                 camera
                 style={{
-                  cursor: "grab",
+                  cursor: 'grab',
                   // background: "url(static/grid.png)",
-                  backgroundSize: "contain",
-                  width: "100vw",
-                  h: "full",
-                  maxHeight: "800px",
-                  paddingTop: "30px",
+                  backgroundSize: 'contain',
+                  width: '100vw',
+                  h: 'full',
+                  maxHeight: '800px',
+                  paddingTop: '30px',
                 }}
               >
                 <PerspectiveCamera makeDefault position={[100, 130, -125]} />
@@ -277,6 +354,7 @@ const ProductItem = ({product, setLoading}) => {
               </Canvas>
             ) : (
               <ReactPlayer
+                // url={product.media}
                 url={`/static/${product.mediaUrl}`}
                 loop={true}
                 playing={true}
@@ -289,11 +367,10 @@ const ProductItem = ({product, setLoading}) => {
         </Box>
         <Box
           p="40px"
-          w={{ base: "100%", md: "50%" }}
-          borderLeft={{ base: "0", md: "1px solid white" }}
+          w={{ base: '100%', md: '50%' }}
+          borderLeft={{ base: '0', md: '1px solid white' }}
         >
-          <VStack align="stretch" spacing={0}
-          >
+          <VStack align="stretch" spacing={0}>
             <Box>
               <Text
                 color="#a5a5a5"
@@ -322,7 +399,13 @@ const ProductItem = ({product, setLoading}) => {
               </Text>
             </Box>
             <Box>
-              <Text color="#BABABA" fontSize="16" fontWeight="normal" mb="32px" textTransform="uppercase">
+              <Text
+                color="#BABABA"
+                fontSize="16"
+                fontWeight="normal"
+                mb="32px"
+                textTransform="uppercase"
+              >
                 {/* TODO fix - for each product */}
                 {cyberSupply} left IN stock
               </Text>
@@ -361,14 +444,14 @@ const ProductItem = ({product, setLoading}) => {
                       fontWeight="600"
                       letterSpacing="0.5rem"
                       _focus={
-                        ({ outline: "none" }, { border: "1px solid red" })
+                        ({ outline: 'none' }, { border: '1px solid red' })
                       }
                       autoComplete="off"
                     />
                   </Box>
                   <SimpleGrid flexDirection="row">
                     <Flex
-                      direction={{ base: "row", md: "row" }}
+                      direction={{ base: 'row', md: 'row' }}
                       spacing="10px"
                       align="stretch"
                       mt="8px"
@@ -386,16 +469,18 @@ const ProductItem = ({product, setLoading}) => {
                   </SimpleGrid>
                 </VStack>
               ) : (
-                ""
+                ''
               )}
               <Box w="100%">
-                <Text textTransform="uppercase" color="#a5a5a5" fontSize="16px" mb="8px">
+                <Text
+                  textTransform="uppercase"
+                  color="#a5a5a5"
+                  fontSize="16px"
+                  mb="8px"
+                >
                   how many units to mint?
                 </Text>
-                <Flex
-                  direction={{ base: "row", md: "row" }}
-                  align="stretch"
-                >
+                <Flex direction={{ base: 'row', md: 'row' }} align="stretch">
                   <Box
                     background="linear-gradient(0deg, rgba(165, 165, 165, 0.2), rgba(165, 165, 165, 0.2)), #000000"
                     border="1px solid #A5A5A5"
@@ -407,9 +492,9 @@ const ProductItem = ({product, setLoading}) => {
                     p="10px"
                     // onClick={minQty}
                     onClick={decrease}
-                    cursor={"pointer"}
+                    cursor={'pointer'}
                     userSelect="none"
-                    h='80px'
+                    h="80px"
                   >
                     -
                   </Box>
@@ -419,14 +504,13 @@ const ProductItem = ({product, setLoading}) => {
                     background="#191919"
                     ml="10px"
                     mr="10px"
-                    h='80px'
-
+                    h="80px"
                   >
                     <Input
                       fontSize="32px"
-                      p={{ base: "24px", md: "36px" }}
-                      w={{ base: "100%", md: "150px" }}
-                      h='full'
+                      p={{ base: '24px', md: '36px' }}
+                      w={{ base: '100%', md: '150px' }}
+                      h="full"
                       textAlign="center"
                       borderRadius="0px"
                       border="none"
@@ -436,7 +520,7 @@ const ProductItem = ({product, setLoading}) => {
                       max="10"
                       readOnly
                       userSelect="none"
-                      cursor={"default"}
+                      cursor={'default'}
                       color="#A5A5A5"
                       fontWeight="600"
                     />
@@ -447,12 +531,13 @@ const ProductItem = ({product, setLoading}) => {
                     color="#A5A5A5"
                     fontSize="32px"
                     w="100%"
-                    h='80px'
+                    h="80px"
                     textAlign="center"
                     border="3px solid #a5a5a5"
                     p="10px"
+                    // onClick={plusQty}
                     onClick={increase}
-                    cursor={"pointer"}
+                    cursor={'pointer'}
                     userSelect="none"
                   >
                     +
@@ -462,26 +547,31 @@ const ProductItem = ({product, setLoading}) => {
             </SimpleGrid>
             <Box>
               {boughtTokens && boughtTokens?.toNumber() < cyberSupply && (
-                <Box mt={{ base: "32px", md: "72px" }}>
+                <Box mt={{ base: '32px', md: '72px' }}>
                   <Button
+                    // bgGradient="linear(to-tr, #fd06b1, #ef313e, #cc672a, #a4a02e, #7dd632, #60ff35)"
                     background="linear-gradient(45deg, #fd06b1, #ef313e, #cc672a, #a4a02e, #7dd632, #60ff35)"
                     backgroundSize="150% 200%"
+                    // onClick={onBuyClick}
                     onClick={() => {
-                      add2Cart(product, count);
+                      // add2Cart(token, order.qty);
+                      add2Cart(product, count)
                     }}
+                    // TODO disable cyber button if input is empty
+                    // disabled={!input.value}
                     outline="none"
                     p="45px"
                     animation={gradientAnimation}
-                    _focus={{ outline: "none" }}
+                    _focus={{ outline: 'none' }}
                     _hover={{
-                      backgroundSize: "800% 800%",
+                      backgroundSize: '800% 800%',
                     }}
                     _active={{
-                      backgroundSize: "30% 30%",
+                      backgroundSize: '30% 30%',
                     }}
                   >
                     <Text
-                      fontSize={{ base: "12px", md: "32px" }}
+                      fontSize={{ base: '12px', md: '32px' }}
                       fontFamily="monospace"
                       color=""
                     >
@@ -496,10 +586,10 @@ const ProductItem = ({product, setLoading}) => {
                 <h3
                   className="text-cyber"
                   style={{
-                    color: "red",
-                    marginTop: "6rem",
-                    fontSize: "4rem",
-                    display: "block",
+                    color: 'red',
+                    marginTop: '6rem',
+                    fontSize: '4rem',
+                    display: 'block',
                   }}
                 >
                   SOLD OUT
@@ -510,7 +600,7 @@ const ProductItem = ({product, setLoading}) => {
         </Box>
       </Flex>
     </Container>
-  );
-};
+  )
+}
 
-export { ProductItem };
+export { ProductItem }

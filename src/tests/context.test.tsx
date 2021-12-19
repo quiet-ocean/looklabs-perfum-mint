@@ -38,7 +38,7 @@ describe('State function test', () => {
     afterAll(() => {
   
     })
-    xit('>>check render', () => {
+    it('>>check render', () => {
         // const { getByTestId } = renderWithContext(<App/>)
         // const { getByTestId } = renderWithContext(<Root />)
         // expect(getByTestId).toEqual('')

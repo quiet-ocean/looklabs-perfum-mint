@@ -10,6 +10,7 @@ import { ChakraProvider, VStack, Box } from "@chakra-ui/react";
 import { Store, Context } from "../state";
 import { Theme } from "../theme";
 import { useContext } from "react";
+import ScrollToTop from 'react-scroll-to-top'
 
 const Root: React.FC = () => {
     return (
@@ -59,6 +60,7 @@ const Root: React.FC = () => {
             </Box>
             
         </VStack>
+        <ScrollToTop smooth style={{background: 'white'}} />
         </>
     )
 }
