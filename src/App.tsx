@@ -31,7 +31,17 @@ const App = () => {
         <ChakraProvider theme={Theme}>
           <Store>
             <Root />
-            <ScrollToTop color='white' top={10} smooth/>
+            <ScrollToTop
+            color='white'
+            style={{
+              border: '1px solid white',
+              borderRadius: '0px',
+              background: 'black',
+              padding: '5px',
+            }}
+
+            top={10}
+            smooth/>
           </Store>
         </ChakraProvider>
       </Web3ReactProvider>
