@@ -23,13 +23,7 @@ const start = async callback => {
 
     const contract = await GenesisCart.deployed()
 
-    // const setVault = await contract.setVault("0x03EF36C4A2ad9f53616a32Bf5C41510ee0c06237");
-    // const withdraw = await contract.withdrawAll();
-
-    // const contract2 = await CartERC721.deployed()
-
-    // TESTING FUNCTIONS, UNCOMMENT TO POPULATE OR BUY
-    const URL = process.env.API_URL ? process.env.API_URL : 'https://elite.looklabs.xyz'
+    const URL = 'https://cart-art.looklabs.xyz'
 
     const product_1 = await contract.addProduct(
       'Cyber EDP',
@@ -69,12 +63,6 @@ const start = async callback => {
       URL + '/coder/'
     )
 
-    // const setDiscount1 = await contract.setDiscount(1, true, utils.parseEther('0.001').toString(10))
-    // const setDiscount2 = await contract.setDiscount(1, true, utils.parseEther('0.001').toString(10))
-    // const setDiscount3 = await contract.setDiscount(1, true, utils.parseEther('0.001').toString(10))
-    // const setDiscount4 = await contract.setDiscount(1, true, utils.parseEther('0.001').toString(10))
-
-    // const setDiscountGroup = await contract.setDiscountGroup([0, 1, 2, 3], true, utils.parseEther('0.001').toString(10))
     const products = await contract.getProducts()
 
     callback(colors.green(`⚡️: ${colors.white(products)}`))

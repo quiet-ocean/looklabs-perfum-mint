@@ -22,16 +22,32 @@ describe("Cart reducer test", () => {
   let expectedTotal: BigNumber
 
   let addProducts = (n: number) => {
+    // let product: ProductProps
+    // for(let i = 0; i < n; i++) {
+
+    // }
+    // let payload: any = { product: product1, quantity: 1 }
+    // let action: ActionProps = { type: 'ADD_PRODUCT', payload: payload }
+    // previousState = cartReducer(initialCartState, action)
+    // action.payload = { product: product2, quantity: 2 }
+    // previousState = cartReducer(previousState, action)
+    // action.payload = { product: product3, quantity: 3}
+    // previousState = cartReducer(previousState, action)
+    // action.payload = { product: product4, quantity: 4 }
+    // total = cartReducer(previousState, action).total
+    // expectedTotal = utils.parseEther('0.03')
 
     for(let i = 0; i < 4; i++) {
       action = { type: 'ADD_PRODUCT', payload: { product: products[i], quantity: i + 1} }
       previousState = cartReducer(previousState, action)
       total = previousState.total
+      // expectedTotal = expectedTotal.add(products[i].price.mul(BigNumber.from((i+1)))
       expectedTotal = expectedTotal.add(products[i].price.mul(BigNumber.from(i+1)))
     }
   }
   let clear = () => {
     previousState = initialCartState
+    // total = new BigNumber('', '0x0')
     total = BigNumber.from('0')
     expectedTotal = BigNumber.from('0')
   }
@@ -42,6 +58,9 @@ describe("Cart reducer test", () => {
       name: 'Cyber EDP',
       price: utils.parseEther('0.001'),
       qty: 10,
+      // contractType: 1,
+      // category: 1,
+      // sale: true,
       mediaUrl: URL + '/cyber/',
       type: 1,
       supply: 10,
@@ -75,6 +94,7 @@ describe("Cart reducer test", () => {
   })
   beforeEach(() => {
     clear()
+    // addProducts(0)
   })
 
   it("handle a product being added to cart list", () => {
@@ -109,17 +129,25 @@ describe("Cart reducer test", () => {
       action = { type: 'DELETE_PRODUCT', payload: products[i].id }
       previousState = cartReducer(previousState, action)
       total = previousState.total
+      // expectedTotal = expectedTotal.sub(products[i].price.mul(BigNumber.from(i+1)))
     }
     expectedTotal = BigNumber.from('0')
 
+    // let total = cartReducer(previousState, action).total
+    // let expectedTotal: BigNumber = utils.parseEther('0.0')
+    // console.log('calculated total price is ', utils.formatEther(total))
+    // console.log('expected total price is ', utils.formatEther(expectedTotal))
+    // expect(total).toEqual(expectedTotal)
     assert.notEqual(total, expectedTotal)
   })
   xit('handle a product being decreased in cart list', () => {
     addProducts(2)
+    // console.log(utils.formatEther(total), utils.formatEther(expectedTotal))
     action = { type: 'DECREASE_QUANTITY', payload: BigNumber.from('4')}
     let state: CartProps = cartReducer(previousState, action)
     total = state.total
     console.log(state)
+    // console.log(utils.formatEther(total), utils.formatEther(expectedTotal))
     expectedTotal = utils.parseEther('0.026')
     expect(total).toEqual(expectedTotal)
   })
@@ -129,12 +157,14 @@ describe("Cart reducer test", () => {
     action = { type: 'DECREASE_QUANTITY', payload: BigNumber.from('4')}
     for(let i = 0; i < 6; i++) {
       previousState = cartReducer(previousState, action)
+      // expectedTotal = expectedTotal.sub(products[3].price)
     }
     console.log(previousState)
     total = previousState.total
     expectedTotal = utils.parseEther('0.014')
     
     console.log(utils.formatEther(total), utils.formatEther(expectedTotal))
+    // console.log(utils.formatEther(expectedTotal))
 
     expect(total).toEqual(expectedTotal)
   })

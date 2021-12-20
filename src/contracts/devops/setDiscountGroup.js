@@ -17,13 +17,12 @@ const start = async callback => {
         process.env.PROVIDER_URL || `wss://rinkeby.infura.io/ws/v3/7480cbb73c7d4bd4933527b0de354d85`
       )
 
+    console.log(accounts, '>>>')
     const FROM = utils.getAddress(accounts().getAddresses()[0])
-
     const contract = await GenesisCart.deployed()
     const URL = process.env.API_URL ? process.env.API_URL : 'https://elite.looklabs.xyz'
-    const updateStock = await contract.updateStock(0, 10);
+    const setDiscountGroup = await contract.setDiscountGroup([0, 1, 2, 3], true, utils.parseEther('0.001').toString(10))
     const products = await contract.getProducts()
-
     callback(colors.green(`⚡️: ${colors.white(products)}`))
   } catch (e) {
     console.log('$error', e)

@@ -9,6 +9,7 @@ import "@fontsource/ibm-plex-mono/700.css";
 import { BrowserRouter as Router } from "react-router-dom";
 import { Web3ReactProvider } from "@web3-react/core";
 import { Web3Provider } from "@ethersproject/providers";
+// import { Switch, Route } from "react-router-dom";
 
 import { ChakraProvider } from "@chakra-ui/react";
 import { Store } from "./state";
@@ -30,7 +31,17 @@ const App = () => {
         <ChakraProvider theme={Theme}>
           <Store>
             <Root />
-            <ScrollToTop color='white' top={10} smooth/>
+            <ScrollToTop
+            color='white'
+            style={{
+              border: '1px solid white',
+              borderRadius: '0px',
+              background: 'black',
+              padding: '5px',
+            }}
+
+            top={10}
+            smooth/>
           </Store>
         </ChakraProvider>
       </Web3ReactProvider>
