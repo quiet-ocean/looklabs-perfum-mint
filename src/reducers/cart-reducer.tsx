@@ -1,4 +1,4 @@
-import { ActionProps, CartItemProps, CartProps } from '../types'
+import { ActionProps, CartItemProps, CartProps, ProductProps } from '../types'
 import { utils, BigNumber } from 'ethers'
 import { initialCartState } from '../state/constants'
 import env from '../config'
@@ -7,67 +7,53 @@ const cartReducer = (state: CartProps = initialCartState, action: ActionProps): 
     const type = action.type
     const payload: any = action.payload
 
-    switch (type) {
-        
-        case 'ADD_PRODUCT':
-            let id: number = payload.product?.id.toNumber()
+    let calculateTotalPrice = (items: CartItemProps[]): BigNumber => {
+        let total: BigNumber = BigNumber.from('0')
+        items.forEach((item: CartItemProps)=>{
+            total = total.add(item.product?.price.mul(item.quantity))
+        })
+        return total
+    }
 
-            let exist: boolean = state.ids.indexOf(id) > -1
-            let quantity: number = Number(payload.quantity)
-            quantity = quantity > env.MAX_QTY ? env.MAX_QTY : quantity          
-            let price: BigNumber = payload.product?.price.mul(quantity)
+    switch (type) {
+        case 'ADD_PRODUCT':
+            let product: ProductProps = payload.product
+            let id: BigNumber = product.id
+            let addQuantity: number = payload.quantity
+            addQuantity = addQuantity > product.qty ? product.qty : addQuantity
+            let price: BigNumber = BigNumber.from('0')
             let _newItems: CartItemProps[] = []
-            let overflow: boolean = false
+            let newTotal: BigNumber = BigNumber.from('0')
+            let exist: boolean = false
 
             let addItem = () => {
-                let flag: boolean = false
+                
                 state.items.forEach((item: CartItemProps) => {
-                    if(item.product.id.eq(payload.product.id)) {                        
-                        flag = true
-                        let _quantity = quantity + item.quantity
-                        _quantity = _quantity > env.MAX_QTY ? env.MAX_QTY : _quantity
-
-                        if(_quantity > item.product.qty) {
-                            _quantity = item.product.qty
-                            let diffQty: number = _quantity - item.quantity
-                            price = item.product.price.mul(BigNumber.from(diffQty.toString()))
-                        } else {
-                            price = item.product.price.mul(BigNumber.from(payload.quantity))
-                        }
-                        _newItems.push({product: payload.product, quantity: _quantity})
-                        return
+                    let _quantity: number = 0
+                    if(item.product.id.eq(id)) {
+                        exist = true
+                        _quantity = addQuantity + item.quantity
+                        _quantity = _quantity > item.product.qty ? item.product.qty : _quantity
+                        
                     } else {
-                        _newItems.push(item)
+                        _quantity = item.quantity
                     }
+                    _newItems.push({product: item.product, quantity: _quantity})
                 })
-                if(!flag) {
-                    _newItems.push({product: payload.product, quantity: quantity})
+                if(!exist) {
+                    price = product.price.mul(BigNumber.from(addQuantity))
+                    newTotal = newTotal.add(price)
+                    _newItems.push({product: product, quantity: addQuantity})
                 }
             }
             addItem()
-            // let _newItems = exist ? state.items.map((item: CartItemProps, key: number) => {
-            //     if(item.product.id.eq(payload.product.id)) {
-            //         let _newQuantity = item.quantity + Number(payload.quantity)
-            //         if(_newQuantity > item.product.qty) {
-            //             _newQuantity = item.product.qty
-            //             price = payload.product?.price.mul(Number(item.product.qty - item.quantity))
-            //         } else {
-
-            //         }
-            //         return { product: item.product, quantity: _newQuantity}
-            //     }
-            //     return item
-            // }) : [...state.items, { product: payload.product, quantity: quantity }]
-
-            let _newState: CartProps = { 
+            let _total: BigNumber = calculateTotalPrice(_newItems)
+            return {
                 ...state,
-                nav: state.nav,
-                total: state.total.add(price), 
-                // total: state.total.add(BigNumber.from('0.001').toString()),
+                total: _total,
+                items: _newItems,
                 ids: exist ? state.ids : [...state.ids, id],
-                items: _newItems
             }
-            return _newState
         case 'INCREASE_QUANTITY':
             return {
                 ...state,
