@@ -25,16 +25,16 @@ import { CART } from "../../state/constants";
 const Cart = () => {
   const { checkout, discount } = useAppState();
   const { state, dispatch } = useContext(Context);
-  const [ids, setIds] = useState<number[]>([]);
+  // const [ids, setIds] = useState<number[]>([]);
   const [loading, setLoading] = useState<boolean>(false)
   const toast = useToast();
   const history = useHistory()
 
   useEffect(() => {
 
-  dispatch({ type: 'SET_NAV_TITLE', payload: CART })
-    setIds(state.ids)
-  }, []);
+    dispatch({ type: 'SET_NAV_TITLE', payload: CART })
+    // setIds(state.ids)
+  });
   useEffect(() => {
     console.log(state)
     // console.log("ids ", ids);

@@ -103,25 +103,10 @@ const ProductItem = ({ product, setLoading }) => {
     const ADDED = 1
     const MINTED = 2
     if (isEmpty(label)) {
-      // toast({
-      //   title: 'Warning.',
-      //   description: "Label cannot be empty.",
-      //   position: 'top-right',
-      //   status: 'warning',
-      //   duration: 5000,
-      //   isClosable: true,
-      // })
-      // setLoading(false)
+      
       console.log('label is empty')
       return
     }
-    console.log('add label ', label)
-    // const response = await api.post('/cyber', {
-    //   label: label,
-    //   address: user?.address,
-    //   productId: id,
-    //   type: ADDED,
-    // })
     let data = {
       name: label,
       address: user?.address,
@@ -170,14 +155,6 @@ const ProductItem = ({ product, setLoading }) => {
           let productId = parseInt(product.id)
           let success = await addLabel(cyberName, productId)
           setLoading(false)
-          // toast({
-          //   title: 'Notice.',
-          //   description: "Label added.",
-          //   position: 'top-right',
-          //   status: 'info',
-          //   duration: 5000,
-          //   isClosable: true,
-          // })
         }
       }
 
@@ -187,7 +164,6 @@ const ProductItem = ({ product, setLoading }) => {
       })
       let flag = await promise
       if (flag) {
-        // alert('add product to cart')
         promise.then((value) => {
           toast({
             status: 'success',
@@ -213,34 +189,7 @@ const ProductItem = ({ product, setLoading }) => {
           })
         })
       }
-      // let promise = new Promise(resolve => {
-      //   dispatch({ type: "ADD_PRODUCT", payload: item })
-      //   resolve(true)
-      // })
-      // promise.then(value => {
-      //   toast({
-      //     status: "success",
-      //     duration: 5000,
-      //     position: "top-right",
-      //     isClosable: true,
-      //     render: (props) => {
-      //       return (
-      //         <CartNotification
-      //           product={product}
-      //           quantity={count}
-      //           close={() => {
-      //             toast.closeAll();
-      //           }}
-      //           checkout={checkout}
-      //           state={state}
-      //           dispatch={dispatch}
-      //           history = {history}
-      //           setLoading = {setLoading}
-      //         />
-      //       );
-      //     },
-      //   });
-      // })
+
     }
   }
 
@@ -254,26 +203,7 @@ const ProductItem = ({ product, setLoading }) => {
       setCount(count - 1)
     }
   }
-  // const checkoutTransfer = async () =>{
-  //   console.log(state)
-  //   checkout(state, toast, history, dispatch)
-  // }
-  // transaction
-
-  // const { setTransaction, setUser, getSupply, getCyberId, mintArt } =
-  //   useAppState(
-  //     useCallback(
-  //       ({ setTransaction, setUser, getSupply, getCyberId, mintArt }) => ({
-  //         setTransaction,
-  //         setUser,
-  //         getSupply,
-  //         getCyberId,
-  //         mintArt,
-  //       }),
-  //       []
-  //     )
-  //   );
-
+  
   function changeCyberName(e) {
     labelExist(true)
     const val = e.target.value

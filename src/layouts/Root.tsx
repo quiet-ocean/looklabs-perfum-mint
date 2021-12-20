@@ -1,15 +1,9 @@
-import { BrowserRouter as Router } from "react-router-dom";
-import { Web3ReactProvider } from "@web3-react/core";
-import { Web3Provider } from "@ethersproject/providers";
 import { Switch, Route } from "react-router-dom";
 import { Connect } from "./";
 import { Marketplace, Cart, Checkout, About, Whitepaper } from "../views";
 import { Header, Footer, Navbar } from "../components";
 
-import { ChakraProvider, VStack, Box } from "@chakra-ui/react";
-import { Store, Context } from "../state";
-import { Theme } from "../theme";
-import { useContext } from "react";
+import { VStack, Box } from "@chakra-ui/react";
 
 const Root: React.FC = () => {
     return (

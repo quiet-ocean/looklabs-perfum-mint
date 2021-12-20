@@ -45,7 +45,6 @@ const ProductList = () => {
       _products.forEach(async (item, key) => {
         // TEST PRODUCT, TO REMOVE WHEN THE DB IS WORKING
         // const response = await api.get(`/product/${item.id}`)
-        // let newItem: TokenProps = {
         let newItem: ProductProps = {
           id: item.id,
           name: item.name,

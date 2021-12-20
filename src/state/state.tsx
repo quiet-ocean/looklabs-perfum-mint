@@ -2,14 +2,11 @@ import GenesisCart from '../contracts/build/contracts/GenesisCart.json'
 import create from 'zustand'
 import { BigNumber, Contract, utils, providers } from 'ethers'
 import axios from 'axios'
-import { api } from '../utils/api'
-// import { TokenProps } from '../types'
 import { ContractPropsDetails, UserProps, CartItemProps } from '../types/types'
 
 interface DiscountProps {
   discount: boolean
   total: BigNumber
-  // amounts: AmountObject;
   items: any[]
   count: number
 }
@@ -56,7 +53,6 @@ export interface StateContext {
   discount(state: any): Promise<DiscountProps>
 }
 
-// const eliteAPI = 'https://api.looklabs.xyz/cyber'
 const eliteAPI = 'https://elite.looklabs.xyz/cyber'
 
 const useAppState = create<StateContext>((set, get) => ({
@@ -191,30 +187,7 @@ const useAppState = create<StateContext>((set, get) => ({
       console.log('on mintArt', e)
     }
 
-    // try {
-    //   const { cyberIds, cyberName, user } = get()
-    //   console.log('mintArt', cyberName)
-    //   const ids = cyberIds.map((i: BigNumber) => {
-    //     return i.toNumber()
-    //   })
-    //   console.log('ids', ids)
-    //   console.log('what I post', {
-    //     id: ids,
-    //     label: cyberName,
-    //     address: user?.address,
-    //   })
-    //   axios
-    //     .post(eliteAPI, {
-    //       id: ids,
-    //       label: cyberName,
-    //       address: user?.address,
-    //     })
-    //     .then(response => {
-    //       console.log('updated', response.data)
-    //     })
-    // } catch (e) {
-    //   console.log('on mintArt', e)
-    // }
+
   },
   getSupply: async () => {
     try {
@@ -248,7 +221,6 @@ const useAppState = create<StateContext>((set, get) => ({
   discount: async (state: any): Promise<DiscountProps> => {
     let min: number = 10
     let productIds: any[] = []
-    // let amount: BigNumber = BigNumber.from('0')
     let total: BigNumber = BigNumber.from('0')
     let items: any[] = []
     let flag: boolean = false
@@ -256,14 +228,10 @@ const useAppState = create<StateContext>((set, get) => ({
       state.items.forEach((item: CartItemProps) => {
         let index: number = productIds.indexOf(item.product.id)
         if (index === -1) {
-          // console.log('new id founed')
           productIds.push(item.product.id)
           min = min < item.quantity ? min : item.quantity
-          // console.log(utils.formatEther(item.product.price))
-          // console.log(utils.formatEther(item.product.price.div(BigNumber.from('5'))))
           total = total.add(item.product.price.div(BigNumber.from('5')))
-          let amount: BigNumber = item.product.price.div(BigNumber.from('5'))
-          // amounts[item.product.id.toString()] = amount
+          // let amount: BigNumber = item.product.price.div(BigNumber.from('5'))
 
           items =
             items && items.length > 0
@@ -272,7 +240,6 @@ const useAppState = create<StateContext>((set, get) => ({
         }
         flag = productIds.length === 4 ? true : false
       })
-      // amount = amount.mul(BigNumber.from(min))
       resolve({
         discount: flag,
         items: items,
@@ -281,7 +248,6 @@ const useAppState = create<StateContext>((set, get) => ({
         ),
         count: min,
       })
-      // resolve({discount: flag, items: items, total: total, count: min})
     })
   },
 
@@ -295,19 +261,15 @@ const useAppState = create<StateContext>((set, get) => ({
       setTransaction,
       discount,
     } = get()
-    // let tx: providers.TransactionResponse
-    let quantity: number = 1
+
+    // let quantity: number = 1
     let eth: BigNumber = state.total
     let balance: BigNumber = BigNumber.from(user?.balance.toString())
 
     let dstate: DiscountProps = await discount(state)
 
-    // console.log('discount state', dstate)
-
-    // console.log('continue')
     if (dstate.discount) {
       dispatch({ type: 'SET_DISCOUNT_AMOUNT', payload: dstate.total })
-      // console.log('discount amount', utils.formatEther(dstate.total))
     }
     type TempProps = {
       cl: any
@@ -334,7 +296,6 @@ const useAppState = create<StateContext>((set, get) => ({
         ) {
           quantities.push(item.quantity)
           productIds.push(item.product.id)
-          // console.log(item.product)
           if (item.product.type === 2) {
             console.log('cyber label is ', cyberName)
             cyberLabel = cyberName?.toUpperCase()
@@ -344,11 +305,7 @@ const useAppState = create<StateContext>((set, get) => ({
             labelArray.push('')
           }
         } else {
-          // setLoading(false)
           console.log('state have wrong items')
-          // return;
-          // resolve({success: false})
-          // return
           success = false
         }
         resolve({
@@ -369,9 +326,6 @@ const useAppState = create<StateContext>((set, get) => ({
     let cyberLabel: string = t.cl
     let cyberId: number = t.cyberId
     let data: string[] = t.data
-    // return
-
-    let product
 
     if (balance.lt(state.total)) {
       toast({
@@ -384,71 +338,23 @@ const useAppState = create<StateContext>((set, get) => ({
       })
       setLoading(false)
     } else {
-      // if(quantity && state.ids && state.ids.length > 0 && eth){
       if (quantities.length > 0 && productIds.length > 0 && eth) {
-        console.log(quantities, productIds, utils.formatEther(eth))
-        //  let price = eth.sub()
-        // let price = eth.sub(state.discount.div(BigNumber.from('4')))
-        console.log('state.discount is ', utils.formatEther(state.discount))
         let price: BigNumber = dstate.discount ? eth.sub(dstate.total) : eth
-        // let price = eth.sub(BigNumber.from(utils.parseEther('0.0001').toString()))
-        console.log('pay price', utils.formatEther(price))
-        // let calculatedPrice: BigNumber = await contract?.calculatePrice([0,1,2,3], [1,1,1,1])
-        // let calculatedPrice: BigNumber = await contract?.calculatePrice(
-        //   productIds,
-        //   quantities,
-        // )
-        // console.log('calucated price is ', utils.formatEther(calculatedPrice))
-        // if (price.lt(calculatedPrice)) {
-        //   console.log('price is lower than calculated price')
-        //   setLoading(false)
-        //   return
-        // }
-        // return
-        // tx = await contract?.checkOut(productIds, quantities, {value: eth})
-        let tx: any
-        // tx = await contract?.checkOut(productIds, quantities, {value: price})
-        // console.log(tx)
-        // if(tx && tx?.code && tx.code === 4001 ) {
-        //   console.log('reject')
-        //   return
-        // } else {
-        //   console.log('no error?')
-        // }
-        // console.log(dispatch)
-        // return
-        console.log(productIds, quantities, data, utils.formatEther(price))
+
         contract
-          // ?.checkOut(productIds, quantities, [cyberLabel, '', ''], {
           ?.checkOut(productIds, quantities, data, {
             value: price,
           })
           .then(async (tx: any) => {
-            console.log('check transaction', tx)
             setTransaction(tx)
             if (tx && tx?.hash) {
               if (t.success) {
-                // console.log('successed' + cyberLabel)
                 if (cyberLabel !== '' && cyberId > -1) {
-                  console.log('set cyber id to ', cyberId)
-                  console.log(dispatch)
                   dispatch({ type: 'SET_CYBER_ID', payload: cyberId })
-                  // return
-                  // let response = await api.post(`/cyber/update`, {t})
-                  // console.log('delete ',cyberLabel)
-                  // let response = await api.get(`/cyber/del/${cyberLabel}`)
-                  // console.log(response)
-                  // if(response.status === 200) {
-                  //   console.log(response.data)
-                  // } else {
-                  //   console.log('delete label is faild')
-                  //   setLoading(false)
-                  //   return;
-                  // }
+           
                 } else {
                   console.log('cannot find cyber name')
                 }
-                // dispatch({ type: 'REMOVE_ALL' })
                 setTransactionHash(tx.hash)
                 setLoading(false)
                 history?.push('/checkout')
@@ -467,8 +373,6 @@ const useAppState = create<StateContext>((set, get) => ({
         setLoading(false)
         console.log('checkout transaction parameters have error')
         console.log(state, toast, history, dispatch)
-        // console.log(dispatch)
-        // console.log(transaction)
       }
     }
   },
