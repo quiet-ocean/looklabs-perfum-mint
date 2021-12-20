@@ -34,12 +34,11 @@ const App = () => {
             <ScrollToTop
             color='white'
             style={{
-              border: '1px solid white',
-              borderRadius: '0px',
-              background: 'black',
               padding: '5px',
+              borderRadius: '0px',
+              border: '1px solid white',
+              background: 'black',
             }}
-
             top={10}
             smooth/>
           </Store>

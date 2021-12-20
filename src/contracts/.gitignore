@@ -12,6 +12,9 @@
 .env
 .env.staging
 
+/src/contracts/build
+/src/contracts/build/contracts
+
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
