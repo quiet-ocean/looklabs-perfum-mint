@@ -18,6 +18,7 @@ const Root: React.FC = () => {
             align="stretch"
             justify={"space-between"}
             h="100%"
+            
             spacing={"0px"}
             overflowY="auto"
             css={{
@@ -42,6 +43,7 @@ const Root: React.FC = () => {
             <Box
             flexGrow={10}
             fontFamily='-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji"'
+            minHeight='500px'
             >
                 <Connect>
                     <Switch>

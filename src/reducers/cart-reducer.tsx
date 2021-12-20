@@ -14,13 +14,28 @@ const cartReducer = (state: CartProps = initialCartState, action: ActionProps): 
         })
         return total
     }
+    let min = (items: number[]): number => {
+        let min: number = 0
+
+        if(items.length == 0)
+            return min
+        
+        min = items[0]
+        let length: number = items.length
+        for(let i = 0; i < length; i++ ){
+            min = min > items[i] ? items[i] : min
+        }
+
+        return min;
+    }
 
     switch (type) {
         case 'ADD_PRODUCT':
             let product: ProductProps = payload.product
             let id: BigNumber = product.id
             let addQuantity: number = payload.quantity
-            addQuantity = addQuantity > product.qty ? product.qty : addQuantity
+            // addQuantity = addQuantity > product.qty ? product.qty : addQuantity
+            addQuantity = min([addQuantity, product.qty, env.MAX_QTY])
             let price: BigNumber = BigNumber.from('0')
             let _newItems: CartItemProps[] = []
             let newTotal: BigNumber = BigNumber.from('0')
@@ -33,7 +48,8 @@ const cartReducer = (state: CartProps = initialCartState, action: ActionProps): 
                     if(item.product.id.eq(id)) {
                         exist = true
                         _quantity = addQuantity + item.quantity
-                        _quantity = _quantity > item.product.qty ? item.product.qty : _quantity
+                        // _quantity = _quantity > item.product.qty ? item.product.qty : _quantity
+                        _quantity = min([_quantity, item.product.qty, env.MAX_QTY])
                         
                     } else {
                         _quantity = item.quantity
@@ -70,27 +86,34 @@ const cartReducer = (state: CartProps = initialCartState, action: ActionProps): 
             let newtotal: BigNumber = state.total
             let __newItems: CartItemProps[] = []
             let _newIds: number[] = []
+            let decreasedAmount: BigNumber = BigNumber.from('0')
             state.items.forEach((item: CartItemProps) => {
                 if(item.product.id.eq(payload)) {
-                    newtotal = newtotal.sub(item.product.price)
-                    if(item.quantity > 1) {                        
-                        __newItems.push({product: item.product, quantity: item.quantity - 1})
-                        _newIds.push(item.product.id.toNumber())
+                    // newtotal = newtotal.sub(item.product.price)
+
+                    let quantity: number = 0
+                    if(item.quantity > 1) {
+                        quantity = item.quantity - 1
+                        decreasedAmount = item.product.price
+                        // __newItems.push({product: item.product, quantity: item.quantity - 1})
+                        // _newIds.push(item.product.id.toNumber())
                     } else if ( item.quantity === 1) {
-                        console.log('remove a item')
-                        
-                    }            
+                        // console.log('remove a item')
+                        quantity = 1
+                    }
+                    __newItems.push({product: item.product, quantity: quantity})
+                    
                     return
                 } else {
                     // console.log('mismatching')
                     __newItems.push(item)
-                    _newIds.push(item.product.id.toNumber())
+                   
                 }
-                
+                 _newIds.push(item.product.id.toNumber())
             })
             return {
                 ...state,
-                total: newtotal,                
+                total: state.total.sub(decreasedAmount),                
                 items: __newItems,
                 ids: _newIds,
             }
