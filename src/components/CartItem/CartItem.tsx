@@ -1,6 +1,6 @@
-import { useContext, useEffect, useState } from "react";
-import { utils } from "ethers";
-import ReactPlayer from "react-player";
+import { useContext, useEffect, useState } from 'react'
+import { utils } from 'ethers'
+import ReactPlayer from 'react-player'
 import { Context, useAppState } from '../../state'
 
 import {
@@ -13,30 +13,32 @@ import {
   Heading,
   Input,
   Spacer,
-} from "@chakra-ui/react";
+} from '@chakra-ui/react'
 
 const CartItem = (props: any) => {
-
-  const { product, quantity, deleteProduct } = props;
+  const { product, quantity, deleteProduct } = props
   const { dispatch } = useContext(Context)
   const { cyberName } = useAppState()
 
   useEffect(() => {
     if (product.type === 2) {
-      console.log("product is cyber");
+      console.log('product is cyber')
     } else {
-      console.log("product is not cyber");
+      console.log('product is not cyber')
     }
-  }, []);
+  }, [])
   let addProduct = () => {
-    dispatch({ type: 'ADD_PRODUCT', payload: { product: product, quantity: 1 } })
+    dispatch({
+      type: 'ADD_PRODUCT',
+      payload: { product: product, quantity: 1 },
+    })
   }
   return (
     <Box
       borderBottom="1px solid white"
-      borderRight={{ base: "none", md: "1px solid white" }}
+      borderRight={{ base: 'none', md: '1px solid white' }}
     >
-      <Flex direction={{ base: "column", md: "row" }}>
+      <Flex direction={{ base: 'column', md: 'row' }}>
         <Box padding="25px" flex="3">
           <ReactPlayer
             // url={token.media}
@@ -52,7 +54,7 @@ const CartItem = (props: any) => {
         <Box
           padding="40px"
           flex="7"
-          borderLeft={{ base: "none", md: "1px solid white" }}
+          borderLeft={{ base: 'none', md: '1px solid white' }}
         >
           <VStack align="stretch" spacing="0" h="100%">
             <Flex>
@@ -82,7 +84,9 @@ const CartItem = (props: any) => {
             </Flex>
             <Box>
               <Heading as="h3" fontWeight="600" fontSize="32px" mb="24px">
-                {product.type === 2 ? cyberName : product.name}
+                {product.type === 2
+                  ? `${cyberName} Eau de Parfum`
+                  : product.name}
               </Heading>
             </Box>
             <Box>
@@ -112,7 +116,7 @@ const CartItem = (props: any) => {
                     QTY:
                   </Text>
                   <Flex
-                    direction={{ base: "row", md: "row" }}
+                    direction={{ base: 'row', md: 'row' }}
                     spacing="10px"
                     align="stretch"
                     mt="8px"
@@ -125,10 +129,15 @@ const CartItem = (props: any) => {
                       textAlign="center"
                       border="3px solid #a5a5a5"
                       p="10px"
-                      h='80px'
+                      h="80px"
                       // onClick={minQty}
-                      onClick={() => dispatch({ type: 'DECREASE_QUANTITY', payload: product.id })}
-                      cursor={"pointer"}
+                      onClick={() =>
+                        dispatch({
+                          type: 'DECREASE_QUANTITY',
+                          payload: product.id,
+                        })
+                      }
+                      cursor={'pointer'}
                       userSelect="none"
                     >
                       -
@@ -139,13 +148,12 @@ const CartItem = (props: any) => {
                       background="#191919"
                       ml="10px"
                       mr="10px"
-                      h='80px'
-
+                      h="80px"
                     >
                       <Input
                         fontSize="32px"
                         p="36px"
-                        w={{ base: "100%", md: "150px" }}
+                        w={{ base: '100%', md: '150px' }}
                         textAlign="center"
                         borderRadius="0px"
                         border="none"
@@ -155,7 +163,7 @@ const CartItem = (props: any) => {
                         max="10"
                         readOnly
                         userSelect="none"
-                        cursor={"default"}
+                        cursor={'default'}
                         color="#A5A5A5"
                         fontWeight="600"
                       />
@@ -168,10 +176,10 @@ const CartItem = (props: any) => {
                       w="100%"
                       textAlign="center"
                       p="10px"
-                      h='80px'
+                      h="80px"
                       // onClick={plusQty}
                       onClick={() => addProduct()}
-                      cursor={"pointer"}
+                      cursor={'pointer'}
                       userSelect="none"
                     >
                       +
@@ -184,7 +192,7 @@ const CartItem = (props: any) => {
         </Box>
       </Flex>
     </Box>
-  );
-};
+  )
+}
 
-export { CartItem };
+export { CartItem }

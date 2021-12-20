@@ -4,7 +4,6 @@ const colors = require('colors')
 const fetch = require('node-fetch')
 const { utils } = require('ethers')
 const GenesisCart = artifacts.require('GenesisCart.sol')
-const CartERC721 = artifacts.require('CartERC721.sol')
 
 const { SERVICE_URL } = process.env
 
@@ -20,8 +19,7 @@ const start = async callback => {
     const FROM = utils.getAddress(accounts().getAddresses()[0])
 
     const contract = await GenesisCart.deployed()
-    const URL = process.env.API_URL ? process.env.API_URL : 'https://elite.looklabs.xyz'
-    const updateStock = await contract.updateStock(0, 10);
+    const deleteProduct = await contract.deleteProduct(1);
     const products = await contract.getProducts()
 
     callback(colors.green(`⚡️: ${colors.white(products)}`))

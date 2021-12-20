@@ -42,7 +42,7 @@ contract CartERC721 is ERC721Enumerable, Ownable, Proxy {
     address _to,
     uint256 _qty,
     uint256 _productId,
-    string memory data
+    string memory _data
   ) public onlyProxy {
     require(
       _qty > 0 && _qty <= 10,
@@ -52,7 +52,7 @@ contract CartERC721 is ERC721Enumerable, Ownable, Proxy {
       uint256 mintIndex = totalSupply() + 1;
       SoldMetaERC721 memory sold = SoldMetaERC721(mintIndex, _productId);
       _mint(_to, mintIndex);
-      cartInstance.productSold(mintIndex, _to, _productId, data);
+      cartInstance.productSold(mintIndex, _to, _productId, _data);
       _setTokenMeta(mintIndex, sold);
     }
   }

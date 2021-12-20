@@ -7,7 +7,7 @@ const addOnContract = artifacts.require('addOnContract')
 
 module.exports = async (deployer, network, addresses) => {
     await deployer.deploy(Helper);
-    deployer.link(Helper, [GenesisCart]);
+    await deployer.link(Helper, [GenesisCart]);
     await deployer.deploy(GenesisCart);
     await deployer.deploy(CartERC721, GenesisCart.address);
     await deployer.deploy(CartERC1155, GenesisCart.address);
