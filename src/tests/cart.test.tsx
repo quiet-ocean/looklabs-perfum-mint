@@ -22,21 +22,7 @@ describe("Cart reducer test", () => {
   let expectedTotal: BigNumber
 
   let addProducts = (n: number) => {
-    // let product: ProductProps
-    // for(let i = 0; i < n; i++) {
-
-    // }
-    // let payload: any = { product: product1, quantity: 1 }
-    // let action: ActionProps = { type: 'ADD_PRODUCT', payload: payload }
-    // previousState = cartReducer(initialCartState, action)
-    // action.payload = { product: product2, quantity: 2 }
-    // previousState = cartReducer(previousState, action)
-    // action.payload = { product: product3, quantity: 3}
-    // previousState = cartReducer(previousState, action)
-    // action.payload = { product: product4, quantity: 4 }
-    // total = cartReducer(previousState, action).total
-    // expectedTotal = utils.parseEther('0.03')
-
+    
     for(let i = 0; i < 4; i++) {
       action = { type: 'ADD_PRODUCT', payload: { product: products[i], quantity: i + 1} }
       previousState = cartReducer(previousState, action)

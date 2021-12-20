@@ -1,11 +1,10 @@
 // @ts-nocheck
 import { useReducer, useEffect, useState, useContext } from "react";
-import { tokenReducer, productReducer } from "../../reducers";
+import { productReducer } from "../../reducers";
 import { Context, useAppState } from "../../state";
 import { api } from "../../utils/api";
 import * as dotenv from "dotenv";
 import { TextSlider } from "../TextSlider";
-import { Cart } from "../Cart";
 import { ProductProps } from '../../types'
 import { ProductItem } from "./ProductItem";
 import { Container, Flex, Box, Text } from "@chakra-ui/react";
@@ -57,22 +56,16 @@ const ProductList = () => {
           description: description[item.id],
           type: item.name.toLowerCase() === 'cyber edp' ? 2 : 1,
         };
-        console.log(newItem)
+        // console.log(newItem)
         productDispatch({ type: "ADD_PRODUCT", payload: newItem });
       });
     }
   };
 
   useEffect(async () => {
-    console.log('product lists are ', products)
-
-  }, [products]);
-  useEffect(async () => {
     dispatch({type: 'SET_NAV_TITLE', payload: PRODUCT})
     await loadProduct();
-    // console.log('products are ', products)
     setLoading(false);
-    console.log(state)
   }, []);
 
   return (
@@ -140,7 +133,7 @@ const ProductList = () => {
             opacity: '0.5',
           }}
         >
-          <Text color='white' zIndex={'2'} fontSize='22px' textAlign='center' marginTop='20%'>Loading...</Text>
+          <Text color='white' zIndex={'2'} fontSize='22px' textAlign='center' marginTop='30%'>Loading...</Text>
         </Box>
         :
         ''

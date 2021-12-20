@@ -39,12 +39,11 @@ import {
   useToast,
   SimpleGrid,
   keyframes,
-  useForceUpdate,
 } from '@chakra-ui/react'
 import { isEmpty } from '../../utils'
 import env from '../../config'
 
-const ProductItem = ({ product, setLoading }) => {
+const ProductItem = ({ product, setLoading }: {ProductProps, any}) => {
   const {
     boughtTokens,
     cyberName,

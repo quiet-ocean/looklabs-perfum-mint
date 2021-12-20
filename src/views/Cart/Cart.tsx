@@ -34,10 +34,9 @@ const Cart = () => {
 
     dispatch({ type: 'SET_NAV_TITLE', payload: CART })
     // setIds(state.ids)
-  });
+  }, []);
   useEffect(() => {
-    console.log(state)
-    // console.log("ids ", ids);
+
     let effect = async () => {
       let dstate = await discount(state)
       if (dstate.discount) {
@@ -50,7 +49,6 @@ const Cart = () => {
     }
 
     effect()
-
   }, [state.items]);
 
   let deleteProduct = (id: BigNumber) => {
