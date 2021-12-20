@@ -26,7 +26,6 @@ import './fonts/Gotham-Medium.woff2';
 import './fonts/Gotham-MediumItalic.woff';
 import './fonts/Gotham-MediumItalic.woff2';
 import { BrowserRouter as Router } from "react-router-dom";
-import { ScrollToTop } from "./components";
 
 dotenv.config()
 
@@ -45,7 +44,6 @@ Sentry.init({
 ReactDOM.render(
   <React.StrictMode>
     <Router basename={process.env.PUBLIC_URL}>
-      <ScrollToTop />
       <App />
     </Router>
   </React.StrictMode>,

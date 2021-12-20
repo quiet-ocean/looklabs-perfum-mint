@@ -22,21 +22,7 @@ describe("Cart reducer test", () => {
   let expectedTotal: BigNumber
 
   let addProducts = (n: number) => {
-    // let product: ProductProps
-    // for(let i = 0; i < n; i++) {
-
-    // }
-    // let payload: any = { product: product1, quantity: 1 }
-    // let action: ActionProps = { type: 'ADD_PRODUCT', payload: payload }
-    // previousState = cartReducer(initialCartState, action)
-    // action.payload = { product: product2, quantity: 2 }
-    // previousState = cartReducer(previousState, action)
-    // action.payload = { product: product3, quantity: 3}
-    // previousState = cartReducer(previousState, action)
-    // action.payload = { product: product4, quantity: 4 }
-    // total = cartReducer(previousState, action).total
-    // expectedTotal = utils.parseEther('0.03')
-
+    
     for(let i = 0; i < 4; i++) {
       action = { type: 'ADD_PRODUCT', payload: { product: products[i], quantity: i + 1} }
       previousState = cartReducer(previousState, action)
@@ -97,7 +83,7 @@ describe("Cart reducer test", () => {
     // addProducts(0)
   })
 
-  it("handle a product being added to cart list", () => {
+  xit("handle a product being added to cart list", () => {
     let payload: any = { product: product1, quantity:1 }
     let action: ActionProps = {type: 'ADD_PRODUCT', payload: payload}
     let expectedTotal: BigNumber = utils.parseEther('0.001')
@@ -105,7 +91,7 @@ describe("Cart reducer test", () => {
     
     expect(stateTotal).toEqual(expectedTotal)
   })
-  it('handle 2 products being added to cart list', () => {
+  xit('handle 2 products being added to cart list', () => {
     let payload: any = { product: product1, quantity:1 }
     let action: ActionProps = {type: 'ADD_PRODUCT', payload: payload}
     let expectedTotal: BigNumber = utils.parseEther('0.005')
@@ -113,13 +99,23 @@ describe("Cart reducer test", () => {
     action.payload = { product: product2, quantity: 2 }
     let state: CartProps = cartReducer(previousState, action)
     let stateTotal: BigNumber = state.total
-    console.log(state)
+    console.log(state, utils.formatEther(state.total))
     expect(stateTotal).toEqual(expectedTotal)
   })
   it('handle several products being added to cart list', () => {
     
     addProducts(1)
-    console.log(previousState)
+    
+    let action = {type: 'ADD_PRODUCT', payload: {product: product1, quantity: 2}}
+    let prevState: CartProps = cartReducer(previousState, action)
+    console.log(prevState)
+    total = prevState.total
+    console.log('total is ', utils.formatEther(total))
+    console.log('expected total', utils.formatEther(expectedTotal.toString()))
+    let addPrice: BigNumber = BigNumber.from(utils.parseEther('0.002').toString())
+    expectedTotal = expectedTotal.add(addPrice)
+
+    console.log(utils.formatEther(total), utils.formatEther(expectedTotal))
     expect(total).toEqual(expectedTotal)
   })
   xit('handle products being deleted from cart list', () => {

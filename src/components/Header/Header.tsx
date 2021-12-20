@@ -2,6 +2,7 @@
 // for some reason the Marquee is not allowing more children when TS is enabled
 import Marquee from "react-easy-marquee";
 import { Box } from "@chakra-ui/react";
+
 function Header() {
   return (
     <header>

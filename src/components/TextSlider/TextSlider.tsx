@@ -1,7 +1,6 @@
 // @ts-nocheck
 // for some reason the Marquee is not allowing more children when TS is enabled
 import Marquee from "react-easy-marquee";
-import { ReactElement } from "react";
 import { Text } from "@chakra-ui/react";
 import { Box } from "@chakra-ui/react";
 

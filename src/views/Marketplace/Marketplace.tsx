@@ -8,10 +8,10 @@ const Marketplace = () => {
   const { active } = useWeb3React()
 
   return (
-    <>
+    <div>
       {!user && <Login />}
       {user && active && <ProductList />}
-      </>
+    </div>
     )
 }
 
