@@ -30,7 +30,8 @@ const CartItem = (props: any) => {
           <ReactPlayer
             // url={token.media}
             // url = '/static/comfy5402_gloss.mp4'
-            url={`/static/${product.mediaUrl}`}
+            // url={`/static/${product.mediaUrl}`}
+            url={product.styles[product.selectedStyle]['animationUri']}
             loop={true}
             playing={true}
             muted={true}

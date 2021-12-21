@@ -45,15 +45,16 @@ const cartReducer = (state: CartProps = initialCartState, action: ActionProps): 
                 
                 state.items.forEach((item: CartItemProps) => {
                     let _quantity: number = 0
+                    let _product: ProductProps = item.product
                     if(item.product.id.eq(id)) {
                         exist = true
                         _quantity = addQuantity + item.quantity
                         _quantity = min([_quantity, item.product.qty, env.MAX_QTY])
-                        
+                        _product = product
                     } else {
                         _quantity = item.quantity
                     }
-                    _newItems.push({product: item.product, quantity: _quantity})
+                    _newItems.push({product: _product, quantity: _quantity})
                 })
                 if(!exist) {
                     price = product.price.mul(BigNumber.from(addQuantity))

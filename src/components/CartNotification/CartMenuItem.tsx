@@ -22,7 +22,8 @@ const CartMenuItem = (props: any) => {
                         <ReactPlayer
                             // url={`${item.token.media}`}
                             // url = {`/static/${product.uri}`}
-                            url = {`/static/${product.mediaUrl}`}
+                            // url = {`/static/${product.mediaUrl}`}
+                            url={product.styles[product.selectedStyle]['animationUri']}
                             loop={true}
                             playing={true}
                             muted={true}

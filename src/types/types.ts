@@ -62,7 +62,8 @@ export type ProductProps = {
   styles: StyleProps[]
 };
 export type ProductListProps = {
-  products: ProductProps[]
+  loaded: boolean;
+  products: ProductProps[];
 }
 
 export type TokenCompProps = {

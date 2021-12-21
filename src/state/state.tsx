@@ -275,6 +275,7 @@ const useAppState = create<StateContext>((set, get) => ({
       cl: any
       qtys: any[]
       prds: BigNumber[]
+      styleIds: number[]
       success: boolean
       cyberId: number
       data: string[]
@@ -282,6 +283,7 @@ const useAppState = create<StateContext>((set, get) => ({
     let promise = new Promise<TempProps>((resolve, reject) => {
       let quantities: any[] = []
       let productIds: BigNumber[] = []
+      let styleIds: number[] = []
       let cyberLabel: any = ''
       let success: boolean = true
       let cyberId = -1
@@ -296,6 +298,8 @@ const useAppState = create<StateContext>((set, get) => ({
         ) {
           quantities.push(item.quantity)
           productIds.push(item.product.id)
+          styleIds.push(item.product?.selectedStyle)
+
           if (item.product.type === 2) {
             console.log('cyber label is ', cyberName)
             cyberLabel = cyberName?.toUpperCase()
@@ -312,6 +316,7 @@ const useAppState = create<StateContext>((set, get) => ({
           success: success,
           qtys: quantities,
           prds: productIds,
+          styleIds: styleIds,
           cl: cyberName,
           cyberId: cyberId,
           data: labelArray,

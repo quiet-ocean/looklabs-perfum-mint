@@ -14,4 +14,4 @@ export const initialCartState: CartProps = {
     discount: BigNumber.from("0"),
     cyberProductId: -1,
 }
-export const initialProductsState: ProductListProps = { products: [] }
+export const initialProductsState: ProductListProps = { loaded: false, products: [] }
