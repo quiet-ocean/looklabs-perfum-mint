@@ -276,6 +276,7 @@ const useAppState = create<StateContext>((set, get) => ({
       cl: any
       qtys: any[]
       prds: BigNumber[]
+      hoodieStyles: string[]
       success: boolean
       cyberId: number
       data: string[]
@@ -284,6 +285,7 @@ const useAppState = create<StateContext>((set, get) => ({
       let quantities: any[] = []
       let productIds: BigNumber[] = []
       let cyberLabel: any = ''
+      let hoodieStyles: string[] = []
       let success: boolean = true
       let cyberId = -1
       let labelArray: string[] = []
@@ -297,6 +299,7 @@ const useAppState = create<StateContext>((set, get) => ({
         ) {
           quantities.push(item.quantity)
           productIds.push(item.product.id)
+          hoodieStyles.push(item.product.selectedStyle)
 
           if (item.product.type === 2) {
             console.log('cyber label is ', cyberName)
@@ -314,6 +317,7 @@ const useAppState = create<StateContext>((set, get) => ({
           success: success,
           qtys: quantities,
           prds: productIds,
+          hoodieStyles: hoodieStyles,
           cl: cyberName,
           cyberId: cyberId,
           data: labelArray,

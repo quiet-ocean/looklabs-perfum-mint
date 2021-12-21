@@ -85,15 +85,11 @@ const ProductItem = ({ product, setLoading }: {ProductProps, any}) => {
 
   useEffect(() => {
 
-    // if(product.type === 1) setIsCyber(true)
-    // if(product.type === 2) setIsHoodie(true)
     let _isCyber = product.type === 1 ? true : false
     let _isHoodie = product.type === 2 ? true : false
 
     setIsHoodie(_isHoodie)
     setIsCyber(_isCyber)
-
-    console.log(product, isHoodie)
   }, [])
 
   useEffect(() => {
