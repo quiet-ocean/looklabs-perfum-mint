@@ -71,7 +71,7 @@ const ProductList = () => {
       {/* <Cart product={null}
         quantity="100" setLoading={setLoading}>
       </Cart> */}
-      {products?.length === undefined || products?.length === 0 ? <Text textAlign='center' marginTop='10%'>No Product</Text> : null}
+      {/*products?.length === undefined || products?.length === 0 ? <Text textAlign='center' marginTop='10%'>No Product</Text> : null*/}
       {
         products?.map((item, key) => {
           if(item === undefined || item === '') return ''
