@@ -51,11 +51,12 @@ const styles: StyleProps[][] = [
 
 const ProductList = () => {
   const { contract } = useAppState();
-  const { state, dispatch, products, productDispatch } = useContext(Context)
+  const { state, dispatch, productState, productDispatch } = useContext(Context)
   // const [products, productDispatch] = useReducer(productReducer, []);1
   const [loading, setLoading] = useState(true);
 
   let _products = [];
+  let products: ProductProps[] = productState.products
 
   let loadProduct = async () => {
     _products = await contract.getProducts();

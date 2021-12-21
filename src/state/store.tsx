@@ -5,28 +5,29 @@ import React, {
 } from 'react'
 import { cartReducer, productReducer } from '../reducers'
 import { initialCartState, initialProductsState } from './constants'
-import { CartProps, ActionProps, ProductProps } from '../types'
+import { CartProps, ActionProps, ProductProps, ProductListProps } from '../types'
 
 interface ContextType {
     state: CartProps;
     dispatch: Dispatch<ActionProps>;
-    products: ProductProps[];
+    // products: ProductProps[];
+    productState: ProductListProps;
     productDispatch: Dispatch<ActionProps>;
 }
 const Context = createContext<ContextType>({ 
     state: initialCartState,   
     dispatch: () => {},
-    products: initialProductsState,
+    productState: initialProductsState,
     productDispatch: () => {},
 })
 
 const Store = ({ children, value = {} as ContextType }: { children: React.ReactNode; value?: {} }) => {
     
     const [state, dispatch] = useReducer(cartReducer, initialCartState)
-    const [products, productDispatch] = useReducer(productReducer, initialProductsState)
+    const [productState, productDispatch] = useReducer(productReducer, initialProductsState)
 
     return (
-        <Context.Provider value={{ state, dispatch, products, productDispatch }} >
+        <Context.Provider value={{ state, dispatch, productState, productDispatch }} >
             {children}
         </Context.Provider>
     )

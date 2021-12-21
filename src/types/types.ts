@@ -61,6 +61,9 @@ export type ProductProps = {
   selectedStyle: number;
   styles: StyleProps[]
 };
+export type ProductListProps = {
+  products: ProductProps[]
+}
 
 export type TokenCompProps = {
   // token: TokenProps;
