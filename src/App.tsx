@@ -16,7 +16,6 @@ import { ChakraProvider } from "@chakra-ui/react";
 import { Store } from "./state";
 import { Theme } from "./theme";
 import { Root } from './layouts/Root'
-import ScrollToTop from "react-scroll-to-top";
 
 function getLibrary(provider: any): Web3Provider {
   const library = new Web3Provider(provider);
@@ -32,16 +31,7 @@ const App = () => {
         <ChakraProvider theme={Theme}>
           <Store>
             <Root />
-            <ScrollToTop
-            color='white'
-            style={{
-              padding: '5px',
-              borderRadius: '0px',
-              border: '1px solid white',
-              background: 'black',
-            }}
-            top={10}
-            smooth/>
+
           </Store>
         </ChakraProvider>
       </Web3ReactProvider>
