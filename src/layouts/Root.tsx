@@ -69,19 +69,14 @@ const Root: React.FC = () => {
             >
                 <Connect>
                     <ST />
-                    <AnimatedSwitch
-                        atEnter={{ opacity: 0 }}
-                        atLeave={{ opacity: 0 }}
-                        atActive={{ opacity: 1 }}
-                        className="switch-wrapper"
-                    >
+                    <Switch>
                         <Route exact path="/" component={Marketplace} />
                         <Route path="/about" component={About} />
                         <Route exact path="/cart" component={Cart} />                    
                         <Route exact path="/token" component={Marketplace} />
                         <Route exact path="/whitepaper" component={Whitepaper} />                    
                         <Route exact path="/checkout" component={Checkout} />
-                    </AnimatedSwitch>
+                    </Switch>
                 </Connect>
             </Box>
             <Box>

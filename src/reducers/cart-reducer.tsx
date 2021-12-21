@@ -146,6 +146,12 @@ const cartReducer = (state: CartProps = initialCartState, action: ActionProps): 
                 cyberProductId: payload
             }
             return __newState
+        case 'SET_HOODIE_STYLE':
+            console.log('set hoodie style to ',payload)
+            return {
+                ...state,
+                hoodieStyle: payload,
+            }
         case 'REMOVE_ALL':
             return initialCartState
         default:

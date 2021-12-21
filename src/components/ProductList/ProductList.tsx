@@ -31,22 +31,10 @@ const description = [
 ]
 
 const styles: StyleProps[][] = [
-  [
-    {id: 1, imageUri: '/static/hoodie/v1.png', animationUri: "/static/movies/cyber_grid.mov", selected: false},
-    {id: 2, imageUri: '/static/hoodie/v2.png', animationUri: "/static/movies/cyber_grid.mov", selected: false},
-  ],
-  [
-    {id: 1, imageUri: '/static/hoodie/v1.png', animationUri: "/static/movies/hoodie_v1.mov", selected: false},
-    {id: 2, imageUri: '/static/hoodie/v2.png', animationUri: "/static/movies/hoodie_v2.mov", selected: false},
-  ],
-  [
-    {id: 1, imageUri: '/static/hoodie/v1.png', animationUri: "/static/movies/eight_grid.mov", selected: false},
-    {id: 2, imageUri: '/static/hoodie/v2.png', animationUri: "/static/movies/eight_fashion_metapass.mov", selected: false},
-  ],
-  [
-    {id: 1, imageUri: '/static/hoodie/v1.png', animationUri: "/static/movies/coder_art_metapass.mp4", selected: false},
-    {id: 2, imageUri: '/static/hoodie/v2.png', animationUri: "/static/movies/coder_metapass.mp4", selected: false},
-  ],
+
+  {id: 1, imageUri: '/static/hoodie/v1.png', animationUri: "/static/movies/hoodie_v1.mov", selected: false},
+  {id: 2, imageUri: '/static/hoodie/v2.png', animationUri: "/static/movies/hoodie_v2.mov", selected: false},
+
 ]
 
 const ProductList = () => {
@@ -77,8 +65,6 @@ const ProductList = () => {
           description: description[item.id],
           // type: item.name.toUpperCase() === 'CYBER EAU DE PARFUM' ? 2 : 1,
           type: item.name.toUpperCase() === 'CYBER EDP' ? 2 : 1,
-          styles: styles[key],
-          selectedStyle: 0,
         };
 
         productDispatch({ type: "ADD_PRODUCT", payload: newItem });

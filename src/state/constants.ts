@@ -13,5 +13,6 @@ export const initialCartState: CartProps = {
     ids: [],
     discount: BigNumber.from("0"),
     cyberProductId: -1,
+    hoodieStyle: 'ver1',
 }
 export const initialProductsState: ProductListProps = { loaded: false, products: [] }

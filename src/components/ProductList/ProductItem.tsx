@@ -9,7 +9,7 @@ import React, {
   useContext,
 } from 'react'
 import { useHistory } from 'react-router-dom'
-import { utils } from 'ethers'
+import { utils, BigNumber } from 'ethers'
 import ReactPlayer from 'react-player'
 import { Canvas } from '@react-three/fiber'
 import {
@@ -22,7 +22,7 @@ import {
 import Model from '../Voxel/Model'
 import { CartNotification } from '../CartNotification'
 // import axios from 'axios'
-import { CartItemProps, ProductProps, StyleProps } from '../../types'
+import { CartItemProps, ProductProps } from '../../types'
 import { Context } from '../../state'
 import { useAppState } from '../../state'
 import { api } from '../../utils/api'
@@ -46,7 +46,12 @@ import { isEmpty } from '../../utils'
 import env from '../../config'
 import parse from 'html-react-parser'
 
-const ProductItem = ({ product, setLoading }: { ProductProps, any, any }) => {
+const hoodieAnimationUris = {
+  'ver1': '/static/movies/hoodie_v1.mov',
+  'ver2': '/static/movies/hoodie_v2.mov',
+}
+
+const ProductItem = ({ product, setLoading }: {ProductProps, any}) => {
   const {
     boughtTokens,
     cyberName,
@@ -63,9 +68,9 @@ const ProductItem = ({ product, setLoading }: { ProductProps, any, any }) => {
   const [input, setInput] = useState('')
   const [count, setCount] = useState(1)
   const toast = useToast()
-  const { state, productDispatch } = useContext(Context)
-  const { dispatch } = useContext(Context)
+  const { state, dispatch } = useContext(Context)
   const [isCyber, setIsCyber] = useState(false)
+  const [isHoodie, setIsHoodie] = useState(false)
 
   const cyberSupply = product.qty
   const maxUnits = product.maxUnits
@@ -79,11 +84,12 @@ const ProductItem = ({ product, setLoading }: { ProductProps, any, any }) => {
   )
 
   useEffect(() => {
-    if (product.type === 2) {
-      setIsCyber(true)
-    } else {
-      setIsCyber(false)
-    }
+
+    let _isCyber = product.type === 2 ? true : false
+    setIsCyber(_isCyber)
+
+    let _isHoodie = product.id.eq(BigNumber.from('1')) ? true : false
+    setIsHoodie(_isHoodie)
   }, [])
 
   useEffect(() => {
@@ -286,8 +292,8 @@ const ProductItem = ({ product, setLoading }: { ProductProps, any, any }) => {
               </Canvas>
             ) : (
               <ReactPlayer
-                // url={product.mediaUrl}
-                url={product.styles[product.selectedStyle]['animationUri']}
+                // url={product.media}
+                url={isHoodie ? hoodieAnimationUris[state.hoodieStyle] : product.mediaUrl}
                 loop={true}
                 playing={true}
                 muted={true}
@@ -406,41 +412,35 @@ const ProductItem = ({ product, setLoading }: { ProductProps, any, any }) => {
                 ''
               )}
               {/* hoodie choose option */}
-              <Box>
-              <Text
-                color="#BABABA"
-                fontSize="16"
-                fontWeight="normal"
-                mb="32px"
-                textTransform="uppercase"
-              >
-                {/* TODO fix - for each product */}
-                Colour Name:
-                <Text as="b" ml="8px">
-                  Minamilistic
-                </Text>
-              </Text>
-              <HStack spacing="18px" mb="39px">
-                {
-                  product.styles.map((style: StyleProps, key: number) => {
-                    return (
-                      <Box
-                      key={key}
-                      onClick={
-                        () => {
-                          productDispatch({type: 'CHANGE_STYLE', payload: {productId: product.id, styleId: key}})}
-                        }
-                        w="80px"
-                        h="80px"
-                        border={key === product.selectedStyle ? "1px solid red" : "1px solid white"}
-                      >
-                        <Image src={style.imageUri} alt="" />
-                      </Box>
-                    )
-                  })
-                }
-              </HStack>
-            </Box>
+              { 
+                isHoodie
+                ?
+                <Box>
+                  <Text
+                    color="#BABABA"
+                    fontSize="16"
+                    fontWeight="normal"
+                    mb="32px"
+                    textTransform="uppercase"
+                  >
+                    {/* TODO fix - for each product */}
+                    Colour Name:
+                    <Text as="b" ml="8px">
+                      Minamilistic
+                    </Text>
+                  </Text>
+                  <HStack spacing="18px" mb="39px">
+                    <Box onClick={()=>{dispatch({type: 'SET_HOODIE_STYLE', payload: 'ver1'})}} w="80px" h="80px" border={state.hoodieStyle === 'ver1' ? "1px solid red" : "1px solid white"}>
+                      <Image src="/static/hoodie/v1.png" alt="" />
+                    </Box>
+                    <Box onClick={()=>{dispatch({type: 'SET_HOODIE_STYLE', payload: 'ver2'})}} w="80px" h="80px" border={state.hoodieStyle === 'ver2' ? "1px solid red" : "1px solid white"}>
+                      <Image src="/static/hoodie/v2.png" alt="" />
+                    </Box>
+                  </HStack>
+                </Box>
+                :
+                null
+              }
             {/* end of hoodie choose option */}
               <Box w="100%">
                 <Text

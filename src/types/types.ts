@@ -57,9 +57,6 @@ export type ProductProps = {
   qty: number;
   description: string;
   sale: boolean;
-
-  selectedStyle: number;
-  styles: StyleProps[]
 };
 export type ProductListProps = {
   loaded: boolean;
@@ -101,6 +98,7 @@ export type CartProps = {
   ids: any
   discount: BigNumber
   cyberProductId: number
+  hoodieStyle: string
 }
 // export interface CartProps {
 //   nav: string;
