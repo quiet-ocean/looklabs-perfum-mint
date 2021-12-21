@@ -22,7 +22,7 @@ import {
 import Model from '../Voxel/Model'
 import { CartNotification } from '../CartNotification'
 // import axios from 'axios'
-import { CartItemProps, ProductProps } from '../../types'
+import { CartItemProps, ProductProps, StyleProps } from '../../types'
 import { Context } from '../../state'
 import { useAppState } from '../../state'
 import { api } from '../../utils/api'
@@ -46,7 +46,7 @@ import { isEmpty } from '../../utils'
 import env from '../../config'
 import parse from 'html-react-parser'
 
-const ProductItem = ({ product, setLoading }: {ProductProps, any}) => {
+const ProductItem = ({ product, setLoading }: { ProductProps, any, any }) => {
   const {
     boughtTokens,
     cyberName,
@@ -63,7 +63,7 @@ const ProductItem = ({ product, setLoading }: {ProductProps, any}) => {
   const [input, setInput] = useState('')
   const [count, setCount] = useState(1)
   const toast = useToast()
-  const { state } = useContext(Context)
+  const { state, productDispatch } = useContext(Context)
   const { dispatch } = useContext(Context)
   const [isCyber, setIsCyber] = useState(false)
 
@@ -286,8 +286,8 @@ const ProductItem = ({ product, setLoading }: {ProductProps, any}) => {
               </Canvas>
             ) : (
               <ReactPlayer
-                // url={product.media}
-                url={`/static/${product.mediaUrl}`}
+                // url={product.mediaUrl}
+                url={product.styles[product.selectedStyle]['animationUri']}
                 loop={true}
                 playing={true}
                 muted={true}
@@ -421,12 +421,24 @@ const ProductItem = ({ product, setLoading }: {ProductProps, any}) => {
                 </Text>
               </Text>
               <HStack spacing="18px" mb="39px">
-                <Box w="80px" h="80px" border="1px solid white">
-                  <Image src="/static/hoodie/v1.png" alt="" />
-                </Box>
-                <Box w="80px" h="80px" border="1px solid white">
-                  <Image src="/static/hoodie/v2.png" alt="" />
-                </Box>
+                {
+                  product.styles.map((style: StyleProps, key: number) => {
+                    return (
+                      <Box
+                      key={key}
+                      onClick={
+                        () => {
+                          productDispatch({type: 'CHANGE_STYLE', payload: {productId: product.id, styleId: key}})}
+                        }
+                        w="80px"
+                        h="80px"
+                        border={key === product.selectedStyle ? "1px solid red" : "1px solid white"}
+                      >
+                        <Image src={style.imageUri} alt="" />
+                      </Box>
+                    )
+                  })
+                }
               </HStack>
             </Box>
             {/* end of hoodie choose option */}

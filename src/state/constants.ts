@@ -1,4 +1,4 @@
-import { CartProps } from '../types'
+import { CartProps, ProductProps } from '../types'
 import { BigNumber } from 'ethers'
 
 export const PRODUCT = 'product'
@@ -14,3 +14,4 @@ export const initialCartState: CartProps = {
     discount: BigNumber.from("0"),
     cyberProductId: -1,
 }
+export const initialProductsState: ProductProps[] = []

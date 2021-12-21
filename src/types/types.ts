@@ -35,6 +35,15 @@ export type UserProps = {
 //   sale: boolean;
 //   url: string;
 // };
+export type StyleProps = {
+  id: number;
+  imageUri: string;
+  animationUri: string;
+  selected: boolean;
+}
+export interface StyleListProps {
+  [key: number]: StyleProps;
+}
 export type ProductProps = {
   id: BigNumber;
   // url: string;
@@ -48,6 +57,9 @@ export type ProductProps = {
   qty: number;
   description: string;
   sale: boolean;
+
+  selectedStyle: number;
+  styles: StyleProps[]
 };
 
 export type TokenCompProps = {

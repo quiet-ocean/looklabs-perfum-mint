@@ -5,7 +5,7 @@ import { Context, useAppState } from "../../state";
 import { api } from "../../utils/api";
 import * as dotenv from "dotenv";
 import { TextSlider } from "../TextSlider";
-import { ProductProps } from '../../types'
+import { ProductProps, StyleProps } from '../../types'
 import { ProductItem } from "./ProductItem";
 import { Container, Flex, Box, Text } from "@chakra-ui/react";
 import { PRODUCT } from "../../state/constants";
@@ -30,10 +30,29 @@ const description = [
   ['<h2>1x free AR mint</h2>'],
 ]
 
+const styles: StyleProps[][] = [
+  [
+    {id: 1, imageUri: '/static/hoodie/v1.png', animationUri: "/static/movies/cyber_grid.mov", selected: false},
+    {id: 2, imageUri: '/static/hoodie/v2.png', animationUri: "/static/movies/cyber_grid.mov", selected: false},
+  ],
+  [
+    {id: 1, imageUri: '/static/hoodie/v1.png', animationUri: "/static/movies/hoodie_v1.mov", selected: false},
+    {id: 2, imageUri: '/static/hoodie/v2.png', animationUri: "/static/movies/hoodie_v2.mov", selected: false},
+  ],
+  [
+    {id: 1, imageUri: '/static/hoodie/v1.png', animationUri: "/static/movies/eight_grid.mov", selected: false},
+    {id: 2, imageUri: '/static/hoodie/v2.png', animationUri: "/static/movies/eight_fashion_metapass.mov", selected: false},
+  ],
+  [
+    {id: 1, imageUri: '/static/hoodie/v1.png', animationUri: "/static/movies/coder_art_metapass.mp4", selected: false},
+    {id: 2, imageUri: '/static/hoodie/v2.png', animationUri: "/static/movies/coder_metapass.mp4", selected: false},
+  ],
+]
+
 const ProductList = () => {
   const { contract } = useAppState();
-  const { state, dispatch } = useContext(Context)
-  const [products, productDispatch] = useReducer(productReducer, []);
+  const { state, dispatch, products, productDispatch } = useContext(Context)
+  // const [products, productDispatch] = useReducer(productReducer, []);1
   const [loading, setLoading] = useState(true);
 
   let _products = [];
@@ -53,11 +72,14 @@ const ProductList = () => {
           // contractType: item.contractType,
           sale: item.sale,
           // uri: item.url,
-          mediaUrl: "/movies/" + uri[item.id],
+          mediaUrl: "/static/movies/" + uri[item.id],
           description: description[item.id],
-          type: item.name.toUpperCase() === 'CYBER EAU DE PARFUM' ? 2 : 1,
+          // type: item.name.toUpperCase() === 'CYBER EAU DE PARFUM' ? 2 : 1,
+          type: item.name.toUpperCase() === 'CYBER EDP' ? 2 : 1,
+          styles: styles[key],
+          selectedStyle: 0,
         };
-        // console.log(newItem)
+
         productDispatch({ type: "ADD_PRODUCT", payload: newItem });
       });
     }
@@ -65,6 +87,7 @@ const ProductList = () => {
 
   useEffect(async () => {
     dispatch({type: 'SET_PAGE', payload: PRODUCT})
+    productDispatch({type: 'REMOVE_ALL', payload: ''})
     await loadProduct();
     setLoading(false);
   }, []);
