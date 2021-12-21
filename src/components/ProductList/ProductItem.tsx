@@ -31,6 +31,7 @@ import {
   Container,
   Heading,
   VStack,
+  HStack,
   Box,
   Button,
   Text,
@@ -39,9 +40,11 @@ import {
   useToast,
   SimpleGrid,
   keyframes,
+  Image,
 } from '@chakra-ui/react'
 import { isEmpty } from '../../utils'
 import env from '../../config'
+import parse from 'html-react-parser'
 
 const ProductItem = ({ product, setLoading }: {ProductProps, any}) => {
   const {
@@ -340,7 +343,9 @@ const ProductItem = ({ product, setLoading }: {ProductProps, any}) => {
               </Text>
             </Box>
             <Box h="100%">
-              <Text mb="39px">{product.description}</Text>
+              <Box mb="39px">
+                <Text>{parse(`${product.description}`)}</Text>
+              </Box>
             </Box>
             <SimpleGrid flexDirection="row">
               {isCyber ? (
@@ -400,6 +405,31 @@ const ProductItem = ({ product, setLoading }: {ProductProps, any}) => {
               ) : (
                 ''
               )}
+              {/* hoodie choose option */}
+              <Box>
+              <Text
+                color="#BABABA"
+                fontSize="16"
+                fontWeight="normal"
+                mb="32px"
+                textTransform="uppercase"
+              >
+                {/* TODO fix - for each product */}
+                Colour Name:
+                <Text as="b" ml="8px">
+                  Minamilistic
+                </Text>
+              </Text>
+              <HStack spacing="18px" mb="39px">
+                <Box w="80px" h="80px" border="1px solid white">
+                  <Image src="/static/hoodie/v1.png" alt="" />
+                </Box>
+                <Box w="80px" h="80px" border="1px solid white">
+                  <Image src="/static/hoodie/v2.png" alt="" />
+                </Box>
+              </HStack>
+            </Box>
+            {/* end of hoodie choose option */}
               <Box w="100%">
                 <Text
                   textTransform="uppercase"

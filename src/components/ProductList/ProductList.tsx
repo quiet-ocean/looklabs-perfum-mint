@@ -14,17 +14,20 @@ dotenv.config();
 
 const uri = [
   'cyber_grid.mov',
-  'hoodie_grid.mp4',
-  'card_green_grid.mp4',
-  'passcard_grid.mp4',
-  'card_green_grid.mp4'
+  'hoodie_v1.mov',
+  'eight_fashion_metapass.mov',
+  'coder_art_metapass.mp4',
 ]
 
 const description = [
-  ['Diam augue auctor aliquet tortor dui proin purus, amet. Ut pellentesque sem praesent cras adipiscing risus pellentesque non id. Risus sed vitae nisi sit. Learn more'],
-  ['Diam augue auctor aliquet tortor dui proin purus, amet. Ut pellentesque sem praesent cras adipiscing risus pellentesque non id. Risus sed vitae nisi sit. Learn more'],
-  ['Diam augue auctor aliquet tortor dui proin purus, amet. Ut pellentesque sem praesent cras adipiscing risus pellentesque non id. Risus sed vitae nisi sit. Learn more'],
-  ['Diam augue auctor aliquet tortor dui proin purus, amet. Ut pellentesque sem praesent cras adipiscing risus pellentesque non id. Risus sed vitae nisi sit. Learn more'],
+  [
+    '<p>Cyber Eau de Parfume is the real taste of luxury in. Each Cyber comes with the digitalised version of the scent. The label is recoreded and customed on the blockchain. Each physical is matching the blockchain one.</p>',
+  ],
+  [
+    '<h2>Includes LOOK LABS propreiatry Metalight™ technilogy. Lightening in the dark, wireless chargable. Recycable OLED lights.</h2>',
+  ],
+  ['<h2>Hello, World!</h2>'],
+  ['<h2>1x free AR mint</h2>'],
 ]
 
 const ProductList = () => {
@@ -52,7 +55,7 @@ const ProductList = () => {
           // uri: item.url,
           mediaUrl: "/movies/" + uri[item.id],
           description: description[item.id],
-          type: item.name.toLowerCase() === 'cyber edp' ? 2 : 1,
+          type: item.name.toUpperCase() === 'CYBER EAU DE PARFUM' ? 2 : 1,
         };
         // console.log(newItem)
         productDispatch({ type: "ADD_PRODUCT", payload: newItem });
