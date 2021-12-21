@@ -7,12 +7,25 @@ import {
     Flex,
     Box,
     Text,
+    Heading,
     Button,
+    Progress,
+    useToast,
     Spinner,
 } from '@chakra-ui/react'
+import { TextInput, AutoCompleteField } from '../../components'
 
 import { useAppState, Context } from '../../state'
 
+const countries = [
+    { value: "ghana", label: "Ghana" },
+    { value: "nigeria", label: "Nigeria" },
+    { value: "kenya", label: "Kenya" },
+    { value: "southAfrica", label: "South Africa" },
+    { value: "unitedStates", label: "United States" },
+    { value: "canada", label: "Canada" },
+    { value: "germany", label: "Germany" }
+]
 
 type ReceiptProps = {confirmations: number, tokenId: number}
 const Checkout = () => {
@@ -20,12 +33,15 @@ const Checkout = () => {
     const CHECKOUT = 0
     const PROCEEDING = 1
     const CONFIRMED = 2
+
+    const MIN_CONFIRMATIONS = 10
+
     const { state, dispatch } = useContext(Context)
-    const { transaction, setCyberName } = useAppState()
+    const { transaction, setTransaction, cyberName, setCyberName } = useAppState()
     const history = useHistory()
     const subtitle = ['checkout','transction processing...', 'transaction confirmed']
     const [status, setStatus] = useState(1) // status - checkout, processing, confirmed
-    const [time] = useState('')
+    const [time, setTime] = useState('')
     const [loading, setLoading] = useState<boolean>(false)
     const [fee, setFee] = useState<string>('0')
 
@@ -38,17 +54,24 @@ const Checkout = () => {
                 let receipt = await transaction.wait()
 
                 let hexId = receipt.logs[0].topics[3]
+                // console.log(BigNumber.from(hexId).toNumber())
                 let id = parseInt(hexId)
+                console.log(id, cyberName)
+                console.log('receipt', receipt)
                 setFee(utils.formatEther(receipt.gasUsed.mul(transaction.maxFeePerGas.add(transaction.maxPriorityFeePerGas))))
                 let result = { confirmations: receipt.confirmations, tokenId: id }
                 return result
             }
             setTimeout(async () => {
                 let result: ReceiptProps = await getTransactionConfirmations()
+                console.log('get formations function result ', result)
+                console.log('current state ', state)
                 if(result.confirmations > 0) {
                     if(result.tokenId) {
                         if(state.cyberProductId > -1) {
-                            // let params = {productId: state.cyberProductId, tokenId: result.tokenId, cyberLabel: cyberName, address: '' }
+                            let params = {productId: state.cyberProductId, tokenId: result.tokenId, cyberLabel: cyberName, address: '' }
+                            console.log(params)
+                            
                         } else {
                             console.log('cyber label not exist')
                         }

@@ -1,47 +1,54 @@
 // @ts-nocheck
-import { useReducer, useEffect, useState, useContext } from "react";
-import { productReducer } from "../../reducers";
-import { Context, useAppState } from "../../state";
-import { api } from "../../utils/api";
-import * as dotenv from "dotenv";
-import { TextSlider } from "../TextSlider";
+import { useReducer, useEffect, useState, useContext } from 'react'
+import { tokenReducer, productReducer } from '../../reducers'
+import { Context, useAppState } from '../../state'
+import { api } from '../../utils/api'
+import * as dotenv from 'dotenv'
+import { TextSlider } from '../TextSlider'
+import { Cart } from '../Cart'
 import { ProductProps } from '../../types'
-import { ProductItem } from "./ProductItem";
-import { Container, Flex, Box, Text } from "@chakra-ui/react";
-import { PRODUCT } from "../../state/constants";
+import { ProductItem } from './ProductItem'
+import { Container, Flex, Box, Text } from '@chakra-ui/react'
+import { PRODUCT } from '../../state/constants'
 
-dotenv.config();
+dotenv.config()
 
 const uri = [
   'cyber_grid.mov',
-  'hoodie_grid.mp4',
-  'card_green_grid.mp4',
-  'passcard_grid.mp4',
-  'card_green_grid.mp4'
+  'hoodie_v1.mov',
+  'eight_fashion_metapass.mov',
+  'coder_art_metapass.mp4',
 ]
 
 const description = [
-  ['Diam augue auctor aliquet tortor dui proin purus, amet. Ut pellentesque sem praesent cras adipiscing risus pellentesque non id. Risus sed vitae nisi sit. Learn more'],
-  ['Diam augue auctor aliquet tortor dui proin purus, amet. Ut pellentesque sem praesent cras adipiscing risus pellentesque non id. Risus sed vitae nisi sit. Learn more'],
-  ['Diam augue auctor aliquet tortor dui proin purus, amet. Ut pellentesque sem praesent cras adipiscing risus pellentesque non id. Risus sed vitae nisi sit. Learn more'],
-  ['Diam augue auctor aliquet tortor dui proin purus, amet. Ut pellentesque sem praesent cras adipiscing risus pellentesque non id. Risus sed vitae nisi sit. Learn more'],
+  [
+    '<p>Cyber Eau de Parfume is the real taste of luxury in. Each Cyber comes with the digitalised version of the scent. The label is recoreded and customed on the blockchain. Each physical is matching the blockchain one.</p>',
+  ],
+  [
+    '<h2>Includes LOOK LABS propreiatry Metalight™ technilogy. Lightening in the dark, wireless chargable. Recycable OLED lights.</h2>',
+  ],
+  ['<h2>Hello, World!</h2>'],
+  ['<h2>1x free AR mint</h2>'],
 ]
 
 const ProductList = () => {
-  const { contract } = useAppState();
+  const { contract } = useAppState()
   const { state, dispatch } = useContext(Context)
-  const [products, productDispatch] = useReducer(productReducer, []);
-  const [loading, setLoading] = useState(true);
+  const [products, productDispatch] = useReducer(productReducer, [])
+  const [loading, setLoading] = useState(true)
 
-  let _products = [];
+  let _products = []
 
   let loadProduct = async () => {
-    _products = await contract.getProducts();
+    _products = await contract.getProducts()
+
+    console.log('_products', _products)
 
     if (_products && _products.length) {
       _products.forEach(async (item, key) => {
         // TEST PRODUCT, TO REMOVE WHEN THE DB IS WORKING
         // const response = await api.get(`/product/${item.id}`)
+        // let newItem: TokenProps = {
         let newItem: ProductProps = {
           id: item.id,
           name: item.name,
@@ -50,77 +57,93 @@ const ProductList = () => {
           // contractType: item.contractType,
           sale: item.sale,
           // uri: item.url,
-          mediaUrl: "/movies/" + uri[item.id],
+          mediaUrl: '/movies/' + uri[item.id],
           description: description[item.id],
-          type: item.name.toLowerCase() === 'cyber edp' ? 2 : 1,
-        };
-        // console.log(newItem)
-        productDispatch({ type: "ADD_PRODUCT", payload: newItem });
-      });
+          type: item.name.toUpperCase() === 'CYBER EAU DE PARFUM' ? 2 : 1,
+        }
+        console.log(newItem)
+        productDispatch({ type: 'ADD_PRODUCT', payload: newItem })
+      })
     }
-  };
+  }
 
   useEffect(async () => {
-    dispatch({type: 'SET_PAGE', payload: PRODUCT})
-    await loadProduct();
-    setLoading(false);
-  }, []);
+    console.log('product lists are ', products)
+  }, [products])
+  useEffect(async () => {
+    dispatch({ type: 'SET_NAV_TITLE', payload: PRODUCT })
+    await loadProduct()
+    // console.log('products are ', products)
+    setLoading(false)
+    console.log(state)
+  }, [])
 
   return (
-    <Flex color="white" direction={{ base: "column", md: "column" }}>
+    <Flex color="white" direction={{ base: 'column', md: 'column' }}>
       {/* <Cart product={null}
         quantity="100" setLoading={setLoading}>
       </Cart> */}
-      {/*products?.length === undefined || products?.length === 0 ? <Text textAlign='center' marginTop='10%'>No Product</Text> : null*/}
-      {
-        products?.map((item, key) => {
-          if(item === undefined || item === '') return ''
-          if (key === 0) {
-            return (
-              <Box key={key}>
-                <Container maxW="100%" centerContent>
-                  <ProductItem key={key} dataKey={key} product={item} setLoading={setLoading} />
-                </Container>
-                <TextSlider reverse={true} variant={1} />
-              </Box>
-            );
-          } else if (key === 1) {
-            return (
-              <Box key={key}>
-                <Container
-                  maxW="100%"
-                  boderbottom={{ base: "1px solid whtie", md: "none" }}
-                  centerContent
-                >
-                  <ProductItem key={key} dataKey={key} product={item} setLoading={setLoading}/>
-                </Container>
-                <TextSlider
-                  reverse={false}
-                  variant={2}
-                  display={{ base: "none", md: "block" }}
+      {products?.map((item, key) => {
+        if (item === undefined || item === '') return ''
+        if (key === 0) {
+          return (
+            <Box key={key}>
+              <Container maxW="100%" centerContent>
+                <ProductItem
+                  key={key}
+                  dataKey={key}
+                  product={item}
+                  setLoading={setLoading}
                 />
-              </Box>
-            );
-          } else {
-            return (
-              <Box key={key}>
-                <Container maxW="100%" centerContent>
-                  <ProductItem key={key} dataKey={key} product={item} setLoading={setLoading}/>
-                </Container>
-                {/* Dividier. ToDo - to be exported in component */}
-                {/* skip border if it's last product not to overlap footer */}
-                {key === products.length - 1 ? (
-                  ""
-                ) : (
-                  <Box border="1px solid white"></Box>
-                )}
-              </Box>
-            );
-          }
-        })
-      }
-      {loading
-        ?
+              </Container>
+              <TextSlider reverse={true} variant={1} />
+            </Box>
+          )
+        } else if (key === 1) {
+          return (
+            <Box key={key}>
+              <Container
+                maxW="100%"
+                boderbottom={{ base: '1px solid whtie', md: 'none' }}
+                centerContent
+              >
+                <ProductItem
+                  key={key}
+                  dataKey={key}
+                  product={item}
+                  setLoading={setLoading}
+                />
+              </Container>
+              <TextSlider
+                reverse={false}
+                variant={2}
+                display={{ base: 'none', md: 'block' }}
+              />
+            </Box>
+          )
+        } else {
+          return (
+            <Box key={key}>
+              <Container maxW="100%" centerContent>
+                <ProductItem
+                  key={key}
+                  dataKey={key}
+                  product={item}
+                  setLoading={setLoading}
+                />
+              </Container>
+              {/* Dividier. ToDo - to be exported in component */}
+              {/* skip border if it's last product not to overlap footer */}
+              {key === products.length - 1 ? (
+                ''
+              ) : (
+                <Box border="1px solid white"></Box>
+              )}
+            </Box>
+          )
+        }
+      })}
+      {loading ? (
         <Box
           style={{
             position: 'fixed',
@@ -132,13 +155,21 @@ const ProductList = () => {
             opacity: '0.5',
           }}
         >
-          <Text color='white' zIndex={'2'} fontSize='22px' textAlign='center' marginTop='30%'>Loading...</Text>
+          <Text
+            color="white"
+            zIndex={'2'}
+            fontSize="22px"
+            textAlign="center"
+            marginTop="20%"
+          >
+            Loading...
+          </Text>
         </Box>
-        :
+      ) : (
         ''
-      }
+      )}
     </Flex>
-  );
-};
+  )
+}
 
-export { ProductList };
+export { ProductList }

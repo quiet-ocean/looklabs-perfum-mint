@@ -10,7 +10,7 @@ import {
   Spacer,
   Flex
 } from "@chakra-ui/react";
-import { CART, PRODUCT, WHITEPAPER } from "../../state/constants";
+import { CART, PRODUCT } from "../../state/constants";
 
 const Navbar: React.FC = () => {
 
@@ -29,7 +29,7 @@ const Navbar: React.FC = () => {
           <Box>
             <Link to="/token">
               <Text
-                color={state.currentPage === PRODUCT ? "white" : "gray"}
+                color="white"
                 fontSize={{ base: "16px", lg: "24px" }}
                 fontWeight="600"
               >
@@ -50,7 +50,7 @@ const Navbar: React.FC = () => {
           <Box>
             <Link to="/whitepaper">
               <Text
-                color={state.currentPage === WHITEPAPER ? "white" : "gray"}
+                color="gray"
                 fontSize={{ base: "16px", lg: "24px" }}
                 _hover={{
                   color: "white",
@@ -64,7 +64,7 @@ const Navbar: React.FC = () => {
 
         <Spacer />
         <Box>
-          { (state.currentPage === PRODUCT || state.currentPage === CART )
+          { (state.nav === PRODUCT || state.nav === CART )
             ?
             <>
               <Link to="/cart">
@@ -75,7 +75,7 @@ const Navbar: React.FC = () => {
                     w={{ base: "150px", lg: "48px" }}
                     h={{ base: "32px", lg: "32px" }}
                   ></Image>
-                  <Text color={state.currentPage === CART ? "white" : "gray"}
+                  <Text color="white"
                     fontSize={{ base: "16px", lg: "24px" }}
                     fontWeight="600">{state.ids.length}&nbsp;{state.ids.length == 1 ? 'ITEM' : 'ITEMS'}</Text>
                 </HStack>

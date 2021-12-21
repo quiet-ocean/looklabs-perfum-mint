@@ -30,6 +30,7 @@ import { api } from '../../utils/api'
 import {
   Container,
   Heading,
+  HStack,
   VStack,
   Box,
   Button,
@@ -39,11 +40,14 @@ import {
   useToast,
   SimpleGrid,
   keyframes,
+  Image,
+  useForceUpdate,
 } from '@chakra-ui/react'
 import { isEmpty } from '../../utils'
 import env from '../../config'
+import parse from 'html-react-parser'
 
-const ProductItem = ({ product, setLoading }: {ProductProps, any}) => {
+const ProductItem = ({ product, setLoading }) => {
   const {
     boughtTokens,
     cyberName,
@@ -102,10 +106,25 @@ const ProductItem = ({ product, setLoading }: {ProductProps, any}) => {
     const ADDED = 1
     const MINTED = 2
     if (isEmpty(label)) {
-      
+      // toast({
+      //   title: 'Warning.',
+      //   description: "Label cannot be empty.",
+      //   position: 'top-right',
+      //   status: 'warning',
+      //   duration: 5000,
+      //   isClosable: true,
+      // })
+      // setLoading(false)
       console.log('label is empty')
       return
     }
+    console.log('add label ', label)
+    // const response = await api.post('/cyber', {
+    //   label: label,
+    //   address: user?.address,
+    //   productId: id,
+    //   type: ADDED,
+    // })
     let data = {
       name: label,
       address: user?.address,
@@ -118,7 +137,7 @@ const ProductItem = ({ product, setLoading }: {ProductProps, any}) => {
     return response.data
   }
   let add2Cart = async (product, quantity) => {
-
+    console.log('add a prodcut to cart list')
     if (quantity > 0) {
       const item: CartItemProps = { product: product, quantity: quantity }
       if (product.type === 2) {
@@ -154,6 +173,14 @@ const ProductItem = ({ product, setLoading }: {ProductProps, any}) => {
           let productId = parseInt(product.id)
           let success = await addLabel(cyberName, productId)
           setLoading(false)
+          // toast({
+          //   title: 'Notice.',
+          //   description: "Label added.",
+          //   position: 'top-right',
+          //   status: 'info',
+          //   duration: 5000,
+          //   isClosable: true,
+          // })
         }
       }
 
@@ -163,6 +190,7 @@ const ProductItem = ({ product, setLoading }: {ProductProps, any}) => {
       })
       let flag = await promise
       if (flag) {
+        // alert('add product to cart')
         promise.then((value) => {
           toast({
             status: 'success',
@@ -188,7 +216,34 @@ const ProductItem = ({ product, setLoading }: {ProductProps, any}) => {
           })
         })
       }
-
+      // let promise = new Promise(resolve => {
+      //   dispatch({ type: "ADD_PRODUCT", payload: item })
+      //   resolve(true)
+      // })
+      // promise.then(value => {
+      //   toast({
+      //     status: "success",
+      //     duration: 5000,
+      //     position: "top-right",
+      //     isClosable: true,
+      //     render: (props) => {
+      //       return (
+      //         <CartNotification
+      //           product={product}
+      //           quantity={count}
+      //           close={() => {
+      //             toast.closeAll();
+      //           }}
+      //           checkout={checkout}
+      //           state={state}
+      //           dispatch={dispatch}
+      //           history = {history}
+      //           setLoading = {setLoading}
+      //         />
+      //       );
+      //     },
+      //   });
+      // })
     }
   }
 
@@ -202,7 +257,26 @@ const ProductItem = ({ product, setLoading }: {ProductProps, any}) => {
       setCount(count - 1)
     }
   }
-  
+  // const checkoutTransfer = async () =>{
+  //   console.log(state)
+  //   checkout(state, toast, history, dispatch)
+  // }
+  // transaction
+
+  // const { setTransaction, setUser, getSupply, getCyberId, mintArt } =
+  //   useAppState(
+  //     useCallback(
+  //       ({ setTransaction, setUser, getSupply, getCyberId, mintArt }) => ({
+  //         setTransaction,
+  //         setUser,
+  //         getSupply,
+  //         getCyberId,
+  //         mintArt,
+  //       }),
+  //       []
+  //     )
+  //   );
+
   function changeCyberName(e) {
     labelExist(true)
     const val = e.target.value
@@ -274,8 +348,12 @@ const ProductItem = ({ product, setLoading }: {ProductProps, any}) => {
                   paddingTop: '30px',
                 }}
               >
-                <PerspectiveCamera makeDefault position={[100, 130, -125]} />
-                <OrbitControls target={[0, 50, 0]} />
+                <PerspectiveCamera makeDefault position={[100, 100, 150]} />
+                <OrbitControls
+                  target={[0, 50, 0]}
+                  autoRotate={true}
+                  autoRotateSpeed={10}
+                />
                 <Suspense fallback={<Loader />}>
                   <Model name={{ cyberName }} position={[0, 0, 0]} zoom={0} />
                   <Environment preset="city" />
@@ -283,7 +361,6 @@ const ProductItem = ({ product, setLoading }: {ProductProps, any}) => {
               </Canvas>
             ) : (
               <ReactPlayer
-                // url={product.media}
                 url={`/static/${product.mediaUrl}`}
                 loop={true}
                 playing={true}
@@ -340,7 +417,9 @@ const ProductItem = ({ product, setLoading }: {ProductProps, any}) => {
               </Text>
             </Box>
             <Box h="100%">
-              <Text mb="39px">{product.description}</Text>
+              <Box mb="39px">
+                <Text>{parse(`${product.description}`)}</Text>
+              </Box>
             </Box>
             <SimpleGrid flexDirection="row">
               {isCyber ? (
@@ -400,6 +479,31 @@ const ProductItem = ({ product, setLoading }: {ProductProps, any}) => {
               ) : (
                 ''
               )}
+              {/* hoodie choose option */}
+              <Box>
+                <Text
+                  color="#BABABA"
+                  fontSize="16"
+                  fontWeight="normal"
+                  mb="32px"
+                  textTransform="uppercase"
+                >
+                  {/* TODO fix - for each product */}
+                  Colour Name:
+                  <Text as="b" ml="8px">
+                    Minamilistic
+                  </Text>
+                </Text>
+                <HStack spacing="18px" mb="39px">
+                  <Box w="80px" h="80px" border="1px solid white">
+                    <Image src="/static/hoodie/v1.png" alt="" />
+                  </Box>
+                  <Box w="80px" h="80px" border="1px solid white">
+                    <Image src="/static/hoodie/v2.png" alt="" />
+                  </Box>
+                </HStack>
+              </Box>
+              {/* end of hoodie choose option */}
               <Box w="100%">
                 <Text
                   textTransform="uppercase"
