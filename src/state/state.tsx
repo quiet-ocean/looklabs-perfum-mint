@@ -252,6 +252,7 @@ const useAppState = create<StateContext>((set, get) => ({
   },
 
   checkout: async (state, toast, history, dispatch, setLoading) => {
+    console.log(state.items)
     setLoading(true)
     const {
       contract,

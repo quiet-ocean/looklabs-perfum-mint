@@ -22,7 +22,7 @@ import {
 import Model from '../Voxel/Model'
 import { CartNotification } from '../CartNotification'
 // import axios from 'axios'
-import { CartItemProps, ProductProps } from '../../types'
+import { CartItemProps, ProductProps, StyleProps } from '../../types'
 import { Context } from '../../state'
 import { useAppState } from '../../state'
 import { api } from '../../utils/api'
@@ -68,7 +68,7 @@ const ProductItem = ({ product, setLoading }: {ProductProps, any}) => {
   const [input, setInput] = useState('')
   const [count, setCount] = useState(1)
   const toast = useToast()
-  const { state, dispatch } = useContext(Context)
+  const { state, dispatch, productDispatch } = useContext(Context)
   const [isCyber, setIsCyber] = useState(false)
   const [isHoodie, setIsHoodie] = useState(false)
 
@@ -85,11 +85,15 @@ const ProductItem = ({ product, setLoading }: {ProductProps, any}) => {
 
   useEffect(() => {
 
-    let _isCyber = product.type === 2 ? true : false
+    // if(product.type === 1) setIsCyber(true)
+    // if(product.type === 2) setIsHoodie(true)
+    let _isCyber = product.type === 1 ? true : false
+    let _isHoodie = product.type === 2 ? true : false
+
+    setIsHoodie(_isHoodie)
     setIsCyber(_isCyber)
 
-    let _isHoodie = product.id.eq(BigNumber.from('1')) ? true : false
-    setIsHoodie(_isHoodie)
+    console.log(product, isHoodie)
   }, [])
 
   useEffect(() => {
@@ -130,7 +134,7 @@ const ProductItem = ({ product, setLoading }: {ProductProps, any}) => {
 
     if (quantity > 0) {
       const item: CartItemProps = { product: product, quantity: quantity }
-      if (product.type === 2) {
+      if (isCyber) {
         if (cyberName === '' || cyberName === undefined || cyberName === null) {
           toast({
             title: 'Warning.',
@@ -292,8 +296,8 @@ const ProductItem = ({ product, setLoading }: {ProductProps, any}) => {
               </Canvas>
             ) : (
               <ReactPlayer
-                // url={product.media}
-                url={isHoodie ? hoodieAnimationUris[state.hoodieStyle] : product.mediaUrl}
+                url={product.mediaUrl}
+                // url={isHoodie ? hoodieAnimationUris[state.hoodieStyle] : product.mediaUrl}
                 loop={true}
                 playing={true}
                 muted={true}
@@ -413,7 +417,7 @@ const ProductItem = ({ product, setLoading }: {ProductProps, any}) => {
               )}
               {/* hoodie choose option */}
               { 
-                isHoodie
+                product.type === 2
                 ?
                 <Box>
                   <Text
@@ -430,12 +434,18 @@ const ProductItem = ({ product, setLoading }: {ProductProps, any}) => {
                     </Text>
                   </Text>
                   <HStack spacing="18px" mb="39px">
-                    <Box onClick={()=>{dispatch({type: 'SET_HOODIE_STYLE', payload: 'ver1'})}} w="80px" h="80px" border={state.hoodieStyle === 'ver1' ? "1px solid red" : "1px solid white"}>
-                      <Image src="/static/hoodie/v1.png" alt="" />
-                    </Box>
-                    <Box onClick={()=>{dispatch({type: 'SET_HOODIE_STYLE', payload: 'ver2'})}} w="80px" h="80px" border={state.hoodieStyle === 'ver2' ? "1px solid red" : "1px solid white"}>
-                      <Image src="/static/hoodie/v2.png" alt="" />
-                    </Box>
+                  {
+                    product.styles.map((style: StyleProps, key: number) => {
+                      return <Box
+                      key={key}
+                      onClick={()=>{productDispatch({type: 'CHANGE_STYLE', payload: {productId: product.id, style: style}})}}
+                      w="80px"
+                      h="80px"
+                      border={style.name === product.selectedStyle ? "1px solid red" : "1px solid white"}>
+                        <Image src={style.imageUri} alt="" />
+                      </Box>
+                    })
+                  }
                   </HStack>
                 </Box>
                 :
@@ -520,16 +530,11 @@ const ProductItem = ({ product, setLoading }: {ProductProps, any}) => {
               {boughtTokens && boughtTokens?.toNumber() < cyberSupply && (
                 <Box mt={{ base: '32px', md: '72px' }}>
                   <Button
-                    // bgGradient="linear(to-tr, #fd06b1, #ef313e, #cc672a, #a4a02e, #7dd632, #60ff35)"
                     background="linear-gradient(45deg, #fd06b1, #ef313e, #cc672a, #a4a02e, #7dd632, #60ff35)"
                     backgroundSize="150% 200%"
-                    // onClick={onBuyClick}
                     onClick={() => {
-                      // add2Cart(token, order.qty);
                       add2Cart(product, count)
                     }}
-                    // TODO disable cyber button if input is empty
-                    // disabled={!input.value}
                     outline="none"
                     p="45px"
                     animation={gradientAnimation}

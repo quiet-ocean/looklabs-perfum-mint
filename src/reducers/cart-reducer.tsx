@@ -46,11 +46,11 @@ const cartReducer = (state: CartProps = initialCartState, action: ActionProps): 
                 state.items.forEach((item: CartItemProps) => {
                     let _quantity: number = 0
                     let _product: ProductProps = item.product
-                    if(item.product.id.eq(id)) {
+                    if(item.product.id.eq(id) && item.product.selectedStyle === product.selectedStyle) {
                         exist = true
                         _quantity = addQuantity + item.quantity
                         _quantity = min([_quantity, item.product.qty, env.MAX_QTY])
-                        _product = product
+                        // _product = product
                     } else {
                         _quantity = item.quantity
                     }

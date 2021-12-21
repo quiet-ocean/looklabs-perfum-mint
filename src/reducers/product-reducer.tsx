@@ -1,5 +1,5 @@
 import { initialProductsState } from '../state/constants';
-import { ActionProps, ProductProps, ProductListProps } from '../types'
+import { ActionProps, ProductProps, ProductListProps, StyleProps } from '../types'
 import { BigNumber } from 'ethers'
 
 const productReducer = (state: ProductListProps = initialProductsState, action: ActionProps): ProductListProps => {
@@ -11,7 +11,17 @@ const productReducer = (state: ProductListProps = initialProductsState, action: 
         case 'MINT':
             return state
         case 'CHANGE_STYLE':
-            return state
+            let productId: BigNumber = payload?.productId
+            let style: StyleProps = payload?.style
+            return {
+                ...state,
+                products: state.products.map((product: ProductProps, key: number) => {
+                    if(product.id.eq(productId)) {
+                        return { ...product, selectedStyle: style.name, mediaUrl: style.animationUri }
+                    }
+                    return product
+                })
+            }
         case 'SET_LOADED':
             let loaded: boolean = payload
             return { ...state, loaded: loaded }

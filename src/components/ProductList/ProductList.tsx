@@ -30,11 +30,16 @@ const description = [
   ['<h2>1x free AR mint</h2>'],
 ]
 
-const styles: StyleProps[][] = [
+const data = [
+  { type: 1, description: description[0] },
+  { type: 2, description: description[1] },
+  { type: 0, description: description[2] },
+  { type: 0, description: description[3] },
+]
 
-  {id: 1, imageUri: '/static/hoodie/v1.png', animationUri: "/static/movies/hoodie_v1.mov", selected: false},
-  {id: 2, imageUri: '/static/hoodie/v2.png', animationUri: "/static/movies/hoodie_v2.mov", selected: false},
-
+const styles: StyleProps[]= [
+  {id: 1, name: 'ver1', imageUri: '/static/hoodie/v1.png', animationUri: "/static/movies/hoodie_v1.mov", selected: false},
+  {id: 2, name: 'ver2', imageUri: '/static/hoodie/v2.png', animationUri: "/static/movies/hoodie_v2.mov", selected: false},
 ]
 
 const ProductList = () => {
@@ -53,6 +58,7 @@ const ProductList = () => {
       _products.forEach(async (item, key) => {
         // TEST PRODUCT, TO REMOVE WHEN THE DB IS WORKING
         // const response = await api.get(`/product/${item.id}`)
+                
         let newItem: ProductProps = {
           id: item.id,
           name: item.name,
@@ -62,9 +68,10 @@ const ProductList = () => {
           sale: item.sale,
           // uri: item.url,
           mediaUrl: "/static/movies/" + uri[item.id],
-          description: description[item.id],
-          // type: item.name.toUpperCase() === 'CYBER EAU DE PARFUM' ? 2 : 1,
-          type: item.name.toUpperCase() === 'CYBER EDP' ? 2 : 1,
+          description: data[item.id]['description'],
+          type: data[item.id]['type'],
+          selectedStyle: data[item.id]['type'] === 2 ? 'ver1' : '',
+          styles: data[item.id]['type'] === 2 ? styles : []
         };
 
         productDispatch({ type: "ADD_PRODUCT", payload: newItem });
@@ -77,7 +84,7 @@ const ProductList = () => {
     // productDispatch({type: 'REMOVE_ALL', payload: ''})
     if(!productState.loaded) {
       await loadProduct();
-      productDispatch({type: 'SET_LOADED', payload: true})
+      // productDispatch({type: 'SET_LOADED', payload: true})
       
     }
     setLoading(false);   

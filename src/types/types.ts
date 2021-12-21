@@ -37,6 +37,7 @@ export type UserProps = {
 // };
 export type StyleProps = {
   id: number;
+  name: string;
   imageUri: string;
   animationUri: string;
   selected: boolean;
@@ -57,6 +58,9 @@ export type ProductProps = {
   qty: number;
   description: string;
   sale: boolean;
+
+  selectedStyle: string;
+  styles: StyleProps[]
 };
 export type ProductListProps = {
   loaded: boolean;
