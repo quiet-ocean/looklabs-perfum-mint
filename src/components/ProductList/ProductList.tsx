@@ -63,7 +63,7 @@ const ProductList = () => {
   };
 
   useEffect(async () => {
-    dispatch({type: 'SET_NAV_TITLE', payload: PRODUCT})
+    dispatch({type: 'SET_PAGE', payload: PRODUCT})
     await loadProduct();
     setLoading(false);
   }, []);
