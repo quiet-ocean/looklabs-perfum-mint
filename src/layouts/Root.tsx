@@ -6,12 +6,21 @@ import { Header, Footer, Navbar } from "../components";
 
 import { VStack, Box } from "@chakra-ui/react";
 import { AnimatedSwitch } from 'react-router-transition'
-import ScrollToTop from 'react-scroll-to-top'
 
 function AutoScrollToTop({ history }: { history: any }) {
     useEffect(() => {
       const unlisten = history.listen(() => {
-        window.scrollTo(0, 0);
+        //   setTimeout(() => {
+        //     window.scrollTo({top: 0, behavior: 'smooth'})
+        //   }, 1000)
+        const scrollToTop = () => {
+            const c = document.documentElement.scrollTop || document.body.scrollTop;
+            if (c > 0) {
+                window.requestAnimationFrame(scrollToTop);
+                window.scrollTo(0, c - c / 8);
+            }
+        };
+        scrollToTop();
       });
       return () => {
         unlisten();

@@ -1,6 +1,9 @@
-import { Box, Heading, Grid } from 'theme-ui'
+// import { Box, Heading, Grid } from 'theme-ui'
 // import { Token } from '../components'
 // import { useAppState } from '../state'
+import {
+  Heading, Grid, Box,
+} from '@chakra-ui/react'
 
 export type ProfileProps = {}
 
