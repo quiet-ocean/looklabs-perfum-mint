@@ -11,6 +11,7 @@ import { Web3ReactProvider } from "@web3-react/core";
 import { Web3Provider } from "@ethersproject/providers";
 // import { Switch, Route } from "react-router-dom";
 
+
 import { ChakraProvider } from "@chakra-ui/react";
 import { Store } from "./state";
 import { Theme } from "./theme";

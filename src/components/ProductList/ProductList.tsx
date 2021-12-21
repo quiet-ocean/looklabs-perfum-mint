@@ -38,8 +38,6 @@ const ProductList = () => {
   let loadProduct = async () => {
     _products = await contract.getProducts();
 
-    console.log('_products', _products)
-
     if (_products && _products.length) {
       _products.forEach(async (item, key) => {
         // TEST PRODUCT, TO REMOVE WHEN THE DB IS WORKING
@@ -73,6 +71,7 @@ const ProductList = () => {
       {/* <Cart product={null}
         quantity="100" setLoading={setLoading}>
       </Cart> */}
+      {products?.length === undefined || products?.length === 0 ? <Text textAlign='center' marginTop='10%'>No Product</Text> : null}
       {
         products?.map((item, key) => {
           if(item === undefined || item === '') return ''

@@ -41,7 +41,7 @@ const Cart = () => {
         dispatch({ type: 'SET_DISCOUNT_AMOUNT', payload: dstate.total })
       }
       else {
-        console.log('discount is ', dstate.discount)
+        // console.log('discount is ', dstate.discount)
         dispatch({ type: 'SET_DISCOUNT_AMOUNT', payload: BigNumber.from('0') })
       }
     }

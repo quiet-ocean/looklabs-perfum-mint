@@ -118,7 +118,7 @@ const ProductItem = ({ product, setLoading }: {ProductProps, any}) => {
     return response.data
   }
   let add2Cart = async (product, quantity) => {
-    console.log('add a prodcut to cart list')
+
     if (quantity > 0) {
       const item: CartItemProps = { product: product, quantity: quantity }
       if (product.type === 2) {

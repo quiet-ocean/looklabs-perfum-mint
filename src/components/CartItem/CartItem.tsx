@@ -20,19 +20,6 @@ const CartItem = (props: any) => {
   const { dispatch } = useContext(Context)
   const { cyberName } = useAppState()
 
-  useEffect(() => {
-    if (product.type === 2) {
-      console.log('product is cyber')
-    } else {
-      console.log('product is not cyber')
-    }
-  }, [])
-  let addProduct = () => {
-    dispatch({
-      type: 'ADD_PRODUCT',
-      payload: { product: product, quantity: 1 },
-    })
-  }
   return (
     <Box
       borderBottom="1px solid white"
@@ -178,7 +165,12 @@ const CartItem = (props: any) => {
                       p="10px"
                       h="80px"
                       // onClick={plusQty}
-                      onClick={() => addProduct()}
+                      onClick={() => {
+                        dispatch({
+                          type: 'ADD_PRODUCT',
+                          payload: { product: product, quantity: 1 },
+                        })
+                      }}
                       cursor={'pointer'}
                       userSelect="none"
                     >
