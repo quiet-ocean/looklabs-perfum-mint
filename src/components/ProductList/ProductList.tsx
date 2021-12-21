@@ -84,7 +84,7 @@ const ProductList = () => {
     // productDispatch({type: 'REMOVE_ALL', payload: ''})
     if(!productState.loaded) {
       await loadProduct();
-      // productDispatch({type: 'SET_LOADED', payload: true})
+      productDispatch({type: 'SET_LOADED', payload: true})
       
     }
     setLoading(false);   
