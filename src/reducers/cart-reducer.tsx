@@ -113,8 +113,8 @@ const cartReducer = (state: CartProps = initialCartState, action: ActionProps): 
         case 'REMOVE_PRODUCT':
             return state
 
-        case 'SET_NAV_TITLE':
-            let newState = {...state, nav: payload}
+        case 'SET_PAGE':
+            let newState = {...state, currentPage: payload}
             return newState
         case 'DELETE_PRODUCT':
             let total: BigNumber = state.total;

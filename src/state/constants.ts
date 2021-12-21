@@ -1,13 +1,16 @@
 import { CartProps } from '../types'
 import { BigNumber } from 'ethers'
 
+export const PRODUCT = 'product'
+export const CART = 'cart'
+export const WHITEPAPER = 'whitepaper'
+export const LOGIN = 'login'
+
 export const initialCartState: CartProps = {
-    nav: '',
+    currentPage: LOGIN,
     total: BigNumber.from("0"),
     items: [],
     ids: [],
     discount: BigNumber.from("0"),
     cyberProductId: -1,
 }
-export const PRODUCT = 'product'
-export const CART = 'cart'

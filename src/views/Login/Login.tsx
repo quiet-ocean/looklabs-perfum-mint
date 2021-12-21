@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import { AbstractConnector } from "@web3-react/abstract-connector";
 import { useWeb3React } from "@web3-react/core";
 import { ConnectorNames, connectorsByName } from "../../connectors";
@@ -62,7 +63,9 @@ const Login = () => {
   const { activatingConnector, setActivatingConnector } = useAppState();
   const { activate } = useWeb3React();
   // const terminal = useRef<HTMLDivElement>(null)
-
+  useEffect(() => {
+    
+  }, [])
   return (
     <>
       <Box w="full" color="white" fontFamily="Cyber Console" height="full">

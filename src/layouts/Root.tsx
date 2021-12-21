@@ -1,4 +1,5 @@
-import { Switch, Route } from "react-router-dom";
+import { useEffect } from 'react'
+import { Switch, Route, withRouter } from "react-router-dom";
 import { Connect } from "./";
 import { Marketplace, Cart, Checkout, About, Whitepaper } from "../views";
 import { Header, Footer, Navbar } from "../components";
@@ -6,16 +7,40 @@ import { Header, Footer, Navbar } from "../components";
 import { VStack, Box } from "@chakra-ui/react";
 import { AnimatedSwitch } from 'react-router-transition'
 
+function AutoScrollToTop({ history }: { history: any }) {
+    useEffect(() => {
+      const unlisten = history.listen(() => {
+        //   setTimeout(() => {
+        //     window.scrollTo({top: 0, behavior: 'smooth'})
+        //   }, 1000)
+        const scrollToTop = () => {
+            const c = document.documentElement.scrollTop || document.body.scrollTop;
+            if (c > 0) {
+                window.requestAnimationFrame(scrollToTop);
+                window.scrollTo(0, c - c / 8);
+            }
+        };
+        scrollToTop();
+      });
+      return () => {
+        unlisten();
+      }
+    }, []);
+  
+    return (null);
+  }
+
+  const ST = withRouter(AutoScrollToTop)
+
 const Root: React.FC = () => {
     return (
-        <>
+        <div style={{height: '100vh'}}>
         <VStack
             align="stretch"
-            justify={"space-between"}
-            h="100%"
-            
+            justify={"space-between"}            
             spacing={"0px"}
-            overflowY="auto"
+            // overflowY="auto"
+            h='100%'
             css={{
             "&::-webkit-scrollbar": {
                 width: "6px",
@@ -36,10 +61,13 @@ const Root: React.FC = () => {
                 <Navbar />
             </Box>
             <Box
+            
             flexGrow={10}
+            
             fontFamily='-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji"'
             >
                 <Connect>
+                    <ST />
                     <AnimatedSwitch
                         atEnter={{ opacity: 0 }}
                         atLeave={{ opacity: 0 }}
@@ -60,7 +88,7 @@ const Root: React.FC = () => {
             </Box>
             
         </VStack>
-        </>
+        </div>
     )
 }
 
