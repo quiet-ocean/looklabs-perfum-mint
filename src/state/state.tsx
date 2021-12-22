@@ -3,6 +3,7 @@ import create from 'zustand'
 import { BigNumber, Contract, utils, providers } from 'ethers'
 import axios from 'axios'
 import { ContractPropsDetails, UserProps, CartItemProps } from '../types/types'
+import { TYPE_CYBER } from './constants'
 
 interface DiscountProps {
   discount: boolean
@@ -301,7 +302,7 @@ const useAppState = create<StateContext>((set, get) => ({
           productIds.push(item.product.id)
           hoodieStyles.push(item.product.selectedStyle)
 
-          if (item.product.type === 2) {
+          if (item.product.type === TYPE_CYBER) {
             console.log('cyber label is ', cyberName)
             cyberLabel = cyberName?.toUpperCase()
             cyberId = parseInt(item.product.id)
@@ -329,9 +330,10 @@ const useAppState = create<StateContext>((set, get) => ({
     console.log(t)
     let productIds = t.prds
     let quantities = t.qtys
+    let hoodieStyles = t.hoodieStyles
     let cyberLabel: string = t.cl
     let cyberId: number = t.cyberId
-    let data: string[] = t.data
+    let cyberLabelArray: string[] = t.data
 
     if (balance.lt(state.total)) {
       toast({
@@ -347,8 +349,9 @@ const useAppState = create<StateContext>((set, get) => ({
       if (quantities.length > 0 && productIds.length > 0 && eth) {
         let price: BigNumber = dstate.discount ? eth.sub(dstate.total) : eth
 
+        console.log(productIds, quantities, cyberLabelArray, hoodieStyles)
         contract
-          ?.checkOut(productIds, quantities, data, {
+          ?.checkOut(productIds, quantities, cyberLabelArray, {
             value: price,
           })
           .then(async (tx: any) => {
