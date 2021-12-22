@@ -347,6 +347,8 @@ const useAppState = create<StateContext>((set, get) => ({
         let price: BigNumber = dstate.discount ? eth.sub(dstate.total) : eth
 
         console.log(productIds, quantities, data)
+        // setLoading(false)
+        // return
         contract
           ?.checkOut(productIds, quantities, data, {
             value: price,

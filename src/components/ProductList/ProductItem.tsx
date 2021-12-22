@@ -147,7 +147,7 @@ const ProductItem = ({ product, setLoading }: {ProductProps, any}) => {
         }
         setLoading(true)
         let labelExist = await checkLabelExist(cyberName)
-        console.log('label is ', labelExist)
+        console.log('label ', labelExist ? 'already exist' : 'not exist')
         setLoading(false)
         if (labelExist) {
           // window.alert('The label already exist')

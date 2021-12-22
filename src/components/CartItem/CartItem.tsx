@@ -14,6 +14,7 @@ import {
   Input,
   Spacer,
 } from '@chakra-ui/react'
+import { TYPE_CYBER } from '../../state/constants'
 
 const CartItem = (props: any) => {
   const { product, quantity, deleteProduct } = props
@@ -72,7 +73,7 @@ const CartItem = (props: any) => {
             </Flex>
             <Box>
               <Heading as="h3" fontWeight="600" fontSize="32px" mb="24px">
-                {product.type === 2
+                {product.type === TYPE_CYBER  
                   ? `${cyberName} Eau de Parfum`
                   : product.name}
               </Heading>
