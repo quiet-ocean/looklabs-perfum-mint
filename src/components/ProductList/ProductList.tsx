@@ -81,13 +81,13 @@ const ProductList = () => {
 
   useEffect(async () => {
     dispatch({type: 'SET_PAGE', payload: PRODUCT})
-    // productDispatch({type: 'REMOVE_ALL', payload: ''})
-    if(!productState.loaded) {
+    productDispatch({type: 'REMOVE_ALL', payload: ''})
+    // if(!productState.loaded) {
       await loadProduct();
       productDispatch({type: 'SET_LOADED', payload: true})
       
-    }
-    setLoading(false);   
+    // }
+    setLoading(false)
   }, []);
 
   return (
