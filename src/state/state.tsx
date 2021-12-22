@@ -345,6 +345,9 @@ const useAppState = create<StateContext>((set, get) => ({
     } else {
       if (quantities.length > 0 && productIds.length > 0 && eth) {
         let price: BigNumber = dstate.discount ? eth.sub(dstate.total) : eth
+        console.log('price calcuated in checkout function is ', utils.formatEther(price))
+        let _price: BigNumber = await contract?.calculatePrice(productIds, quantities)
+        console.log('price calculated in smart contract is ', utils.formatEther(_price))
 
         console.log(productIds, quantities, data)
         // setLoading(false)
