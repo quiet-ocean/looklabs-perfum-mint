@@ -1,1 +1,1 @@
-export * from './TextSlider'
+export * from './TexSlider'

@@ -1,9 +1,8 @@
-import { useEffect } from 'react'
-import { AbstractConnector } from "@web3-react/abstract-connector";
-import { useWeb3React } from "@web3-react/core";
-import { ConnectorNames, connectorsByName } from "../../connectors";
-import { useAppState } from "../../state";
-import Spinner from "react-text-spinners";
+import { AbstractConnector } from '@web3-react/abstract-connector'
+import { useWeb3React } from '@web3-react/core'
+import { ConnectorNames, connectorsByName } from '../../connectors'
+import { useAppState } from '../../state'
+import Spinner from 'react-text-spinners'
 
 import {
   VStack,
@@ -15,7 +14,7 @@ import {
   Heading,
   Link,
   keyframes,
-} from "@chakra-ui/react";
+} from '@chakra-ui/react'
 
 const rotateCircle = keyframes`
 from {
@@ -32,7 +31,7 @@ to {
   -o-transform: rotate(-360deg);
   transform: rotate(-360deg);
 }
-  `;
+  `
 
 const rotateLogo = keyframes`
 from {
@@ -49,45 +48,43 @@ to {
   -o-transform: rotate(360deg);
   transform: rotate(360deg);
 }
-    `;
+    `
 
-const circleRotate = `${rotateCircle} 50s linear infinite;`;
-const logoRotate = `${rotateLogo} 50s linear infinite;`;
+const circleRotate = `${rotateCircle} 50s linear infinite;`
+const logoRotate = `${rotateLogo} 50s linear infinite;`
 
 const iconsMap = {
-  [ConnectorNames.Metamask]: "https://docs.metamask.io/metamask-fox.svg",
+  [ConnectorNames.Metamask]: 'https://docs.metamask.io/metamask-fox.svg',
   // [ConnectorNames.WalletConnect]: 'https://walletconnect.org/walletconnect-logo.svg',
-};
+}
 
 const Login = () => {
-  const { activatingConnector, setActivatingConnector } = useAppState();
-  const { activate } = useWeb3React();
+  const { activatingConnector, setActivatingConnector } = useAppState()
+  const { activate } = useWeb3React()
   // const terminal = useRef<HTMLDivElement>(null)
-  useEffect(() => {
-    
-  }, [])
+
   return (
     <>
       <Box w="full" color="white" fontFamily="Cyber Console" height="full">
-        <Flex direction={{ base: "column", md: "row" }} height="full">
+        <Flex direction={{ base: 'column', md: 'row' }} height="full">
           <Flex
-            w={{ base: "100%", md: "50%" }}
-            p={{ base: "20px", md: "40px" }}
+            w={{ base: '100%', md: '50%' }}
+            p={{ base: '20px', md: '40px' }}
             alignitem="center"
           >
             {/* DAO TOKEN HERE */}
             <Box
               alignItems="center"
               justifyContent="center"
-              fontSize={{ base: "1.1rem", lg: "1.1rem" }}
+              fontSize={{ base: '1.1rem', lg: '1.1rem' }}
               display="flex"
               flexDirection="column"
               fontWeight="bold"
-              w={{ base: "100%", lg: "100%" }}
+              w={{ base: '100%', lg: '100%' }}
             >
               <Box
                 position="relative"
-                width={{ base: "100%", lg: "58%" }}
+                width={{ base: '100%', lg: '58%' }}
                 mt="10%"
               >
                 <Flex
@@ -128,7 +125,7 @@ const Login = () => {
                 </Flex>
               </Box>
 
-              <Box mt={{ base: "0rem", lg: "0rem" }}>
+              <Box mt={{ base: '0rem', lg: '0rem' }}>
                 <Heading
                   as="h2"
                   fontSize="72px"
@@ -140,17 +137,15 @@ const Login = () => {
                 >
                   8888
                 </Heading>
-                <Text letterSpacing="0.3rem">
-                  LOOK LABS DAO Tokens
-                </Text>
+                <Text letterSpacing="0.3rem">LOOK LABS DAO Tokens</Text>
               </Box>
             </Box>
           </Flex>
           <Box
-            w={{ base: "100%", md: "50%" }}
+            w={{ base: '100%', md: '50%' }}
             p="40px"
-            borderLeft={{ base: "none", md: "1px solid white" }}
-            borderTop={{ base: "1px solid white", md: "none" }}
+            borderLeft={{ base: 'none', md: '1px solid white' }}
+            borderTop={{ base: '1px solid white', md: 'none' }}
           >
             <VStack align="stretch" h="full">
               <Box flex="10" h="full">
@@ -166,22 +161,31 @@ const Login = () => {
                 <Text mb="79px" mt="32px">
                   Where high-end fashion is born on blockchain.
                 </Text>
-                <Text mb="79px" mt="32px" fontSize="14px" color="#A5A5A5" maxWidth="523px" letterSpacing="3px">
-                  Loading cart.art... done, booting the kernel.
-                  (gcc version 4.8.3 20140303 (prerelease) (crosstool-NG linaro-1.13.1+bzr2650 - Linaro GCC 2014.03)) #775 PREEMPT ThuR
-                  [    0.000000] CPU: ARMv6-compatible processor [410fb767] revision 7 (ARMv7), cr=00c5387d
-                  [    0.000000] CPU: PIPT / VIPT nonaliasing data cache, VIPT nonaliasing instruction cache
-                  [    0.000000] Machine model: Raspberry Pi Model B
-                  [    0.000000] cma: Reserved 8 MiB at 0x0b800000
-                  [    0.000000] Memory policy: Data cache writeback
+                <Text
+                  mb="79px"
+                  mt="32px"
+                  fontSize="14px"
+                  color="#A5A5A5"
+                  maxWidth="523px"
+                  letterSpacing="3px"
+                >
+                  Loading cart.art... done, booting the kernel. (gcc version
+                  4.8.3 20140303 (prerelease) (crosstool-NG
+                  linaro-1.13.1+bzr2650 - Linaro GCC 2014.03)) #775 PREEMPT ThuR
+                  [ 0.000000] CPU: ARMv6-compatible processor [410fb767]
+                  revision 7 (ARMv7), cr=00c5387d [ 0.000000] CPU: PIPT / VIPT
+                  nonaliasing data cache, VIPT nonaliasing instruction cache [
+                  0.000000] Machine model: Raspberry Pi Model B [ 0.000000] cma:
+                  Reserved 8 MiB at 0x0b800000 [ 0.000000] Memory policy: Data
+                  cache writeback
                 </Text>
               </Box>
 
               <Box flex="1">
                 {Object.keys(connectorsByName).map((name: string) => {
                   const currentConnector =
-                    connectorsByName[name as keyof typeof connectorsByName];
-                  const activating = currentConnector === activatingConnector;
+                    connectorsByName[name as keyof typeof connectorsByName]
+                  const activating = currentConnector === activatingConnector
                   // const connected = currentConnector === connector
 
                   return (
@@ -189,19 +193,20 @@ const Login = () => {
                       bgGradient="linear(to-tr, #fd06b1, #ef313e, #cc672a, #a4a02e, #7dd632, #60ff35)"
                       borderRadius="0px"
                       w="full"
-                      fontSize={{ base: "24px", md: "36px", lg: "42px" }}
+                      fontSize={{ base: '24px', md: '36px', lg: '42px' }}
                       p="50px"
                       mb="24px"
+                      _active={{ boxShadow: 'none', outline: 'none' }}
                       fontFamily="IBM Plex Mono"
                       colorScheme="red"
                       key={name}
                       onClick={() => {
-                        setActivatingConnector(currentConnector);
+                        setActivatingConnector(currentConnector)
                         activate(
                           connectorsByName[
-                          name as keyof typeof connectorsByName
-                          ] as AbstractConnector
-                        );
+                            name as keyof typeof connectorsByName
+                          ] as AbstractConnector,
+                        )
                       }}
                     >
                       {iconsMap[name as keyof typeof connectorsByName] &&
@@ -221,13 +226,13 @@ const Login = () => {
                         />
                       )}
                     </Button>
-                  );
+                  )
                 })}
               </Box>
               <Box flex="1">
                 {Object.keys(connectorsByName).map((name: string) => {
                   // const currentConnector =
-                    // connectorsByName[name as keyof typeof connectorsByName];
+                  // connectorsByName[name as keyof typeof connectorsByName];
                   // const activating = currentConnector === activatingConnector;
                   // const connected = currentConnector === connector
 
@@ -236,18 +241,24 @@ const Login = () => {
                       background="linear-gradient(0deg, rgba(88, 101, 242, 0.2), rgba(88, 101, 242, 0.2)), #000000"
                       borderRadius="0px"
                       w="full"
-                      fontSize={{ base: "24px", md: "36px", lg: "42px" }}
+                      fontSize={{ base: '24px', md: '36px', lg: '42px' }}
                       p="50px"
                       color="#5865F2"
                       border="1px solid #5865F2"
                       fontFamily="IBM Plex Mono"
                       key={name}
+                      _active={{ boxShadow: 'none', outline: 'none' }}
                     >
-                      <Link href='https://discord.gg/looklabs' isExternal textDecoration="none" _hover={{ textDecoration: "none" }}>
+                      <Link
+                        href="https://discord.gg/looklabs"
+                        isExternal
+                        textDecoration="none"
+                        _hover={{ textDecoration: 'none' }}
+                      >
                         JOIN the DISCORD
                       </Link>
                     </Button>
-                  );
+                  )
                 })}
               </Box>
             </VStack>
@@ -255,7 +266,7 @@ const Login = () => {
         </Flex>
       </Box>
     </>
-  );
-};
+  )
+}
 
-export { Login };
+export { Login }

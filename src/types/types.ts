@@ -79,7 +79,7 @@ export type CartItemProps = {
   quantity: number;
 };
 export type CartProps = {
-  currentPage: string
+  nav: string
   total: BigNumber
   items: any
   ids: any

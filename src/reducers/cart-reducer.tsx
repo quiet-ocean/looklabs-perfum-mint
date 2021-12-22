@@ -1,5 +1,5 @@
-import { ActionProps, CartItemProps, CartProps, ProductProps } from '../types'
-import { BigNumber } from 'ethers'
+import { ActionProps, CartItemProps, CartProps } from '../types'
+import { utils, BigNumber } from 'ethers'
 import { initialCartState } from '../state/constants'
 import env from '../config'
 
@@ -7,73 +7,72 @@ const cartReducer = (state: CartProps = initialCartState, action: ActionProps): 
     const type = action.type
     const payload: any = action.payload
 
-    let calculateTotalPrice = (items: CartItemProps[]): BigNumber => {
-        let total: BigNumber = BigNumber.from('0')
-        items.forEach((item: CartItemProps)=>{
-            total = total.add(item.product?.price.mul(item.quantity))
-        })
-        return total
-    }
-    let min = (items: number[]): number => {
-        let min: number = 0
-
-        if(items.length === 0)
-            return min
-        
-        min = items[0]
-        let length: number = items.length
-        for(let i = 0; i < length; i++ ){
-            min = min > items[i] ? items[i] : min
-        }
-
-        return min;
-    }
-
     switch (type) {
+        
         case 'ADD_PRODUCT':
+            let id: number = payload.product?.id.toNumber()
 
-            let product: ProductProps = payload.product
-            let id: BigNumber = product.id
-            let addQuantity: number = payload.quantity
-            addQuantity = min([addQuantity, product.qty, env.MAX_QTY])
-            let price: BigNumber = BigNumber.from('0')
+            let exist: boolean = state.ids.indexOf(id) > -1
+            let quantity: number = Number(payload.quantity)
+            quantity = quantity > env.MAX_QTY ? env.MAX_QTY : quantity          
+            let price: BigNumber = payload.product?.price.mul(quantity)
             let _newItems: CartItemProps[] = []
-            let newTotal: BigNumber = BigNumber.from('0')
-            let exist: boolean = false
+            let overflow: boolean = false
 
             let addItem = () => {
-                
+                let flag: boolean = false
                 state.items.forEach((item: CartItemProps) => {
-                    let _quantity: number = 0
-                    if(item.product.id.eq(id)) {
-                        exist = true
-                        _quantity = addQuantity + item.quantity
-                        _quantity = min([_quantity, item.product.qty, env.MAX_QTY])
-                        
+                    if(item.product.id.eq(payload.product.id)) {                        
+                        flag = true
+                        let _quantity = quantity + item.quantity
+                        _quantity = _quantity > env.MAX_QTY ? env.MAX_QTY : _quantity
+
+                        if(_quantity > item.product.qty) {
+                            _quantity = item.product.qty
+                            let diffQty: number = _quantity - item.quantity
+                            price = item.product.price.mul(BigNumber.from(diffQty.toString()))
+                        } else {
+                            price = item.product.price.mul(BigNumber.from(payload.quantity))
+                        }
+                        _newItems.push({product: payload.product, quantity: _quantity})
+                        return
                     } else {
-                        _quantity = item.quantity
+                        _newItems.push(item)
                     }
-                    _newItems.push({product: item.product, quantity: _quantity})
                 })
-                if(!exist) {
-                    price = product.price.mul(BigNumber.from(addQuantity))
-                    newTotal = newTotal.add(price)
-                    _newItems.push({product: product, quantity: addQuantity})
+                if(!flag) {
+                    _newItems.push({product: payload.product, quantity: quantity})
                 }
             }
             addItem()
-            let _total: BigNumber = calculateTotalPrice(_newItems)
-            return {
+            // let _newItems = exist ? state.items.map((item: CartItemProps, key: number) => {
+            //     if(item.product.id.eq(payload.product.id)) {
+            //         let _newQuantity = item.quantity + Number(payload.quantity)
+            //         if(_newQuantity > item.product.qty) {
+            //             _newQuantity = item.product.qty
+            //             price = payload.product?.price.mul(Number(item.product.qty - item.quantity))
+            //         } else {
+
+            //         }
+            //         return { product: item.product, quantity: _newQuantity}
+            //     }
+            //     return item
+            // }) : [...state.items, { product: payload.product, quantity: quantity }]
+
+            let _newState: CartProps = { 
                 ...state,
-                total: _total,
-                items: _newItems,
+                nav: state.nav,
+                total: state.total.add(price), 
+                // total: state.total.add(BigNumber.from('0.001').toString()),
                 ids: exist ? state.ids : [...state.ids, id],
+                items: _newItems
             }
+            return _newState
         case 'INCREASE_QUANTITY':
             return {
                 ...state,
                 items: state.items.map((item: CartItemProps) => {
-
+                    // if(item.product.id === payload){
                     if(item.product.id.eq(payload)) {
                         return { product: item.product, quantity: item.quantity + 1}
                     }
@@ -82,39 +81,39 @@ const cartReducer = (state: CartProps = initialCartState, action: ActionProps): 
             }
         
         case 'DECREASE_QUANTITY':
-            // let newtotal: BigNumber = state.total
+            let newtotal: BigNumber = state.total
             let __newItems: CartItemProps[] = []
             let _newIds: number[] = []
-            let decreasedAmount: BigNumber = BigNumber.from('0')
             state.items.forEach((item: CartItemProps) => {
                 if(item.product.id.eq(payload)) {
-
-                    let quantity: number = 0
-                    if(item.quantity > 1) {
-                        quantity = item.quantity - 1
-                        decreasedAmount = item.product.price
+                    newtotal = newtotal.sub(item.product.price)
+                    if(item.quantity > 1) {                        
+                        __newItems.push({product: item.product, quantity: item.quantity - 1})
+                        _newIds.push(item.product.id.toNumber())
                     } else if ( item.quantity === 1) {
-                        quantity = 1
-                    }
-                    __newItems.push({product: item.product, quantity: quantity})
-                    
+                        console.log('remove a item')
+                        
+                    }            
                     return
                 } else {
-                    __newItems.push(item)                   
+                    // console.log('mismatching')
+                    __newItems.push(item)
+                    _newIds.push(item.product.id.toNumber())
                 }
-                 _newIds.push(item.product.id.toNumber())
+                
             })
             return {
                 ...state,
-                total: state.total.sub(decreasedAmount),                
+                total: newtotal,                
                 items: __newItems,
                 ids: _newIds,
             }
         case 'REMOVE_PRODUCT':
             return state
 
-        case 'SET_PAGE':
-            let newState = {...state, currentPage: payload}
+        case 'SET_NAV_TITLE':
+            const nav: string = payload
+            let newState = {...state, nav: payload}
             return newState
         case 'DELETE_PRODUCT':
             let total: BigNumber = state.total;
@@ -122,17 +121,21 @@ const cartReducer = (state: CartProps = initialCartState, action: ActionProps): 
             
             let newIds = state.ids.filter((id: any) => {
                 if(id === productId.toNumber()) {
+                    // console.log('id exist in id array')
                     return false
                 }
                 return true
             })
             let newItems = state.items.filter((item: CartItemProps, key: number) => {
                 if(item.product.id.eq(payload)) {
+                    // console.log('id exist in item array')
+                    // total =  total.sub(item.product?.price.mul(BigNumber.from(item.quantity)))
                     total =  total.sub(item.product?.price.mul((item.quantity)))
                     return false
                 }
                 return true
             })
+        // console.log(utils.formatEther(total))
             return { ...state, items: newItems, total: total, ids: newIds }
         case 'SET_DISCOUNT_AMOUNT':
             return {
@@ -144,6 +147,7 @@ const cartReducer = (state: CartProps = initialCartState, action: ActionProps): 
                 ...state,
                 cyberProductId: payload
             }
+            // console.log(newState_2)
             return __newState
         case 'REMOVE_ALL':
             return initialCartState
