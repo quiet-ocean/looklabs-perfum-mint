@@ -62,7 +62,7 @@ export type ProductProps = {
   ids: BigNumber[]
   styleId: BigNumber
 };
-export type ProductListProps = {
+export type ProductStateProps = {
   loaded: boolean;
   products: ProductProps[];
 }

@@ -1,4 +1,4 @@
-import { CartProps, ProductListProps, ProductProps } from '../types'
+import { CartProps, ProductStateProps, ProductProps } from '../types'
 import { BigNumber } from 'ethers'
 
 export const PRODUCT = 'product'
@@ -19,4 +19,4 @@ export const initialCartState: CartProps = {
     cyberProductId: -1,
     hoodieStyle: 'ver1',
 }
-export const initialProductsState: ProductListProps = { loaded: false, products: [] }
+export const initialProductsState: ProductStateProps = { loaded: false, products: [] }

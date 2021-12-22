@@ -5,13 +5,13 @@ import React, {
 } from 'react'
 import { cartReducer, productReducer } from '../reducers'
 import { initialCartState, initialProductsState } from './constants'
-import { CartProps, ActionProps, ProductProps, ProductListProps } from '../types'
+import { CartProps, ActionProps, ProductProps, ProductStateProps } from '../types'
 
 interface ContextType {
     state: CartProps;
     dispatch: Dispatch<ActionProps>;
     // products: ProductProps[];
-    productState: ProductListProps;
+    productState: ProductStateProps;
     productDispatch: Dispatch<ActionProps>;
 }
 const Context = createContext<ContextType>({ 

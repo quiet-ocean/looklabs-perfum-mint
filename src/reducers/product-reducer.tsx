@@ -1,8 +1,8 @@
 import { initialProductsState } from '../state/constants';
-import { ActionProps, ProductProps, ProductListProps, StyleProps } from '../types'
+import { ActionProps, ProductProps, ProductStateProps, StyleProps } from '../types'
 import { BigNumber } from 'ethers'
 
-const productReducer = (state: ProductListProps = initialProductsState, action: ActionProps): ProductListProps => {
+const productReducer = (state: ProductStateProps = initialProductsState, action: ActionProps): ProductStateProps => {
 
     let payload = action.payload
     switch(action.type){
