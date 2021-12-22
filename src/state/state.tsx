@@ -3,7 +3,7 @@ import create from 'zustand'
 import { BigNumber, Contract, utils, providers } from 'ethers'
 import axios from 'axios'
 import { ContractPropsDetails, UserProps, CartItemProps } from '../types/types'
-import { TYPE_CYBER } from './constants'
+import { TYPE_CYBER, TYPE_HOODIE } from './constants'
 
 interface DiscountProps {
   discount: boolean
@@ -277,7 +277,6 @@ const useAppState = create<StateContext>((set, get) => ({
       cl: any
       qtys: any[]
       prds: BigNumber[]
-      hoodieStyles: string[]
       success: boolean
       cyberId: number
       data: string[]
@@ -286,10 +285,9 @@ const useAppState = create<StateContext>((set, get) => ({
       let quantities: any[] = []
       let productIds: BigNumber[] = []
       let cyberLabel: any = ''
-      let hoodieStyles: string[] = []
       let success: boolean = true
       let cyberId = -1
-      let labelArray: string[] = []
+      let data: string[] = []
 
       state.items.forEach(async (item: CartItemProps, key: number) => {
         if (
@@ -300,15 +298,16 @@ const useAppState = create<StateContext>((set, get) => ({
         ) {
           quantities.push(item.quantity)
           productIds.push(item.product.id)
-          hoodieStyles.push(item.product.selectedStyle)
 
           if (item.product.type === TYPE_CYBER) {
             console.log('cyber label is ', cyberName)
             cyberLabel = cyberName?.toUpperCase()
             cyberId = parseInt(item.product.id)
-            labelArray.push(cyberLabel)
+            data.push(cyberLabel)
+          } else if(item.product.type === TYPE_HOODIE) {
+            data.push('ver' + item.product.styleId.toNumber())
           } else {
-            labelArray.push('')
+            data.push('')
           }
         } else {
           console.log('state have wrong items')
@@ -318,10 +317,9 @@ const useAppState = create<StateContext>((set, get) => ({
           success: success,
           qtys: quantities,
           prds: productIds,
-          hoodieStyles: hoodieStyles,
           cl: cyberName,
           cyberId: cyberId,
-          data: labelArray,
+          data: data,
         })
       })
     })
@@ -330,10 +328,9 @@ const useAppState = create<StateContext>((set, get) => ({
     console.log(t)
     let productIds = t.prds
     let quantities = t.qtys
-    let hoodieStyles = t.hoodieStyles
     let cyberLabel: string = t.cl
     let cyberId: number = t.cyberId
-    let cyberLabelArray: string[] = t.data
+    let data: string[] = t.data
 
     if (balance.lt(state.total)) {
       toast({
@@ -349,9 +346,9 @@ const useAppState = create<StateContext>((set, get) => ({
       if (quantities.length > 0 && productIds.length > 0 && eth) {
         let price: BigNumber = dstate.discount ? eth.sub(dstate.total) : eth
 
-        console.log(productIds, quantities, cyberLabelArray, hoodieStyles)
+        console.log(productIds, quantities, data)
         contract
-          ?.checkOut(productIds, quantities, cyberLabelArray, {
+          ?.checkOut(productIds, quantities, data, {
             value: price,
           })
           .then(async (tx: any) => {

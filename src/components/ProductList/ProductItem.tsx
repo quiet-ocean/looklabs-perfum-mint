@@ -45,6 +45,7 @@ import {
 import { isEmpty } from '../../utils'
 import env from '../../config'
 import parse from 'html-react-parser'
+import { TYPE_CYBER, TYPE_HOODIE } from '../../state/constants'
 
 const hoodieAnimationUris = {
   'ver1': '/static/movies/hoodie_v1.mov',
@@ -85,8 +86,8 @@ const ProductItem = ({ product, setLoading }: {ProductProps, any}) => {
 
   useEffect(() => {
 
-    let _isCyber = product.type === 1 ? true : false
-    let _isHoodie = product.type === 2 ? true : false
+    let _isCyber = product.type === TYPE_CYBER ? true : false
+    let _isHoodie = product.type === TYPE_HOODIE ? true : false
 
     setIsHoodie(_isHoodie)
     setIsCyber(_isCyber)
@@ -121,11 +122,13 @@ const ProductItem = ({ product, setLoading }: {ProductProps, any}) => {
       productId: id,
       type: ADDED,
     }
-    console.log('add label with param', data)
     const response = await api.post(`/label`, data)
-    console.log(response)
     return response.data
   }
+  let checkoutProducts = () => {
+    checkout(state, toast, history, dispatch, setLoading)
+  }
+
   let add2Cart = async (product, quantity) => {
 
     if (quantity > 0) {
@@ -191,6 +194,7 @@ const ProductItem = ({ product, setLoading }: {ProductProps, any}) => {
                   dispatch={dispatch}
                   history={history}
                   setLoading={setLoading}
+                  _checkoutProducts={checkoutProducts}
                 />
               )
             },
@@ -431,14 +435,18 @@ const ProductItem = ({ product, setLoading }: {ProductProps, any}) => {
                   </Text>
                   <HStack spacing="18px" mb="39px">
                   {
-                    product.styles.map((style: StyleProps, key: number) => {
+                    product.ids.map((id: BigNumber, key: number) => {
                       return <Box
                       key={key}
-                      onClick={()=>{productDispatch({type: 'CHANGE_STYLE', payload: {productId: product.id, style: style}})}}
+                      onClick={
+                        () => {
+                          productDispatch({type: 'CHANGE_HOODIE_STYLE', payload: {productId: product.id, styleId: id }})
+                        }
+                      }
                       w="80px"
                       h="80px"
-                      border={style.name === product.selectedStyle ? "1px solid red" : "1px solid white"}>
-                        <Image src={style.imageUri} alt="" />
+                      border={ id.eq(product.styleId) ? "1px solid red" : "1px solid white"}>
+                        <Image src={`/static/hoodie/v${id.toNumber()}.png`} alt="" />
                       </Box>
                     })
                   }

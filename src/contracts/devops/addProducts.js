@@ -35,7 +35,7 @@ const start = async callback => {
       URL + '/cyber/'
     )
     const product_2 = await contract.addProduct(
-      'Hoodie',
+      'COMFY5402 METALIGHT HOODIE',
       utils.parseEther('0.002').toString(10),
       10,
       2,
@@ -44,6 +44,15 @@ const start = async callback => {
       URL + '/hoodie/'
     )
     const product_3 = await contract.addProduct(
+      'COMFY5402 METALIGHT HOODIE',
+      utils.parseEther('0.002').toString(10),
+      10,
+      2,
+      2,
+      true,
+      URL + '/hoodie/'
+    )
+    const product_4 = await contract.addProduct(
       'Fashion.Eight.Pass',
       utils.parseEther('0.003').toString(10),
       100,
@@ -53,7 +62,7 @@ const start = async callback => {
       URL + '/eight/'
     )
 
-    const product_4 = await contract.addProduct(
+    const product_5 = await contract.addProduct(
       'Corder.Art.Pass',
       utils.parseEther('0.004').toString(10),
       100,

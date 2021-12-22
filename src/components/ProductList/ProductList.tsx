@@ -8,13 +8,15 @@ import { TextSlider } from "../TextSlider";
 import { ProductProps, StyleProps } from '../../types'
 import { ProductItem } from "./ProductItem";
 import { Container, Flex, Box, Text } from "@chakra-ui/react";
-import { PRODUCT } from "../../state/constants";
+import { PRODUCT, TYPE_HOODIE } from "../../state/constants";
+import { BigNumber } from "ethers";
 
 dotenv.config();
 
 const uri = [
   'cyber_grid.mov',
   'hoodie_v1.mov',
+  'hoodie_v2.mov',
   'eight_fashion_metapass.mov',
   'coder_art_metapass.mp4',
 ]
@@ -26,6 +28,9 @@ const description = [
   [
     '<h2>Includes LOOK LABS propreiatry Metalight™ technilogy. Lightening in the dark, wireless chargable. Recycable OLED lights.</h2>',
   ],
+  [
+    '<h2>Includes LOOK LABS propreiatry Metalight™ technilogy. Lightening in the dark, wireless chargable. Recycable OLED lights.</h2>',
+  ],
   ['<h2>Hello, World!</h2>'],
   ['<h2>1x free AR mint</h2>'],
 ]
@@ -33,8 +38,9 @@ const description = [
 const data = [
   { type: 1, description: description[0] },
   { type: 2, description: description[1] },
-  { type: 0, description: description[2] },
-  { type: 0, description: description[3] },
+  { type: 2, description: description[1] },
+  { type: 3, description: description[2] },
+  { type: 3, description: description[3] },
 ]
 
 const styles: StyleProps[]= [
@@ -58,7 +64,7 @@ const ProductList = () => {
       _products.forEach(async (item, key) => {
         // TEST PRODUCT, TO REMOVE WHEN THE DB IS WORKING
         // const response = await api.get(`/product/${item.id}`)
-                
+
         let newItem: ProductProps = {
           id: item.id,
           name: item.name,
@@ -70,11 +76,14 @@ const ProductList = () => {
           mediaUrl: "/static/movies/" + uri[item.id],
           description: data[item.id]['description'],
           type: data[item.id]['type'],
-          selectedStyle: data[item.id]['type'] === 2 ? 'ver1' : '',
-          styles: data[item.id]['type'] === 2 ? styles : []
+          ids: [],
+          styleId: BigNumber.from('0'),
         };
-
-        productDispatch({ type: "ADD_PRODUCT", payload: newItem });
+        if(newItem.type === TYPE_HOODIE) {
+          productDispatch({ type: 'ADD_HOODIE', payload: newItem })
+        } else {
+          productDispatch({ type: "ADD_PRODUCT", payload: newItem });
+        }
       });
     }
   };

@@ -59,8 +59,8 @@ export type ProductProps = {
   description: string;
   sale: boolean;
 
-  selectedStyle: string;
-  styles: StyleProps[]
+  ids: BigNumber[]
+  styleId: BigNumber
 };
 export type ProductListProps = {
   loaded: boolean;

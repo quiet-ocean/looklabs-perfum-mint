@@ -77,7 +77,7 @@ const Navbar: React.FC = () => {
                   ></Image>
                   <Text color={state.currentPage === CART ? "white" : "gray"}
                     fontSize={{ base: "16px", lg: "24px" }}
-                    fontWeight="600">{state.ids.length}&nbsp;{state.ids.length == 1 ? 'ITEM' : 'ITEMS'}</Text>
+                    fontWeight="600">{state.items.length}&nbsp;{state.items.length == 1 ? 'ITEM' : 'ITEMS'}</Text>
                 </HStack>
               </Link>
             </>

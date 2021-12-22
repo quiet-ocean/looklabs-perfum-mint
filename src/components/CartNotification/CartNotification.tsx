@@ -14,7 +14,7 @@ import { initialCartState } from '../../state/constants'
 const CartNotification = (props: any) => {
 
     // const { product, quantity, close, checkout, state, history, setLoading } = props
-    const { product, quantity, close, checkout, state, history, dispatch } = props
+    const { product, quantity, close, checkout, state, history, dispatch, _checkoutProducts } = props
     // const { dispatch } = useContext(Context)
     // console.log('dispatch in cart notification is ', dispatch)
     // console.log('state in cart notification is ', state)
@@ -41,19 +41,15 @@ const CartNotification = (props: any) => {
                     total: state.total.add(price), 
                     ids: exist ? state.ids : [...state.ids, id],
                     items: exist ? state.items.map((item: CartItemProps, key: number) => {
-                        if(item.product.id == product.id) {
+                        if(item.product.id.eq(product.id)) {
                             return { product: item.product, quantity: item.quantity + Number(quantity) }
                         }
                         return item
                     }) : [...state.items, { product: product, quantity: qty }] 
                 }
-                // console.log('add new item', newState_1)
-                // return newState_1
                 resolve(newState_1)
             })
-            // let newState: CartProps// = await promise
             let newState = await promise
-            // console.log('New state in cart notification toast', newState)
             setState(newState)
         }
         
@@ -79,7 +75,7 @@ const CartNotification = (props: any) => {
             <Box p='5px' w='full'>
                 <VStack w='full'>
                     <Button p='8px' bgGradient="linear(to-tr, #fd06b1, #ef313e, #cc672a, #a4a02e, #7dd632, #60ff35)" >
-                        <Text color='white' onClick={() => {checkoutProducts()}}>proceed to checkout</Text>
+                        <Text color='white' onClick={() => {_checkoutProducts()}}>proceed to checkout</Text>
                     </Button>
                     <Button p='8px' onClick={() => history.push('/cart')} bgGradient="linear(to-tr, #fd06b1, #ef313e, #cc672a, #a4a02e, #7dd632, #60ff35)" >
                         <Text color='white'>view cart</Text>
