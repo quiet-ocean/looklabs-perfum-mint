@@ -59,7 +59,7 @@ const ProductList = () => {
 
   let loadProduct = async () => {
     _products = await contract.getProducts();
-
+    console.log(_products)
     if (_products && _products.length) {
       _products.forEach(async (item, key) => {
         // TEST PRODUCT, TO REMOVE WHEN THE DB IS WORKING

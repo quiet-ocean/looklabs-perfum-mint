@@ -99,7 +99,7 @@ const CartNotification = (props: any) => {
 
     }, [state])
     let checkoutProducts = () => {
-        checkout(_state, toast, history, dispatch, setLoading)
+        checkout(_state, toast, history, dispatch, setLoading, true)
         // state, toast, history, dispatch, setLoading
     }
 

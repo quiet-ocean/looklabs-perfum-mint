@@ -50,6 +50,7 @@ export interface StateContext {
     history: any,
     dispatch: any,
     setLoading: any,
+    isToast: boolean,
   ): void
   discount(state: any): Promise<DiscountProps>
 }

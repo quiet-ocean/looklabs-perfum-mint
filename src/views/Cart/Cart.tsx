@@ -54,7 +54,7 @@ const Cart = () => {
     dispatch({ type: 'DELETE_PRODUCT', payload: id })
   }
   let checkoutTransfer = async () => {
-    checkout(state, toast, history, dispatch, setLoading)
+    checkout(state, toast, history, dispatch, setLoading, true)
   };
 
   //   gradient animation
