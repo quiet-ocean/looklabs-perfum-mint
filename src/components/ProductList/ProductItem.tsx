@@ -418,7 +418,7 @@ const ProductItem = ({ product, setLoading }: {ProductProps, any}) => {
                 ''
               )}
               {/* hoodie choose option */}
-              { 
+              {
                 product.type === 2
                 ?
                 <Box>

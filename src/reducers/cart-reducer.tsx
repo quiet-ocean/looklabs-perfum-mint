@@ -53,7 +53,7 @@ const cartReducer = (state: CartProps = initialCartState, action: ActionProps): 
                         _quantity = addQuantity + item.quantity
                         _quantity = min([_quantity, item.product.qty, env.MAX_QTY])
                         _product = product
-                        lastItem = { product: product, quantity: _quantity - item.quantity}                        
+                        lastItem = { product: product, quantity: _quantity - item.quantity}
                     } else {
                         _quantity = item.quantity
                     }
@@ -106,13 +106,13 @@ const cartReducer = (state: CartProps = initialCartState, action: ActionProps): 
                     
                     return
                 } else {
-                    __newItems.push(item)                   
+                    __newItems.push(item)
                 }
                  _newIds.push(item.product.id.toNumber())
             })
             return {
                 ...state,
-                total: state.total.sub(decreasedAmount),                
+                total: state.total.sub(decreasedAmount),
                 items: __newItems,
                 ids: _newIds,
             }

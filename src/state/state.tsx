@@ -225,7 +225,7 @@ const useAppState = create<StateContext>((set, get) => ({
     let total: BigNumber = BigNumber.from('0')
     let items: any[] = []
     let flag: boolean = false
-    return await new Promise((resolve) => {
+    return new Promise((resolve) => {
       state.items.forEach((item: CartItemProps) => {
         let index: number = productIds.indexOf(item.product.id)
         if (index === -1) {
@@ -345,9 +345,9 @@ const useAppState = create<StateContext>((set, get) => ({
     } else {
       if (quantities.length > 0 && productIds.length > 0 && eth) {
         let price: BigNumber
-        // if(allowDiscount) 
+        // if(allowDiscount)
         //   price = eth
-        // else 
+        // else
         price = dstate.discount ? eth.sub(dstate.total) : eth
         console.log('price calcuated in checkout function is ', utils.formatEther(price))
         let _price: BigNumber = await contract?.calculatePrice(productIds, quantities)
