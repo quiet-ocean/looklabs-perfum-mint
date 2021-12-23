@@ -44,7 +44,6 @@ import {
   keyframes,
   Image,
 } from '@chakra-ui/react'
-import { CartNotification } from '../CartNotification'
 import { ToastContent } from './ToastContent'
 
 // const hoodieAnimationUris = {
@@ -200,31 +199,7 @@ const ProductItem = ({ product, setLoading }: {ProductProps, any}) => {
       let flag = await promise
       if (flag) {
         promise.then((value) => {
-          let showToast = () =>{
-            toast({
-              status: 'success',
-              duration: 5000,
-              position: 'top-right',
-              isClosable: true,
-              render: (props) => {
-                return (
-                  <CartNotification
-                    product={product}
-                    quantity={count}
-                    close={() => {
-                      toast.closeAll()
-                    }}
-                    checkout={checkout}
-                    __state={state}
-                    dispatch={dispatch}
-                    history={history}
-                    setLoading={setLoading}
-                    _checkoutProducts={checkoutProducts}
-                  />
-                )
-              },
-            })
-          }
+
           // setTimeout(showToast, 1000)
         })
       }
