@@ -32,14 +32,16 @@ const cartReducer = (state: CartProps = initialCartState, action: ActionProps): 
     switch (type) {
         case 'ADD_PRODUCT':
 
-            let product: ProductProps = payload.product
+            let callback: any = payload.callback
+            let product: ProductProps = payload.item.product
             let id: BigNumber = product.id
-            let addQuantity: number = payload.quantity
+            let addQuantity: number = payload.item.quantity
             addQuantity = min([addQuantity, product.qty, env.MAX_QTY])
             let price: BigNumber = BigNumber.from('0')
             let _newItems: CartItemProps[] = []
             let newTotal: BigNumber = BigNumber.from('0')
             let exist: boolean = false
+            let lastItem: CartItemProps = {product: null, quantity: 0}
 
             let addItem = () => {
                 
@@ -51,6 +53,7 @@ const cartReducer = (state: CartProps = initialCartState, action: ActionProps): 
                         _quantity = addQuantity + item.quantity
                         _quantity = min([_quantity, item.product.qty, env.MAX_QTY])
                         _product = product
+                        lastItem = { product: product, quantity: _quantity - item.quantity}                        
                     } else {
                         _quantity = item.quantity
                     }
@@ -59,10 +62,12 @@ const cartReducer = (state: CartProps = initialCartState, action: ActionProps): 
                 if(!exist) {
                     price = product.price.mul(BigNumber.from(addQuantity))
                     newTotal = newTotal.add(price)
-                    _newItems.push({product: product, quantity: addQuantity})
+                    lastItem = {product: product, quantity: addQuantity}
+                    _newItems.push(lastItem)
                 }
             }
             addItem()
+            if(lastItem.quantity > 0) callback(lastItem, _newItems.length)
             let _total: BigNumber = calculateTotalPrice(_newItems)
             return {
                 ...state,
@@ -113,7 +118,37 @@ const cartReducer = (state: CartProps = initialCartState, action: ActionProps): 
             }
         case 'REMOVE_PRODUCT':
             return state
-
+        case 'SET_PENDING_ITEM':
+            // let pendignItems: CartItemProps = payload
+            console.log('set pending item', payload)
+            return {
+                ...state,
+                pendingItem: payload,
+            }
+        case 'REMOVE_PENDING_ITEM':
+            // let items: CartItemProps[] = payload
+            console.log('remove pending item', state.pendingItem)
+            let ___newItems: CartItemProps[] = []
+            
+            state.items.forEach((item: CartItemProps) => {
+                let _item: CartItemProps
+                let quantity: number = item.quantity
+                let id: BigNumber = item.product.id
+                
+                if(id.eq(state.pendingItem.product.id)) {
+                    quantity = item.quantity - state.pendingItem.quantity
+                }
+                if(quantity > 0) {
+                    ___newItems.push({product: item.product, quantity: quantity})
+                }
+            })
+            let __total: BigNumber = calculateTotalPrice(___newItems)
+            return {
+                ...state,
+                items: ___newItems,
+                total: __total,
+                pendingItem: {product: null, quantity: 0}
+            }
         case 'SET_PAGE':
             let newState = {...state, currentPage: payload}
             return newState

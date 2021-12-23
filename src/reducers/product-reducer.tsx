@@ -37,19 +37,7 @@ const productReducer = (state: ProductStateProps = initialProductsState, action:
                     return product
                 })
             }
-        case 'CHANGE_STYLE':
 
-            // let productId: BigNumber = payload?.productId
-            // let style: StyleProps = payload?.style
-            // return {
-            //     ...state,
-            //     products: state.products.map((product: ProductProps, key: number) => {
-            //         if(product.id.eq(productId)) {
-            //             return { ...product, selectedStyle: style.name, mediaUrl: style.animationUri }
-            //         }
-            //         return product
-            //     })
-            // }
         case 'SET_LOADED':
 
             let loaded: boolean = payload

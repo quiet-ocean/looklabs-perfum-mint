@@ -90,7 +90,7 @@ export type ActionProps = {
   type: string;
   payload: any;
 };
-export type CartItemProps = {
+export interface CartItemProps {
   // token: TokenProps,
   product: any;
   quantity: number;
@@ -103,6 +103,7 @@ export type CartProps = {
   discount: BigNumber
   cyberProductId: number
   hoodieStyle: string
+  pendingItem: CartItemProps
 }
 // export interface CartProps {
 //   nav: string;

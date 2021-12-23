@@ -51,14 +51,17 @@ const Checkout = () => {
                             // let params = {productId: state.cyberProductId, tokenId: result.tokenId, cyberLabel: cyberName, address: '' }
                         } else {
                             console.log('cyber label not exist')
-                        }
-                        
+                        }                        
                     } else {
                         console.log('token id is null')
                     }
                     setLoading(false)
                     setStatus(CONFIRMED)
-                    dispatch({type: 'REMOVE_ALL', payload: ''})
+                    console.log(state.pendingItem)
+                    if(state.pendingItem.quantity > 0)
+                        dispatch({type: 'REMOVE_PENDING_ITEM', payload: ''})                        
+                    else 
+                        dispatch({type: 'REMOVE_ALL', payload: ''})
                     setCyberName('')
                     return;
                 } else {

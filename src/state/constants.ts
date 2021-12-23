@@ -18,5 +18,6 @@ export const initialCartState: CartProps = {
     discount: BigNumber.from("0"),
     cyberProductId: -1,
     hoodieStyle: 'ver1',
+    pendingItem: {product: null, quantity: 0}
 }
 export const initialProductsState: ProductStateProps = { loaded: false, products: [] }

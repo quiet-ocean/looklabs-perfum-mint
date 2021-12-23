@@ -47,7 +47,7 @@ const Cart = (props: any) => {
     }
     let checkoutTransfer = async () => {
         
-      checkout(state, toast, history, dispatch, setLoading, true)
+      checkout(state, toast, history, dispatch, setLoading)
     };
     return (
         <VStack bg={'black'} color='white' border='1px solid white' onClick={close} >

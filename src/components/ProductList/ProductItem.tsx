@@ -20,12 +20,14 @@ import {
   useProgress,
 } from '@react-three/drei'
 import Model from '../Voxel/Model'
-import { CartNotification } from '../CartNotification'
-// import axios from 'axios'
+import parse from 'html-react-parser'
+import env from '../../config'
+import { TYPE_CYBER, TYPE_HOODIE } from '../../state/constants'
 import { CartItemProps, ProductProps, StyleProps } from '../../types'
 import { Context } from '../../state'
 import { useAppState } from '../../state'
 import { api } from '../../utils/api'
+import { isEmpty } from '../../utils'
 
 import {
   Container,
@@ -42,15 +44,13 @@ import {
   keyframes,
   Image,
 } from '@chakra-ui/react'
-import { isEmpty } from '../../utils'
-import env from '../../config'
-import parse from 'html-react-parser'
-import { TYPE_CYBER, TYPE_HOODIE } from '../../state/constants'
+import { CartNotification } from '../CartNotification'
+import { ToastContent } from './ToastContent'
 
-const hoodieAnimationUris = {
-  'ver1': '/static/movies/hoodie_v1.mov',
-  'ver2': '/static/movies/hoodie_v2.mov',
-}
+// const hoodieAnimationUris = {
+//   'ver1': '/static/movies/hoodie_v1.mov',
+//   'ver2': '/static/movies/hoodie_v2.mov',
+// }
 
 const ProductItem = ({ product, setLoading }: {ProductProps, any}) => {
   const {
@@ -129,6 +129,30 @@ const ProductItem = ({ product, setLoading }: {ProductProps, any}) => {
     checkout(state, toast, history, dispatch, setLoading)
   }
 
+  let callback = (lastItem: CartItemProps, length: number) => {
+    console.log('callback function', lastItem, length)
+    
+    toast({
+      status: 'success',
+      duration: 5000,
+      position: 'top-right',
+      isClosable: true,
+      render: (props) => {
+        return (
+          <ToastContent
+            item = { lastItem }
+            itemCount = {length}
+            history = { history }
+            close = { toast.closeAll }
+            toast = {toast}
+            dispatch = {dispatch}
+            setLoading = {setLoading}
+            checkout = {checkout}
+          />
+        )
+      },
+    })
+  }
   let add2Cart = async (product, quantity) => {
 
     if (quantity > 0) {
@@ -170,7 +194,7 @@ const ProductItem = ({ product, setLoading }: {ProductProps, any}) => {
       }
 
       let promise = new Promise((resolve) => {
-        dispatch({ type: 'ADD_PRODUCT', payload: item })
+        dispatch({ type: 'ADD_PRODUCT', payload: {item: item, callback: callback} })
         resolve(true)
       })
       let flag = await promise
@@ -201,7 +225,7 @@ const ProductItem = ({ product, setLoading }: {ProductProps, any}) => {
               },
             })
           }
-          setTimeout(showToast, 1000)
+          // setTimeout(showToast, 1000)
         })
       }
 

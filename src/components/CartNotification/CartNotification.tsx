@@ -18,8 +18,6 @@ const CartNotification = (props: any) => {
     const toast = useToast()
     const [_state, setState] = useState<any>(initialCartState)
     const [loading, setLoading] = useState<boolean>(false)
-    const { state } = useContext(Context)
-    console.log(state)
 
     useEffect(() => {
 
@@ -96,7 +94,7 @@ const CartNotification = (props: any) => {
 
     }, [__state])
     let checkoutProducts = () => {
-        checkout(_state, toast, history, dispatch, setLoading, true)
+        checkout(_state, toast, history, dispatch, setLoading)
         // state, toast, history, dispatch, setLoading
     }
 

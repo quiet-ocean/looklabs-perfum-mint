@@ -1,5 +1,6 @@
 // @ts-nocheck
 import { useReducer, useEffect, useState, useContext } from "react";
+import { useHistory } from 'react-router-dom';
 import { productReducer } from "../../reducers";
 import { Context, useAppState } from "../../state";
 import { api } from "../../utils/api";
@@ -7,7 +8,7 @@ import * as dotenv from "dotenv";
 import { TextSlider } from "../TextSlider";
 import { ProductProps, StyleProps } from '../../types'
 import { ProductItem } from "./ProductItem";
-import { Container, Flex, Box, Text } from "@chakra-ui/react";
+import { Container, Flex, Box, Text, useToast } from "@chakra-ui/react";
 import { PRODUCT, TYPE_HOODIE } from "../../state/constants";
 import { BigNumber } from "ethers";
 
@@ -53,10 +54,34 @@ const ProductList = () => {
   const { state, dispatch, productState, productDispatch } = useContext(Context)
   // const [products, productDispatch] = useReducer(productReducer, []);1
   const [loading, setLoading] = useState(true);
+  const [productCount, setProductCount] = useState(0)
+  const history = useHistory()
+  const toast = useToast()
 
   let _products = [];
   let products: ProductProps[] = productState.products
 
+  useEffect(async () => {
+    dispatch({type: 'SET_PAGE', payload: PRODUCT})
+    productDispatch({type: 'REMOVE_ALL', payload: ''})
+    // if(!productState.loaded) {
+      await loadProduct();
+      productDispatch({type: 'SET_LOADED', payload: true})
+      
+    // }
+    setLoading(false)
+  }, []);
+
+  useEffect(() => {
+    let length = state.items.length
+    if(length > productCount) {
+      console.log('a product added to cart')
+      
+    }
+    setProductCount(length)
+  }, [state.items])
+
+  
   let loadProduct = async () => {
     _products = await contract.getProducts();
     console.log(_products)
@@ -77,7 +102,7 @@ const ProductList = () => {
           description: data[item.id]['description'],
           type: data[item.id]['type'],
           ids: [],
-          styleId: BigNumber.from('0'),
+          styleId: BigNumber.from('1'),
         };
         if(newItem.type === TYPE_HOODIE) {
           productDispatch({ type: 'ADD_HOODIE', payload: newItem })
@@ -88,16 +113,9 @@ const ProductList = () => {
     }
   };
 
-  useEffect(async () => {
-    dispatch({type: 'SET_PAGE', payload: PRODUCT})
-    productDispatch({type: 'REMOVE_ALL', payload: ''})
-    // if(!productState.loaded) {
-      await loadProduct();
-      productDispatch({type: 'SET_LOADED', payload: true})
-      
-    // }
-    setLoading(false)
-  }, []);
+  let checkout = () => [
+    checkout(state, toast, history, dispatch, setLoading)
+  ]
 
   return (
     <Flex color="white" direction={{ base: "column", md: "column" }}>

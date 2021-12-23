@@ -50,7 +50,6 @@ export interface StateContext {
     history: any,
     dispatch: any,
     setLoading: any,
-    isToast: boolean,
   ): void
   discount(state: any): Promise<DiscountProps>
 }
@@ -253,7 +252,7 @@ const useAppState = create<StateContext>((set, get) => ({
     })
   },
 
-  checkout: async (state, toast, history, dispatch, setLoading, isToast = true) => {
+  checkout: async (state, toast, history, dispatch, setLoading) => {
     // console.log(state.items)
     setLoading(true)
     const {
@@ -346,10 +345,10 @@ const useAppState = create<StateContext>((set, get) => ({
     } else {
       if (quantities.length > 0 && productIds.length > 0 && eth) {
         let price: BigNumber
-        if(isToast) 
-          price = eth
-        else 
-          price = dstate.discount ? eth.sub(dstate.total) : eth
+        // if(allowDiscount) 
+        //   price = eth
+        // else 
+        price = dstate.discount ? eth.sub(dstate.total) : eth
         console.log('price calcuated in checkout function is ', utils.formatEther(price))
         let _price: BigNumber = await contract?.calculatePrice(productIds, quantities)
         console.log('price calculated in smart contract is ', utils.formatEther(_price))
