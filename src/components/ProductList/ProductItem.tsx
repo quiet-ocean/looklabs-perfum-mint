@@ -49,7 +49,7 @@ import { ToastContent } from './ToastContent'
 // const hoodieAnimationUris = {
 //   'ver1': '/static/movies/hoodie_v1.mov',
 //   'ver2': '/static/movies/hoodie_v2.mov',
-// }
+
 
 const ProductItem = ({ product, setLoading }: {ProductProps, any}) => {
   const {

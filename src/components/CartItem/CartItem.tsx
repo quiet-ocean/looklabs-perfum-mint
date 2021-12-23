@@ -170,7 +170,7 @@ const CartItem = (props: any) => {
                       onClick={() => {
                         dispatch({
                           type: 'ADD_PRODUCT',
-                          payload: { product: product, quantity: 1 },
+                          payload: {item: { product: product, quantity: 1 }, callback: (item: any) => {}},
                         })
                       }}
                       cursor={'pointer'}

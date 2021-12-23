@@ -24,7 +24,7 @@ describe("Cart reducer test", () => {
   let addProducts = (n: number) => {
     
     for(let i = 0; i < 4; i++) {
-      action = { type: 'ADD_PRODUCT', payload: { product: products[i], quantity: i + 1} }
+      action = { type: 'ADD_PRODUCT', payload: {item: { product: products[i], quantity: i + 1}, callback: (item: any)=>{}}}
       previousState = cartReducer(previousState, action)
       total = previousState.total
       // expectedTotal = expectedTotal.add(products[i].price.mul(BigNumber.from((i+1)))
@@ -84,7 +84,7 @@ describe("Cart reducer test", () => {
   })
 
   xit("handle a product being added to cart list", () => {
-    let payload: any = { product: product1, quantity:1 }
+    let payload: any = {item: { product: product1, quantity:1 }, callback: (item: any)=>{}}
     let action: ActionProps = {type: 'ADD_PRODUCT', payload: payload}
     let expectedTotal: BigNumber = utils.parseEther('0.001')
     let stateTotal: BigNumber = cartReducer(initialCartState, action).total
@@ -92,11 +92,11 @@ describe("Cart reducer test", () => {
     expect(stateTotal).toEqual(expectedTotal)
   })
   xit('handle 2 products being added to cart list', () => {
-    let payload: any = { product: product1, quantity:1 }
+    let payload: any = {item: { product: product1, quantity:1 }, callback: (item: any) => {}}
     let action: ActionProps = {type: 'ADD_PRODUCT', payload: payload}
     let expectedTotal: BigNumber = utils.parseEther('0.005')
     let previousState: CartProps = cartReducer(initialCartState, action)
-    action.payload = { product: product2, quantity: 2 }
+    action.payload = {item: { product: product2, quantity: 2 }, callback: (item: any) => {}}
     let state: CartProps = cartReducer(previousState, action)
     let stateTotal: BigNumber = state.total
     console.log(state, utils.formatEther(state.total))
@@ -106,7 +106,7 @@ describe("Cart reducer test", () => {
     
     addProducts(1)
     
-    let action = {type: 'ADD_PRODUCT', payload: {product: product1, quantity: 2}}
+    let action = {type: 'ADD_PRODUCT', payload: {item: {product: product1, quantity: 2}, callback: (item: any)=> {}}}
     let prevState: CartProps = cartReducer(previousState, action)
     console.log(prevState)
     total = prevState.total
