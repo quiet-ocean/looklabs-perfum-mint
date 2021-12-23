@@ -13,22 +13,19 @@ import env from '../../config/index'
 
 const CartNotification = (props: any) => {
 
-    // const { product, quantity, close, checkout, state, history, setLoading } = props
-    const { product, quantity, close, checkout, state, history, dispatch, _checkoutProducts } = props
-    // const { dispatch } = useContext(Context)
-    // console.log('dispatch in cart notification is ', dispatch)
-    // console.log('state in cart notification is ', state)
-    // const history = useHistory()
+    const { product, quantity, close, checkout, __state, history, dispatch, _checkoutProducts } = props
+    
     const toast = useToast()
-    // const [_state, setState] = useState<CartProps>(initialCartState)
     const [_state, setState] = useState<any>(initialCartState)
     const [loading, setLoading] = useState<boolean>(false)
+    const { state } = useContext(Context)
+    console.log(state)
 
     useEffect(() => {
 
         let effect = async () => {
 
-            
+            let state = __state
             let calculateTotalPrice = (items: CartItemProps[]): BigNumber => {
                 let total: BigNumber = BigNumber.from('0')
                 items.forEach((item: CartItemProps)=>{
@@ -97,7 +94,7 @@ const CartNotification = (props: any) => {
         
         effect()
 
-    }, [state])
+    }, [__state])
     let checkoutProducts = () => {
         checkout(_state, toast, history, dispatch, setLoading, true)
         // state, toast, history, dispatch, setLoading
@@ -111,7 +108,7 @@ const CartNotification = (props: any) => {
             <Box w='full' borderBottom='1px solid #a5a5a5' p='5px'>
                 <HStack align='stretch'>
                     <Box w='full'><Text>total:</Text></Box>
-                    <Box><Text color='white'>ETH {Number(utils.formatEther(product.price)) * quantity}</Text></Box>
+                    <Box><Text color='white'>ETH {Number(utils.formatEther(_state.total))}</Text></Box>
                 </HStack>
             </Box>
             <Box p='5px' w='full'>
