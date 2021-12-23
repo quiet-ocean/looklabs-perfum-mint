@@ -32,6 +32,7 @@ const Cart = () => {
   useEffect(() => {
 
     dispatch({ type: 'SET_PAGE', payload: CART })
+    dispatch({type: 'CLEAR_PENDING_ITEM', payload: ''})
   }, []);
   useEffect(() => {
 

@@ -149,6 +149,11 @@ const cartReducer = (state: CartProps = initialCartState, action: ActionProps): 
                 total: __total,
                 pendingItem: {product: null, quantity: 0}
             }
+        case 'CLEAR_PENDING_ITEM':
+            return {
+                ...state,
+                pendingItem: {product: null, quantity: 0}
+            }
         case 'SET_PAGE':
             let newState = {...state, currentPage: payload}
             return newState
