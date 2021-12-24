@@ -75,20 +75,23 @@ const Checkout = () => {
                         } else {
                             console.log('cyber label not exist')
                         }
-                        
                     } else {
                         console.log('token id is null')
                     }
                     setLoading(false)
                     setStatus(CONFIRMED)
-                    dispatch({type: 'REMOVE_ALL', payload: ''})
+                    console.log(state.pendingItem)
+                    if(state.pendingItem.quantity > 0)
+                        dispatch({type: 'REMOVE_PENDING_ITEM', payload: ''})
+                    else
+                        dispatch({type: 'REMOVE_ALL', payload: ''})
                     setCyberName('')
                     return;
                 } else {
                     
                 }
             }, 1000)
-        }       
+        }
     }, [])
     const toShort = (value: string, factor: number = 5) => {
         const slice = Math.round(value.length / factor)
@@ -111,7 +114,7 @@ const Checkout = () => {
                             }}
                         >
                             { (transaction && transaction.hash) ? transaction.hash : ''}
-                        </Text> 
+                        </Text>
                     </Flex>
                     <Box w='100%'>
                         {status === PROCEEDING ? ([<Spinner color = 'white' />, <Box color='white'> <Text>Transaction: </Text> <Text color='white'>{(transaction && transaction.hash) ? toShort(transaction.hash) : ''}</Text></Box>]) : ''}
@@ -119,8 +122,8 @@ const Checkout = () => {
                     </Box>
                     <Box>
                         {
-                            status === CONFIRMED 
-                            ? 
+                            status === CONFIRMED
+                            ?
                             [
                                 <HStack key='1'>
                                     <Text fontSize='12px'>time: </Text><Text color='white' fontSize='12px'>{time} transaction succeed</Text>
@@ -131,7 +134,7 @@ const Checkout = () => {
                                 <Box key='3'>
                                     <HStack><Text  fontSize='12px'>tx fees: Ξ </Text><Text  fontSize='12px' color='white'> { fee }</Text></HStack>
                                 </Box>
-                            ]                            
+                            ]
                             :
                             ''
                         }
