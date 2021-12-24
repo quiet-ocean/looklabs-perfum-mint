@@ -35,16 +35,6 @@ export type UserProps = {
 //   sale: boolean;
 //   url: string;
 // };
-export type StyleProps = {
-  id: number;
-  name: string;
-  imageUri: string;
-  animationUri: string;
-  selected: boolean;
-}
-export interface StyleListProps {
-  [key: number]: StyleProps;
-}
 export type ProductProps = {
   id: BigNumber;
   // url: string;
@@ -58,14 +48,7 @@ export type ProductProps = {
   qty: number;
   description: string;
   sale: boolean;
-
-  ids: BigNumber[]
-  styleId: BigNumber
 };
-export type ProductStateProps = {
-  loaded: boolean;
-  products: ProductProps[];
-}
 
 export type TokenCompProps = {
   // token: TokenProps;
@@ -90,7 +73,7 @@ export type ActionProps = {
   type: string;
   payload: any;
 };
-export interface CartItemProps {
+export type CartItemProps = {
   // token: TokenProps,
   product: any;
   quantity: number;
@@ -102,8 +85,6 @@ export type CartProps = {
   ids: any
   discount: BigNumber
   cyberProductId: number
-  hoodieStyle: string
-  pendingItem: CartItemProps
 }
 // export interface CartProps {
 //   nav: string;

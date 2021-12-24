@@ -9,7 +9,7 @@ import React, {
   useContext,
 } from 'react'
 import { useHistory } from 'react-router-dom'
-import { utils, BigNumber } from 'ethers'
+import { utils } from 'ethers'
 import ReactPlayer from 'react-player'
 import { Canvas } from '@react-three/fiber'
 import {
@@ -20,20 +20,18 @@ import {
   useProgress,
 } from '@react-three/drei'
 import Model from '../Voxel/Model'
-import parse from 'html-react-parser'
-import env from '../../config'
-import { TYPE_CYBER, TYPE_HOODIE } from '../../state/constants'
-import { CartItemProps, ProductProps, StyleProps } from '../../types'
+import { CartNotification } from '../CartNotification'
+// import axios from 'axios'
+import { CartItemProps, ProductProps } from '../../types'
 import { Context } from '../../state'
 import { useAppState } from '../../state'
 import { api } from '../../utils/api'
-import { isEmpty } from '../../utils'
 
 import {
   Container,
   Heading,
-  VStack,
   HStack,
+  VStack,
   Box,
   Button,
   Text,
@@ -43,15 +41,13 @@ import {
   SimpleGrid,
   keyframes,
   Image,
+  useForceUpdate,
 } from '@chakra-ui/react'
-import { ToastContent } from './ToastContent'
+import { isEmpty } from '../../utils'
+import env from '../../config'
+import parse from 'html-react-parser'
 
-// const hoodieAnimationUris = {
-//   'ver1': '/static/movies/hoodie_v1.mov',
-//   'ver2': '/static/movies/hoodie_v2.mov',
-
-
-const ProductItem = ({ product, setLoading }: {ProductProps, any}) => {
+const ProductItem = ({ product, setLoading }) => {
   const {
     boughtTokens,
     cyberName,
@@ -68,9 +64,9 @@ const ProductItem = ({ product, setLoading }: {ProductProps, any}) => {
   const [input, setInput] = useState('')
   const [count, setCount] = useState(1)
   const toast = useToast()
-  const { state, dispatch, productDispatch } = useContext(Context)
+  const { state } = useContext(Context)
+  const { dispatch } = useContext(Context)
   const [isCyber, setIsCyber] = useState(false)
-  const [isHoodie, setIsHoodie] = useState(false)
 
   const cyberSupply = product.qty
   const maxUnits = product.maxUnits
@@ -84,12 +80,11 @@ const ProductItem = ({ product, setLoading }: {ProductProps, any}) => {
   )
 
   useEffect(() => {
-
-    let _isCyber = product.type === TYPE_CYBER ? true : false
-    let _isHoodie = product.type === TYPE_HOODIE ? true : false
-
-    setIsHoodie(_isHoodie)
-    setIsCyber(_isCyber)
+    if (product.type === 2) {
+      setIsCyber(true)
+    } else {
+      setIsCyber(false)
+    }
   }, [])
 
   useEffect(() => {
@@ -111,52 +106,41 @@ const ProductItem = ({ product, setLoading }: {ProductProps, any}) => {
     const ADDED = 1
     const MINTED = 2
     if (isEmpty(label)) {
-      
+      // toast({
+      //   title: 'Warning.',
+      //   description: "Label cannot be empty.",
+      //   position: 'top-right',
+      //   status: 'warning',
+      //   duration: 5000,
+      //   isClosable: true,
+      // })
+      // setLoading(false)
       console.log('label is empty')
       return
     }
+    console.log('add label ', label)
+    // const response = await api.post('/cyber', {
+    //   label: label,
+    //   address: user?.address,
+    //   productId: id,
+    //   type: ADDED,
+    // })
     let data = {
       name: label,
       address: user?.address,
       productId: id,
       type: ADDED,
     }
+    console.log('add label with param', data)
     const response = await api.post(`/label`, data)
+    console.log(response)
     return response.data
   }
-  let checkoutProducts = () => {
-    checkout(state, toast, history, dispatch, setLoading)
-  }
-
-  let callback = (lastItem: CartItemProps, length: number) => {
-    console.log('callback function', lastItem, length)
-    
-    toast({
-      status: 'success',
-      duration: 5000,
-      position: 'top-right',
-      isClosable: true,
-      render: (props) => {
-        return (
-          <ToastContent
-            item = { lastItem }
-            itemCount = {length}
-            history = { history }
-            close = { toast.closeAll }
-            toast = {toast}
-            dispatch = {dispatch}
-            setLoading = {setLoading}
-            checkout = {checkout}
-          />
-        )
-      },
-    })
-  }
   let add2Cart = async (product, quantity) => {
-
+    console.log('add a prodcut to cart list')
     if (quantity > 0) {
       const item: CartItemProps = { product: product, quantity: quantity }
-      if (isCyber) {
+      if (product.type === 2) {
         if (cyberName === '' || cyberName === undefined || cyberName === null) {
           toast({
             title: 'Warning.',
@@ -170,7 +154,7 @@ const ProductItem = ({ product, setLoading }: {ProductProps, any}) => {
         }
         setLoading(true)
         let labelExist = await checkLabelExist(cyberName)
-        console.log('label ', labelExist ? 'already exist' : 'not exist')
+        console.log('label is ', labelExist)
         setLoading(false)
         if (labelExist) {
           // window.alert('The label already exist')
@@ -189,21 +173,77 @@ const ProductItem = ({ product, setLoading }: {ProductProps, any}) => {
           let productId = parseInt(product.id)
           let success = await addLabel(cyberName, productId)
           setLoading(false)
+          // toast({
+          //   title: 'Notice.',
+          //   description: "Label added.",
+          //   position: 'top-right',
+          //   status: 'info',
+          //   duration: 5000,
+          //   isClosable: true,
+          // })
         }
       }
 
       let promise = new Promise((resolve) => {
-        dispatch({ type: 'ADD_PRODUCT', payload: {item: item, callback: callback} })
+        dispatch({ type: 'ADD_PRODUCT', payload: item })
         resolve(true)
       })
       let flag = await promise
       if (flag) {
+        // alert('add product to cart')
         promise.then((value) => {
-
-          // setTimeout(showToast, 1000)
+          toast({
+            status: 'success',
+            duration: 5000,
+            position: 'top-right',
+            isClosable: true,
+            render: (props) => {
+              return (
+                <CartNotification
+                  product={product}
+                  quantity={count}
+                  close={() => {
+                    toast.closeAll()
+                  }}
+                  checkout={checkout}
+                  state={state}
+                  dispatch={dispatch}
+                  history={history}
+                  setLoading={setLoading}
+                />
+              )
+            },
+          })
         })
       }
-
+      // let promise = new Promise(resolve => {
+      //   dispatch({ type: "ADD_PRODUCT", payload: item })
+      //   resolve(true)
+      // })
+      // promise.then(value => {
+      //   toast({
+      //     status: "success",
+      //     duration: 5000,
+      //     position: "top-right",
+      //     isClosable: true,
+      //     render: (props) => {
+      //       return (
+      //         <CartNotification
+      //           product={product}
+      //           quantity={count}
+      //           close={() => {
+      //             toast.closeAll();
+      //           }}
+      //           checkout={checkout}
+      //           state={state}
+      //           dispatch={dispatch}
+      //           history = {history}
+      //           setLoading = {setLoading}
+      //         />
+      //       );
+      //     },
+      //   });
+      // })
     }
   }
 
@@ -217,7 +257,26 @@ const ProductItem = ({ product, setLoading }: {ProductProps, any}) => {
       setCount(count - 1)
     }
   }
-  
+  // const checkoutTransfer = async () =>{
+  //   console.log(state)
+  //   checkout(state, toast, history, dispatch)
+  // }
+  // transaction
+
+  // const { setTransaction, setUser, getSupply, getCyberId, mintArt } =
+  //   useAppState(
+  //     useCallback(
+  //       ({ setTransaction, setUser, getSupply, getCyberId, mintArt }) => ({
+  //         setTransaction,
+  //         setUser,
+  //         getSupply,
+  //         getCyberId,
+  //         mintArt,
+  //       }),
+  //       []
+  //     )
+  //   );
+
   function changeCyberName(e) {
     labelExist(true)
     const val = e.target.value
@@ -289,8 +348,12 @@ const ProductItem = ({ product, setLoading }: {ProductProps, any}) => {
                   paddingTop: '30px',
                 }}
               >
-                <PerspectiveCamera makeDefault position={[100, 130, -125]} />
-                <OrbitControls target={[0, 50, 0]} />
+                <PerspectiveCamera makeDefault position={[100, 100, 150]} />
+                <OrbitControls
+                  target={[0, 50, 0]}
+                  autoRotate={true}
+                  autoRotateSpeed={10}
+                />
                 <Suspense fallback={<Loader />}>
                   <Model name={{ cyberName }} position={[0, 0, 0]} zoom={0} />
                   <Environment preset="city" />
@@ -298,8 +361,7 @@ const ProductItem = ({ product, setLoading }: {ProductProps, any}) => {
               </Canvas>
             ) : (
               <ReactPlayer
-                url={product.mediaUrl}
-                // url={isHoodie ? hoodieAnimationUris[state.hoodieStyle] : product.mediaUrl}
+                url={`/static/${product.mediaUrl}`}
                 loop={true}
                 playing={true}
                 muted={true}
@@ -355,8 +417,8 @@ const ProductItem = ({ product, setLoading }: {ProductProps, any}) => {
               </Text>
             </Box>
             <Box h="100%">
-              <Box mb="39px" textTransform={'uppercase'}>
-                {parse(`${product.description}`)}
+              <Box mb="39px">
+                <Text>{parse(`${product.description}`)}</Text>
               </Box>
             </Box>
             <SimpleGrid flexDirection="row">
@@ -418,46 +480,30 @@ const ProductItem = ({ product, setLoading }: {ProductProps, any}) => {
                 ''
               )}
               {/* hoodie choose option */}
-              {
-                product.type === 2
-                ?
-                <Box>
-                  <Text
-                    color="#BABABA"
-                    fontSize="16"
-                    fontWeight="normal"
-                    mb="32px"
-                    textTransform="uppercase"
-                  >
-                    {/* TODO fix - for each product */}
-                    Colour Name:
-                    <Text as="b" ml="8px">
-                      Minamilistic
-                    </Text>
+              <Box>
+                <Text
+                  color="#BABABA"
+                  fontSize="16"
+                  fontWeight="normal"
+                  mb="32px"
+                  textTransform="uppercase"
+                >
+                  {/* TODO fix - for each product */}
+                  Colour Name:
+                  <Text as="b" ml="8px">
+                    Minamilistic
                   </Text>
-                  <HStack spacing="18px" mb="39px">
-                  {
-                    product.ids.map((id: BigNumber, key: number) => {
-                      return <Box
-                      key={key}
-                      onClick={
-                        () => {
-                          productDispatch({type: 'CHANGE_HOODIE_STYLE', payload: {productId: product.id, styleId: id }})
-                        }
-                      }
-                      w="80px"
-                      h="80px"
-                      border={ id.eq(product.styleId) ? "1px solid red" : "1px solid white"}>
-                        <Image src={`/static/hoodie/v${id.toNumber()}.png`} alt="" />
-                      </Box>
-                    })
-                  }
-                  </HStack>
-                </Box>
-                :
-                null
-              }
-            {/* end of hoodie choose option */}
+                </Text>
+                <HStack spacing="18px" mb="39px">
+                  <Box w="80px" h="80px" border="1px solid white">
+                    <Image src="/static/hoodie/v1.png" alt="" />
+                  </Box>
+                  <Box w="80px" h="80px" border="1px solid white">
+                    <Image src="/static/hoodie/v2.png" alt="" />
+                  </Box>
+                </HStack>
+              </Box>
+              {/* end of hoodie choose option */}
               <Box w="100%">
                 <Text
                   textTransform="uppercase"
@@ -536,11 +582,16 @@ const ProductItem = ({ product, setLoading }: {ProductProps, any}) => {
               {boughtTokens && boughtTokens?.toNumber() < cyberSupply && (
                 <Box mt={{ base: '32px', md: '72px' }}>
                   <Button
+                    // bgGradient="linear(to-tr, #fd06b1, #ef313e, #cc672a, #a4a02e, #7dd632, #60ff35)"
                     background="linear-gradient(45deg, #fd06b1, #ef313e, #cc672a, #a4a02e, #7dd632, #60ff35)"
                     backgroundSize="150% 200%"
+                    // onClick={onBuyClick}
                     onClick={() => {
+                      // add2Cart(token, order.qty);
                       add2Cart(product, count)
                     }}
+                    // TODO disable cyber button if input is empty
+                    // disabled={!input.value}
                     outline="none"
                     p="45px"
                     animation={gradientAnimation}

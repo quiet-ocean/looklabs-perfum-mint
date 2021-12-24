@@ -25,29 +25,32 @@ import { CART } from "../../state/constants";
 const Cart = () => {
   const { checkout, discount } = useAppState();
   const { state, dispatch } = useContext(Context);
+  const [ids, setIds] = useState<number[]>([]);
   const [loading, setLoading] = useState<boolean>(false)
   const toast = useToast();
   const history = useHistory()
 
   useEffect(() => {
 
-    dispatch({ type: 'SET_PAGE', payload: CART })
-    dispatch({type: 'CLEAR_PENDING_ITEM', payload: ''})
+  dispatch({ type: 'SET_NAV_TITLE', payload: CART })
+    setIds(state.ids)
   }, []);
   useEffect(() => {
-
+    console.log(state)
+    // console.log("ids ", ids);
     let effect = async () => {
       let dstate = await discount(state)
       if (dstate.discount) {
         dispatch({ type: 'SET_DISCOUNT_AMOUNT', payload: dstate.total })
       }
       else {
-        // console.log('discount is ', dstate.discount)
+        console.log('discount is ', dstate.discount)
         dispatch({ type: 'SET_DISCOUNT_AMOUNT', payload: BigNumber.from('0') })
       }
     }
 
     effect()
+
   }, [state.items]);
 
   let deleteProduct = (id: BigNumber) => {

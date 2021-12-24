@@ -1,33 +1,32 @@
 import React, {
+    // useEffect, 
     createContext,
     useReducer,
     Dispatch,
+    ReducerAction,
+    Reducer
 } from 'react'
-import { cartReducer, productReducer } from '../reducers'
-import { initialCartState, initialProductsState } from './constants'
-import { CartProps, ActionProps, ProductProps, ProductStateProps } from '../types'
+import { cartReducer } from '../reducers'
+import { BigNumber } from 'ethers'
+import { initialCartState } from './constants'
+import { CartProps, ActionProps } from '../types'
 
 interface ContextType {
-    state: CartProps;
-    dispatch: Dispatch<ActionProps>;
-    // products: ProductProps[];
-    productState: ProductStateProps;
-    productDispatch: Dispatch<ActionProps>;
+    state: CartProps; dispatch: Dispatch<ActionProps>
 }
 const Context = createContext<ContextType>({ 
+    // state: {} as any,
+    // dispatch: {} as Dispatch<ReducerAction<Reducer<any, any>>>
     state: initialCartState,   
-    dispatch: () => {},
-    productState: initialProductsState,
-    productDispatch: () => {},
+    dispatch: () => {}
+    // dispatch: {} as Dispatch<ReducerAction<Reducer<any, any>>>
 })
 
 const Store = ({ children, value = {} as ContextType }: { children: React.ReactNode; value?: {} }) => {
-    
     const [state, dispatch] = useReducer(cartReducer, initialCartState)
-    const [productState, productDispatch] = useReducer(productReducer, initialProductsState)
 
     return (
-        <Context.Provider value={{ state, dispatch, productState, productDispatch }} >
+        <Context.Provider value={{ state, dispatch }} >
             {children}
         </Context.Provider>
     )

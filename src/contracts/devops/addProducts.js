@@ -20,13 +20,12 @@ const start = async callback => {
     console.log(accounts, '>>>')
 
     const FROM = utils.getAddress(accounts().getAddresses()[0])
-
     const contract = await GenesisCart.deployed()
 
     const URL = 'https://cart-art.looklabs.xyz'
 
     const product_1 = await contract.addProduct(
-      'Cyber EDP',
+      'CYBER EAU DE PARFUM',
       utils.parseEther('0.001').toString(10),
       10,
       1,
@@ -44,16 +43,7 @@ const start = async callback => {
       URL + '/hoodie/'
     )
     const product_3 = await contract.addProduct(
-      'COMFY5402 METALIGHT HOODIE',
-      utils.parseEther('0.002').toString(10),
-      10,
-      2,
-      2,
-      true,
-      URL + '/hoodie/'
-    )
-    const product_4 = await contract.addProduct(
-      'Fashion.Eight.Pass',
+      'EIGHT.FASHON METAPASS',
       utils.parseEther('0.003').toString(10),
       100,
       2,
@@ -62,8 +52,8 @@ const start = async callback => {
       URL + '/eight/'
     )
 
-    const product_5 = await contract.addProduct(
-      'Corder.Art.Pass',
+    const product_4 = await contract.addProduct(
+      'CODER.ART METAPASS',
       utils.parseEther('0.004').toString(10),
       100,
       3,

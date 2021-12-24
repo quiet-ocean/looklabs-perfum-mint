@@ -21,8 +21,7 @@ const start = async callback => {
     const FROM = utils.getAddress(accounts().getAddresses()[0])
     const contract = await GenesisCart.deployed()
     const URL = process.env.API_URL ? process.env.API_URL : 'https://elite.looklabs.xyz'
-    // const setDiscountGroup = await contract.setDiscountGroup([0, 1, 2, 3], true, utils.parseEther('0.001').toString(10))
-    const setDiscountGroup = await contract.setDiscountGroup([0, 1, 2, 3, 4], true, utils.parseEther('0.001').toString(10))
+    const setDiscountGroup = await contract.setDiscountGroup([0, 1, 2, 3], true, utils.parseEther('0.001').toString(10))
     const products = await contract.getProducts()
     callback(colors.green(`⚡️: ${colors.white(products)}`))
   } catch (e) {

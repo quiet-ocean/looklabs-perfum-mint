@@ -79,11 +79,10 @@ contract GenesisCart is Ownable, Product, Proxy {
       }
     }
 
-    // if (
-    //   keccak256(abi.encodePacked(discountGroup.productIds)) ==
-    //   keccak256(abi.encodePacked(_products.sort()))
-    // ) {
-    if (_products.length == 4) {
+    if (
+      keccak256(abi.encodePacked(discountGroup.productIds)) ==
+      keccak256(abi.encodePacked(_products.sort()))
+    ) {
       uint256[] memory discountPack = _qty.sort();
       _price = _price.sub(discountGroup.amount.mul(discountPack[0]));
     }

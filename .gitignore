@@ -6,8 +6,6 @@
 .pnp.js
 
 /src/contracts/.env
-/src/contracts/build
-/src/contracts/buid/contracts
 /src/contracts/node_modules
 
 # testing
