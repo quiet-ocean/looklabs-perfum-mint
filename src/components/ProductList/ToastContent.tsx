@@ -21,10 +21,10 @@ const ToastContent = (props: any) => {
     
     let state = initialCartState
     let proceedCheckout = () => {
-        if(itemCount === 4) {
-            console.log('cannot proceed checkout')
-            return
-        }
+        // if(itemCount === 4) {
+        //     console.log('cannot proceed checkout')
+        //     return
+        // }
         state = { ...state, items: [item], total: total }
         console.log(state)
         dispatch({type: 'SET_PENDING_ITEM', payload: item})
