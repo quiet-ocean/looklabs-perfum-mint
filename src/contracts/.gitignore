@@ -12,8 +12,8 @@
 .env
 .env.staging
 
-/src/contracts/.env
-/src/contracts/node_modules
+/src/contracts/build
+/src/contracts/build/contracts
 
 npm-debug.log*
 yarn-debug.log*

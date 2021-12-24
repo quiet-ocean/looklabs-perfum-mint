@@ -33,4 +33,5 @@ contract Proxy is Ownable {
     proxyAddr = _newProxyAddr;
   }
 
+  // check if token onlyOwner
 }

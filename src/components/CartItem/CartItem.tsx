@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react'
+import { useContext, useEffect } from 'react'
 import { utils } from 'ethers'
 import ReactPlayer from 'react-player'
 import { Context, useAppState } from '../../state'
@@ -14,25 +14,13 @@ import {
   Input,
   Spacer,
 } from '@chakra-ui/react'
+import { TYPE_CYBER } from '../../state/constants'
 
 const CartItem = (props: any) => {
   const { product, quantity, deleteProduct } = props
   const { dispatch } = useContext(Context)
   const { cyberName } = useAppState()
 
-  useEffect(() => {
-    if (product.type === 2) {
-      console.log('product is cyber')
-    } else {
-      console.log('product is not cyber')
-    }
-  }, [])
-  let addProduct = () => {
-    dispatch({
-      type: 'ADD_PRODUCT',
-      payload: { product: product, quantity: 1 },
-    })
-  }
   return (
     <Box
       borderBottom="1px solid white"
@@ -43,7 +31,8 @@ const CartItem = (props: any) => {
           <ReactPlayer
             // url={token.media}
             // url = '/static/comfy5402_gloss.mp4'
-            url={`/static/${product.mediaUrl}`}
+            url={product.mediaUrl}
+            // url={product.styles[product.selectedStyle]['animationUri']}
             loop={true}
             playing={true}
             muted={true}
@@ -84,7 +73,7 @@ const CartItem = (props: any) => {
             </Flex>
             <Box>
               <Heading as="h3" fontWeight="600" fontSize="32px" mb="24px">
-                {product.type === 2
+                {product.type === TYPE_CYBER
                   ? `${cyberName} Eau de Parfum`
                   : product.name}
               </Heading>
@@ -178,7 +167,12 @@ const CartItem = (props: any) => {
                       p="10px"
                       h="80px"
                       // onClick={plusQty}
-                      onClick={() => addProduct()}
+                      onClick={() => {
+                        dispatch({
+                          type: 'ADD_PRODUCT',
+                          payload: {item: { product: product, quantity: 1 }, callback: (item: any) => {}},
+                        })
+                      }}
                       cursor={'pointer'}
                       userSelect="none"
                     >
