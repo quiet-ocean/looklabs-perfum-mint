@@ -5,7 +5,7 @@ import { Marketplace, Cart, Checkout, About, Whitepaper } from "../views";
 import { Header, Footer, Navbar } from "../components";
 
 import { VStack, Box } from "@chakra-ui/react";
-import { AnimatedSwitch } from 'react-router-transition'
+// import { AnimatedSwitch } from 'react-router-transition'
 
 function AutoScrollToTop({ history }: { history: any }) {
     useEffect(() => {

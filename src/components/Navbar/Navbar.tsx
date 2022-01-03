@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 // import { utils } from "ethers";
-import { useContext } from 'react'
+import { useContext, useState } from 'react'
 import { Context } from '../../state'
 import {
   HStack,
@@ -8,13 +8,26 @@ import {
   Text,
   Image,
   Spacer,
-  Flex
+  Flex,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
+  Button,
 } from "@chakra-ui/react";
+import { ChevronUpIcon, ChevronDownIcon } from '@chakra-ui/icons'
 import { CART, PRODUCT, WHITEPAPER } from "../../state/constants";
 
+const categories = ['all', 'perfum', 'clothing', 'membership', 'accessories']
 const Navbar: React.FC = () => {
 
   const { state } = useContext(Context)
+  
+  // const [isOpen, setOpen] = useState(false)
+  // const onClose = () => {
+  //   console.log('on close function')
+  //   setOpen(!isOpen)
+  // }
   return (
     <>
       <Flex
@@ -27,15 +40,29 @@ const Navbar: React.FC = () => {
       >
         <HStack>
           <Box>
-            <Link to="/token">
-              <Text
-                color={state.currentPage === PRODUCT ? "white" : "gray"}
-                fontSize={{ base: "16px", lg: "24px" }}
-                fontWeight="600"
-              >
-                Products
-              </Text>
-            </Link>
+            <Menu>
+              {({ isOpen }) => (
+                <>
+                  <MenuButton rightIcon={<ChevronDownIcon />}>
+                    <HStack><Text
+                        color={state.currentPage === PRODUCT ? "white" : "gray"}
+                        fontSize={{ base: "16px", lg: "24px" }}
+                        fontWeight="600"
+                        >
+                        products
+                    </Text>
+                    <ChevronDownIcon /></HStack>
+                  </MenuButton>
+                  <MenuList style={{background: 'black', borderRadius: '0px', padding: '0px', marginTop: '16px'}}>
+                    {
+                        categories.map((item: any, key: number) => (
+                            <MenuItem style={{borderTop: '1px solid'}} key={key}><Link to='/token'><Text>{item}</Text></Link></MenuItem>
+                        ))   
+                    }
+                  </MenuList>
+                </>
+              )}
+            </Menu>
           </Box>
           <Box>
             <Text

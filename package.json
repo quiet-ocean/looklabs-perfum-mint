@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@chakra-ui/icons": "^1.1.1",
     "@chakra-ui/react": "^1.7.3",
     "@choc-ui/chakra-autocomplete": "^4.13.0",
     "@emotion/react": "^11.7.1",
@@ -76,6 +77,8 @@
     ]
   },
   "devDependencies": {
-    "chai": "^4.3.4"
+    "chai": "^4.3.4",
+    "ts-node": "^10.4.0",
+    "ts-node-dev": "^1.1.8"
   }
 }
