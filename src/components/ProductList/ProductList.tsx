@@ -103,6 +103,7 @@ const ProductList = () => {
           type: data[item.id]['type'],
           ids: [],
           styleId: BigNumber.from('1'),
+          category: item.category,
         };
         if(newItem.type === TYPE_HOODIE) {
           productDispatch({ type: 'ADD_HOODIE', payload: newItem })

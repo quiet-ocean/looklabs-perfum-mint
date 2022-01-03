@@ -61,6 +61,8 @@ export type ProductProps = {
 
   ids: BigNumber[]
   styleId: BigNumber
+
+  category: BigNumber
 };
 export type ProductStateProps = {
   loaded: boolean;
