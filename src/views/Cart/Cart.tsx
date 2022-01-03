@@ -179,7 +179,7 @@ const Cart = () => {
             <Box p='40px' mt="72px" alignItems="center" textAlign="center"><Text textTransform="uppercase" fontWeight="600" fontSize="56px" color="white" >NO ITEMS IN CART.ART</Text>
             </Box>
             <Box textAlign="center">
-              <Link to='/token' >
+              <Link to='/products' >
                 <Text textAlign="center" textDecoration="underline" mt="72px" fontSize="24px" textTransform="uppercase">
                   Go to products
                 </Text>

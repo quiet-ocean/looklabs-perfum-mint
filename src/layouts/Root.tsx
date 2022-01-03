@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { Switch, Route, withRouter } from "react-router-dom";
 import { Connect } from "./";
-import { Marketplace, Cart, Checkout, About, Whitepaper } from "../views";
+import { Marketplace, Cart, Checkout, About, Whitepaper, AddProduct } from "../views";
 import { Header, Footer, Navbar } from "../components";
 
 import { VStack, Box } from "@chakra-ui/react";
@@ -73,7 +73,8 @@ const Root: React.FC = () => {
                         <Route exact path="/" component={Marketplace} />
                         <Route path="/about" component={About} />
                         <Route exact path="/cart" component={Cart} />                    
-                        <Route exact path="/token" component={Marketplace} />
+                        <Route exact path="/products/:category" component={Marketplace} />
+                        <Route exact path="/add" component={AddProduct} />
                         <Route exact path="/whitepaper" component={Whitepaper} />                    
                         <Route exact path="/checkout" component={Checkout} />
                     </Switch>

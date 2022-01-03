@@ -1,6 +1,6 @@
 // @ts-nocheck
 import { useReducer, useEffect, useState, useContext } from "react";
-import { useHistory } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import { productReducer } from "../../reducers";
 import { Context, useAppState } from "../../state";
 import { api } from "../../utils/api";
@@ -56,6 +56,7 @@ const ProductList = () => {
   const [loading, setLoading] = useState(true);
   const [productCount, setProductCount] = useState(0)
   const history = useHistory()
+  const { category } = useParams()
   const toast = useToast()
 
   let _products = [];
@@ -71,6 +72,10 @@ const ProductList = () => {
     // }
     setLoading(false)
   }, []);
+
+  useEffect(() => {
+    console.log('category is ', category)
+  }, [category])
 
   useEffect(() => {
     let length = state.items.length

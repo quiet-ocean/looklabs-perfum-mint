@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 // import { utils } from "ethers";
 import { useContext, useState } from 'react'
 import { Context } from '../../state'
@@ -21,13 +21,9 @@ import { CART, PRODUCT, WHITEPAPER } from "../../state/constants";
 const categories = ['all', 'perfum', 'clothing', 'membership', 'accessories']
 const Navbar: React.FC = () => {
 
+  const history = useHistory()
   const { state } = useContext(Context)
-  
-  // const [isOpen, setOpen] = useState(false)
-  // const onClose = () => {
-  //   console.log('on close function')
-  //   setOpen(!isOpen)
-  // }
+
   return (
     <>
       <Flex
@@ -56,7 +52,7 @@ const Navbar: React.FC = () => {
                   <MenuList style={{background: 'black', borderRadius: '0px', padding: '0px', marginTop: '16px'}}>
                     {
                         categories.map((item: any, key: number) => (
-                            <MenuItem style={{borderTop: '1px solid'}} key={key}><Link to='/token'><Text>{item}</Text></Link></MenuItem>
+                            <MenuItem style={{borderTop: '1px solid'}} key={key}><Link to={`/products/${item}`}><Text>{item}</Text></Link></MenuItem>
                         ))   
                     }
                   </MenuList>

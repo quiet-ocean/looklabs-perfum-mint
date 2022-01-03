@@ -47,7 +47,7 @@ const Checkout = () => {
 
     useEffect(() => {
         if(!transaction || transaction === undefined || transaction === '') {
-            history.push('/token')
+            history.push('/products')
         } else {
             setLoading(true)
             let getTransactionConfirmations = async (): Promise<ReceiptProps> => {
