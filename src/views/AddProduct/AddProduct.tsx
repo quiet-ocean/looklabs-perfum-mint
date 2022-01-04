@@ -1,4 +1,7 @@
 import React, { useState } from 'react'
+import { utils, providers } from 'ethers'
+import Web3 from 'web3'
+import GenesisCart from '../../contracts/build/contracts/GenesisCart.json'
 import {
     HStack,
     VStack,
@@ -31,6 +34,9 @@ const AddProduct: React.FC<{setLoading: any}> = ({setLoading}) => {
         }
     }
     let addProduct = async (product: ProductProps) => {
+
+        
+
         setLoading(true)
         console.log('add a product')
         let tokenId = await contract?.addProduct(
@@ -46,6 +52,17 @@ const AddProduct: React.FC<{setLoading: any}> = ({setLoading}) => {
                 console.log(tx)
                 let receipt = await tx.wait()
                 console.log(receipt)
+                const web3 = new Web3()
+                const typesArray = [
+                {type: 'uint256', name: 'productId'}
+                ]
+                let data = receipt.logs[0].data
+                const decodedParameters = web3.eth.abi.decodeParameters(typesArray, data)
+                // console.log(JSON.stringify(decodedParameters, null, 1));
+                console.log('new product id is ', decodedParameters[0])
+            })
+            .catch((error: any) => {
+                setLoading(false)
             })
         // api.post('/add-product', { ...product, tokenId })
         // .then(res => {

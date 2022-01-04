@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react'
-import { api, LabelApi } from '../utils/api'
+import { api } from '../utils/api'
 
 jest.useRealTimers();
 
@@ -7,7 +7,7 @@ describe('Label api test', () => {
     let label: string
     let p
     const ADDED = 1
-    
+    let LabelApi = api
     beforeEach((): void => {
         jest.setTimeout(60000);
         // p = new SUT.PlaywrightFluent();
