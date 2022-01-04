@@ -60,13 +60,14 @@ const ProductList = () => {
   const toast = useToast()
 
   let _products = [];
-  let products: ProductProps[] = productState.products
+  // let products: ProductProps[] = productState.products
+  const [products, setProducts] = useState<ProductProps[]>([])
 
   useEffect(async () => {
     dispatch({type: 'SET_PAGE', payload: PRODUCT})
     productDispatch({type: 'REMOVE_ALL', payload: ''})
     // if(!productState.loaded) {
-      await loadProduct();
+      await loadProducts();
       productDispatch({type: 'SET_LOADED', payload: true})
       
     // }
@@ -75,6 +76,16 @@ const ProductList = () => {
 
   useEffect(() => {
     console.log('category is ', category)
+    if(category === 0) {
+      setProducts(productState.products)
+    } else {
+      setProducts(productState.products.filter((item: ProductProps) => {
+        if(item.category.eq(category)) {
+          return false
+        }
+        return true
+      }))
+    }
   }, [category])
 
   useEffect(() => {
@@ -87,7 +98,7 @@ const ProductList = () => {
   }, [state.items])
 
   
-  let loadProduct = async () => {
+  let loadProducts = async () => {
     _products = await contract.getProducts();
     console.log(_products)
     if (_products && _products.length) {
@@ -102,7 +113,7 @@ const ProductList = () => {
           qty: item.qty,
           // contractType: item.contractType,
           sale: item.sale,
-          // uri: item.url,
+          uri: item.url,
           mediaUrl: "/static/movies/" + uri[item.id],
           description: data[item.id]['description'],
           type: data[item.id]['type'],

@@ -47,7 +47,7 @@ export interface StyleListProps {
 }
 export type ProductProps = {
   id: BigNumber;
-  // url: string;
+  url: string;
   price: BigNumber;
   name: string;
   type: number;

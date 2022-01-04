@@ -40,19 +40,21 @@ const Navbar: React.FC = () => {
               {({ isOpen }) => (
                 <>
                   <MenuButton rightIcon={<ChevronDownIcon />}>
-                    <HStack><Text
+                    <HStack>
+                      <Text
                         color={state.currentPage === PRODUCT ? "white" : "gray"}
                         fontSize={{ base: "16px", lg: "24px" }}
                         fontWeight="600"
                         >
                         products
-                    </Text>
-                    <ChevronDownIcon /></HStack>
+                      </Text>
+                      <ChevronDownIcon />
+                    </HStack>
                   </MenuButton>
                   <MenuList style={{background: 'black', borderRadius: '0px', padding: '0px', marginTop: '16px'}}>
                     {
                         categories.map((item: any, key: number) => (
-                            <MenuItem style={{borderTop: '1px solid'}} key={key}><Link to={`/products/${item}`}><Text>{item}</Text></Link></MenuItem>
+                            <MenuItem style={{borderTop: '1px solid'}} key={key}><Link to={`/products/${key}`}><Text>{item}</Text></Link></MenuItem>
                         ))   
                     }
                   </MenuList>
@@ -86,6 +88,9 @@ const Navbar: React.FC = () => {
         </HStack>
 
         <Spacer />
+        <Box>
+          <Link to='/admin'>admin</Link>
+        </Box>
         <Box>
           { (state.currentPage === PRODUCT || state.currentPage === CART )
             ?

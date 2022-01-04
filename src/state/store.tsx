@@ -2,6 +2,7 @@ import React, {
     createContext,
     useReducer,
     Dispatch,
+    useState,
 } from 'react'
 import { cartReducer, productReducer } from '../reducers'
 import { initialCartState, initialProductsState } from './constants'
@@ -23,6 +24,7 @@ const Context = createContext<ContextType>({
 
 const Store = ({ children, value = {} as ContextType }: { children: React.ReactNode; value?: {} }) => {
     
+    const [appState, setAppState] = useState<{contract: any}>({contract: ''})
     const [state, dispatch] = useReducer(cartReducer, initialCartState)
     const [productState, productDispatch] = useReducer(productReducer, initialProductsState)
 
