@@ -39,7 +39,7 @@ const Navbar: React.FC = () => {
             <Menu>
               {({ isOpen }) => (
                 <>
-                  <MenuButton rightIcon={<ChevronDownIcon />}>
+                  <MenuButton>
                     <HStack>
                       <Text
                         color={state.currentPage === PRODUCT ? "white" : "gray"}
@@ -89,7 +89,11 @@ const Navbar: React.FC = () => {
 
         <Spacer />
         <Box>
-          <Link to='/admin'>admin</Link>
+          <Link to='/add'>add </Link>
+        </Box>
+        <Box> | </Box>
+        <Box>
+          <Link to='/admin'> admin</Link>
         </Box>
         <Box>
           { (state.currentPage === PRODUCT || state.currentPage === CART )

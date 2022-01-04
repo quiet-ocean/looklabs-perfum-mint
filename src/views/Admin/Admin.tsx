@@ -17,18 +17,26 @@ import {
     
 } from '@chakra-ui/react'
 import { ProductProps } from '../../types'
-import { Context, products } from '../../state'
+import { Context, products, useAppState } from '../../state'
 
-const AdminPage: React.FC = () => {
-    const { productState } = useContext(Context)
-    const deleteProduct = (dbId: BigNumber) => {
-        console.log('delete product ' + dbId + ' in database')
+const AdminPage: React.FC<{setLoading: any}> = ({setLoading}) => {
+    const { productState, productDispatch } = useContext(Context)
+    const { contract } = useAppState()
+
+    const deleteProduct = async (productId: BigNumber) => {
+        setLoading(true)
+        console.log('delee product ' + productId + ' in database')
+        await contract?.deleteProduct(productId)
+            .then(async (tx: any) => {
+                productDispatch({type: 'REMOVE_PRODUCT', payload: productId})
+            })
+        setLoading(false)
     }
     return (
         <>
-            <Container>
+            <Container maxW='container.xl' mt='40px'>
                 <Table variant='simple' color='white' w='full'>
-                    <TableCaption>Imperial to metric conversion factors</TableCaption>
+                    <TableCaption>product list</TableCaption>
                     <Thead>
                     <Tr>
                         <Th>id</Th>
@@ -43,13 +51,13 @@ const AdminPage: React.FC = () => {
                     {
                         productState.products.map((item: ProductProps, key: number) => {
                             return (
-                                <Tr>
+                                <Tr key={key}>
                                     <Td>{item.id.toString()}</Td>
                                     <Td>{item.name}</Td>
                                     <Td isNumeric>{item.price.toString()}</Td>
                                     <Td>{item.category.toString()}</Td>
                                     <Td>detail</Td>
-                                    <Td>delete</Td>
+                                    <Td><a href='#' onClick={() => {deleteProduct(item.id)}}>delete</a></Td>
                                 </Tr>
                             )
                         })
@@ -62,6 +70,7 @@ const AdminPage: React.FC = () => {
                         <Th isNumeric>price</Th>
                         <Th>category</Th>
                         <Th>detail</Th>
+                        <Th>actions</Th>
                     </Tr>
                     </Tfoot>
                 </Table>

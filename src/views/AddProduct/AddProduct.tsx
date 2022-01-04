@@ -13,7 +13,8 @@ import { initialProduct, products, useAppState } from '../../state'
 import { ProductProps } from '../../types'
 import { api } from '../../utils/api'
 
-const AddProduct: React.FC = () => {
+const AddProduct: React.FC<{setLoading: any}> = ({setLoading}) => {
+
     const { contract } = useAppState()
     const [product, setProduct] = useState(initialProduct) 
     const handleClick = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -30,6 +31,8 @@ const AddProduct: React.FC = () => {
         }
     }
     let addProduct = async (product: ProductProps) => {
+        setLoading(true)
+        console.log('add a product')
         let tokenId = await contract?.addProduct(
                 product.name,
                 product.price,
@@ -39,13 +42,19 @@ const AddProduct: React.FC = () => {
                 product.sale,
                 product.url
             )
-        api.post('/add-product', { ...product, tokenId })
-        .then(res => {
+            .then(async (tx: any) => {
+                console.log(tx)
+                let receipt = await tx.wait()
+                console.log(receipt)
+            })
+        // api.post('/add-product', { ...product, tokenId })
+        // .then(res => {
 
-        })
-        .catch(err => {
-            console.log(err)
-        })
+        // })
+        // .catch(err => {
+        //     console.log(err)
+        // })
+        setLoading(false)
     }
     return (
         <>

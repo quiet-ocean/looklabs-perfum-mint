@@ -72,20 +72,17 @@ const ProductList = () => {
       
     // }
     setLoading(false)
+    
   }, []);
 
   useEffect(() => {
-    console.log('category is ', category)
-    if(category === 0) {
-      setProducts(productState.products)
-    } else {
       setProducts(productState.products.filter((item: ProductProps) => {
-        if(item.category.eq(category)) {
-          return false
+        if(category === '0') return true
+        if(item.category.eq(BigNumber.from(category))) {
+          return true
         }
-        return true
+        return false
       }))
-    }
   }, [category])
 
   useEffect(() => {
@@ -105,7 +102,8 @@ const ProductList = () => {
       _products.forEach(async (item, key) => {
         // TEST PRODUCT, TO REMOVE WHEN THE DB IS WORKING
         // const response = await api.get(`/product/${item.id}`)
-
+        if(item.name === undefined || item.name === '')
+          return
         let newItem: ProductProps = {
           id: item.id,
           name: item.name,
@@ -115,8 +113,10 @@ const ProductList = () => {
           sale: item.sale,
           uri: item.url,
           mediaUrl: "/static/movies/" + uri[item.id],
-          description: data[item.id]['description'],
-          type: data[item.id]['type'],
+          // description: data[item.id]['description'],
+          description: 'description' + item.id,
+          // type: data[item.id]['type'],
+          type: item.contractType,
           ids: [],
           styleId: BigNumber.from('1'),
           category: item.category,
