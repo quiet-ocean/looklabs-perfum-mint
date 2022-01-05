@@ -1,5 +1,6 @@
 import { render, screen } from '@testing-library/react'
 import { api } from '../utils/api'
+import axios from 'axios'
 
 jest.useRealTimers();
 
@@ -43,11 +44,33 @@ describe('Label api test', () => {
     })
 })
 describe('product api test', () => {
+    let url = 'localhost:4000'
     beforeEach(() => {
 
     })
+    it('get a product info', async () => {
+        axios.get(`${url}/1`)
+        .then(res => {
+            console.log(res)
+        })
+        .catch(err => {
+            console.log(err)
+        })
+    })
     it('add a product', async () => {
-
+        let product = {
+            productId: '0x0df9e9',
+            mediaUrl: 'product media url',
+            type: 1,
+            description: 'product description',
+        }
+        axios.post(url, product)
+        .then(res => {
+            console.log(res)
+        })
+        .catch(err => {
+            console.log(err)
+        })
     })
     it('remove a product', async () => {
         

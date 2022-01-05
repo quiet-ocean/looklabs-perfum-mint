@@ -59,7 +59,23 @@ const AddProduct: React.FC<{setLoading: any}> = ({setLoading}) => {
                 let data = receipt.logs[0].data
                 const decodedParameters = web3.eth.abi.decodeParameters(typesArray, data)
                 // console.log(JSON.stringify(decodedParameters, null, 1));
-                console.log('new product id is ', decodedParameters[0])
+                let productId = decodedParameters[0]
+                console.log('new product id is ', productId)
+
+                api.post(`/product`, {
+                    productId: productId,
+                    mediaUrl: product.mediaUrl,
+                    type: product.type,
+                    desciption: product.description,
+                })
+                .then(res => {
+                    setLoading(false)
+                    console.log(res)
+                })
+                .catch(err => {
+                    setLoading(false)
+                    console.log(err)
+                })
             })
             .catch((error: any) => {
                 setLoading(false)
@@ -71,7 +87,7 @@ const AddProduct: React.FC<{setLoading: any}> = ({setLoading}) => {
         // .catch(err => {
         //     console.log(err)
         // })
-        setLoading(false)
+        // setLoading(false)
     }
     return (
         <>
