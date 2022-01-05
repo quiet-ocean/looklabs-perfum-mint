@@ -42,3 +42,14 @@ describe('Label api test', () => {
         console.log(response)
     })
 })
+describe('product api test', () => {
+    beforeEach(() => {
+
+    })
+    it('add a product', async () => {
+
+    })
+    it('remove a product', async () => {
+        
+    })
+})

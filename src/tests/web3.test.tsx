@@ -1,6 +1,6 @@
 // # use describe, it pattern
 import Web3 from 'web3'
-import { transaction, receipt } from './data.json'
+import { transaction, receipt } from './test-data.json'
 
 describe("Web 3 test", () => {
   it("parse event log", () => {

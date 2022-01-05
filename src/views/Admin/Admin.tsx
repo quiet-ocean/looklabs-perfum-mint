@@ -1,5 +1,6 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 import { BigNumber } from 'ethers'
+import { useProductState } from '../../hooks'
 
 import {
     Container,
@@ -19,10 +20,18 @@ import {
 import { ProductProps } from '../../types'
 import { Context, products, useAppState } from '../../state'
 
-const AdminPage: React.FC<{setLoading: any}> = ({setLoading}) => {
-    const { productState, productDispatch } = useContext(Context)
+const AdminPage: React.FC = () => {
+    const { productState, productDispatch, appState, setAppState } = useContext(Context)
     const { contract } = useAppState()
+    const products = useProductState()
 
+    useEffect(() => {
+        
+    }, [])
+
+    const setLoading = (flag: boolean) => {
+        setAppState({...appState, loading: flag})
+    }
     const deleteProduct = async (productId: BigNumber) => {
         setLoading(true)
         console.log('delee product ' + productId + ' in database')

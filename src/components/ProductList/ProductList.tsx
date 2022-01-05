@@ -11,78 +11,24 @@ import { ProductItem } from "./ProductItem";
 import { Container, Flex, Box, Text, useToast } from "@chakra-ui/react";
 import { PRODUCT, TYPE_HOODIE } from "../../state/constants";
 import { BigNumber } from "ethers";
+import { useProductState } from '../../hooks'
 
 dotenv.config();
 
-const uri = [
-  'cyber_grid.mov',
-  'hoodie_v1.mov',
-  'hoodie_v2.mov',
-  'eight_fashion_metapass.mov',
-  'coder_art_metapass.mp4',
-]
-
-const description = [
-  [
-    '<p>Cyber Eau de Parfume is the real taste of luxury in. Each Cyber comes with the digitalised version of the scent. The label is recoreded and customed on the blockchain. Each physical is matching the blockchain one.</p>',
-  ],
-  [
-    '<h2>Includes LOOK LABS propreiatry Metalight™ technilogy. Lightening in the dark, wireless chargable. Recycable OLED lights.</h2>',
-  ],
-  [
-    '<h2>Includes LOOK LABS propreiatry Metalight™ technilogy. Lightening in the dark, wireless chargable. Recycable OLED lights.</h2>',
-  ],
-  ['<h2>Hello, World!</h2>'],
-  ['<h2>1x free AR mint</h2>'],
-]
-
-const data = [
-  { type: 1, description: description[0] },
-  { type: 2, description: description[1] },
-  { type: 2, description: description[1] },
-  { type: 3, description: description[2] },
-  { type: 3, description: description[3] },
-]
-
-const styles: StyleProps[]= [
-  {id: 1, name: 'ver1', imageUri: '/static/hoodie/v1.png', animationUri: "/static/movies/hoodie_v1.mov", selected: false},
-  {id: 2, name: 'ver2', imageUri: '/static/hoodie/v2.png', animationUri: "/static/movies/hoodie_v2.mov", selected: false},
-]
-
-const ProductList = () => {
-  const { contract } = useAppState();
-  const { state, dispatch, productState, productDispatch } = useContext(Context)
-  // const [products, productDispatch] = useReducer(productReducer, []);1
-  const [loading, setLoading] = useState(true);
+const ProductList: React.FC = () => {
+  const { state, dispatch, productState, productDispatch, appState, setAppState } = useContext(Context)
   const [productCount, setProductCount] = useState(0)
   const history = useHistory()
   const { category } = useParams()
   const toast = useToast()
-
-  let _products = [];
-  // let products: ProductProps[] = productState.products
-  const [products, setProducts] = useState<ProductProps[]>([])
-
-  useEffect(async () => {
-    dispatch({type: 'SET_PAGE', payload: PRODUCT})
-    productDispatch({type: 'REMOVE_ALL', payload: ''})
-    // if(!productState.loaded) {
-      await loadProducts();
-      productDispatch({type: 'SET_LOADED', payload: true})
-      
-    // }
-    setLoading(false)
-    
-  }, []);
+  const products = useProductState()
+  
+  const setLoading = (flag: boolean) => {
+    setAppState({...appState, loading: flag})
+  }
 
   useEffect(() => {
-      setProducts(productState.products.filter((item: ProductProps) => {
-        if(category === '0') return true
-        if(item.category.eq(BigNumber.from(category))) {
-          return true
-        }
-        return false
-      }))
+
   }, [category])
 
   useEffect(() => {
@@ -93,42 +39,6 @@ const ProductList = () => {
     }
     setProductCount(length)
   }, [state.items])
-
-  
-  let loadProducts = async () => {
-    _products = await contract.getProducts();
-    console.log(_products)
-    if (_products && _products.length) {
-      _products.forEach(async (item, key) => {
-        // TEST PRODUCT, TO REMOVE WHEN THE DB IS WORKING
-        // const response = await api.get(`/product/${item.id}`)
-        if(item.name === undefined || item.name === '')
-          return
-        let newItem: ProductProps = {
-          id: item.id,
-          name: item.name,
-          price: item.price,
-          qty: item.qty,
-          // contractType: item.contractType,
-          sale: item.sale,
-          uri: item.url,
-          mediaUrl: "/static/movies/" + uri[item.id],
-          // description: data[item.id]['description'],
-          description: 'description' + item.id,
-          // type: data[item.id]['type'],
-          type: item.contractType,
-          ids: [],
-          styleId: BigNumber.from('1'),
-          category: item.category,
-        };
-        if(newItem.type === TYPE_HOODIE) {
-          productDispatch({ type: 'ADD_HOODIE', payload: newItem })
-        } else {
-          productDispatch({ type: "ADD_PRODUCT", payload: newItem });
-        }
-      });
-    }
-  };
 
   let checkout = () => [
     checkout(state, toast, history, dispatch, setLoading)
@@ -141,7 +51,7 @@ const ProductList = () => {
       </Cart> */}
       {/*products?.length === undefined || products?.length === 0 ? <Text textAlign='center' marginTop='10%'>No Product</Text> : null*/}
       {
-        products?.map((item, key) => {
+        productState.products?.map((item, key) => {
           if(item === undefined || item === '') return ''
           if (key === 0) {
             return (
@@ -186,24 +96,6 @@ const ProductList = () => {
             );
           }
         })
-      }
-      {loading
-        ?
-        <Box
-          style={{
-            position: 'fixed',
-            top: '0px',
-            bottom: '0px',
-            right: '0px',
-            left: '0px',
-            background: 'black',
-            opacity: '0.5',
-          }}
-        >
-          <Text color='white' zIndex={'2'} fontSize='22px' textAlign='center' marginTop='30%'>Loading...</Text>
-        </Box>
-        :
-        ''
       }
     </Flex>
   );

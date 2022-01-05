@@ -1,6 +1,9 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useContext } from 'react'
+import { BigNumber } from 'ethers'
 import { Switch, Route, withRouter } from "react-router-dom";
 import { Connect } from "./";
+import { Context, useAppState,TYPE_HOODIE } from '../state'
+import { ProductProps, StyleProps } from '../types'
 import { Marketplace, Cart, Checkout, About, Whitepaper, AddProduct, AdminPage } from "../views";
 import { Header, Footer, Navbar } from "../components";
 
@@ -28,12 +31,19 @@ function AutoScrollToTop({ history }: { history: any }) {
     }, []);
   
     return (null);
-  }
+}
 
-  const ST = withRouter(AutoScrollToTop)
+const ST = withRouter(AutoScrollToTop)
 
 const Root: React.FC = () => {
-    const [loading, setLoading] = useState<boolean>(false)
+    const { contract } = useAppState()
+    const { productDispatch, appState, setAppState } = useContext(Context)
+    
+    const loading = appState.loading
+    const setLoading = (flag: boolean) => {
+        setAppState({...appState, loading: flag})
+    }
+
     return (
         <div style={{height: '100vh'}}>
             <VStack
@@ -78,7 +88,7 @@ const Root: React.FC = () => {
                                 <AddProduct setLoading={setLoading} />
                             </Route>
                             <Route exact path="/admin">
-                                <AdminPage setLoading = {setLoading} />
+                                <AdminPage />
                             </Route>
                             <Route exact path="/whitepaper" component={Whitepaper} />                    
                             <Route exact path="/checkout" component={Checkout} />
