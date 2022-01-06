@@ -20,6 +20,7 @@ import {
 } from '@chakra-ui/react'
 import { ProductProps } from '../../types'
 import { Context, products, useAppState } from '../../state'
+import { api } from '../../utils/api'
 
 const AdminPage: React.FC = () => {
     const { productState, productDispatch, appState, setAppState } = useContext(Context)
@@ -39,6 +40,9 @@ const AdminPage: React.FC = () => {
         await contract?.deleteProduct(productId)
             .then(async (tx: any) => {
                 productDispatch({type: 'REMOVE_PRODUCT', payload: productId})
+                let response = await api.get(`/product/del/${productId}`)
+                let body = response.data.body
+                console.log(response)
             })
         setLoading(false)
     }
