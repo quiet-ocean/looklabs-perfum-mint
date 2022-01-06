@@ -7,27 +7,14 @@ import {
     Flex,
     Box,
     Text,
-    Heading,
     Button,
-    Progress,
-    useToast,
     Spinner,
 } from '@chakra-ui/react'
-import { TextInput, AutoCompleteField } from '../../components'
 
 import { useAppState, Context } from '../../state'
 
-const countries = [
-    { value: "ghana", label: "Ghana" },
-    { value: "nigeria", label: "Nigeria" },
-    { value: "kenya", label: "Kenya" },
-    { value: "southAfrica", label: "South Africa" },
-    { value: "unitedStates", label: "United States" },
-    { value: "canada", label: "Canada" },
-    { value: "germany", label: "Germany" }
-]
-
 type ReceiptProps = {confirmations: number, tokenId: number}
+
 const Checkout = () => {
 
     const CHECKOUT = 0

@@ -16,7 +16,7 @@ import {
   Button,
 } from "@chakra-ui/react";
 import { ChevronUpIcon, ChevronDownIcon } from '@chakra-ui/icons'
-import { CART, PRODUCT, WHITEPAPER } from "../../state/constants";
+import { CART_PAGE, PRODUCT_PAGE, WHITEPAPER_PAGE } from "../../state/constants";
 
 const categories = ['all', 'perfum', 'clothing', 'membership', 'accessories']
 const Navbar: React.FC = () => {
@@ -42,7 +42,7 @@ const Navbar: React.FC = () => {
                   <MenuButton>
                     <HStack>
                       <Text
-                        color={state.currentPage === PRODUCT ? "white" : "gray"}
+                        color={state.currentPage === PRODUCT_PAGE ? "white" : "gray"}
                         fontSize={{ base: "16px", lg: "24px" }}
                         fontWeight="600"
                         >
@@ -75,7 +75,7 @@ const Navbar: React.FC = () => {
           <Box>
             <Link to="/whitepaper">
               <Text
-                color={state.currentPage === WHITEPAPER ? "white" : "gray"}
+                color={state.currentPage === WHITEPAPER_PAGE ? "white" : "gray"}
                 fontSize={{ base: "16px", lg: "24px" }}
                 _hover={{
                   color: "white",
@@ -88,15 +88,11 @@ const Navbar: React.FC = () => {
         </HStack>
 
         <Spacer />
-        <Box>
-          <Link to='/add'>add </Link>
-        </Box>
-        <Box> | </Box>
-        <Box>
-          <Link to='/admin'> admin</Link>
+        <Box  p='6px'>
+          <Link to='/admin'> <Text>admin</Text></Link>
         </Box>
         <Box>
-          { (state.currentPage === PRODUCT || state.currentPage === CART )
+          { (state.currentPage === PRODUCT_PAGE || state.currentPage === CART_PAGE )
             ?
             <>
               <Link to="/cart">
@@ -107,7 +103,7 @@ const Navbar: React.FC = () => {
                     w={{ base: "150px", lg: "48px" }}
                     h={{ base: "32px", lg: "32px" }}
                   ></Image>
-                  <Text color={state.currentPage === CART ? "white" : "gray"}
+                  <Text color={state.currentPage === CART_PAGE ? "white" : "gray"}
                     fontSize={{ base: "16px", lg: "24px" }}
                     fontWeight="600">{state.items.length}&nbsp;{state.items.length == 1 ? 'ITEM' : 'ITEMS'}</Text>
                 </HStack>

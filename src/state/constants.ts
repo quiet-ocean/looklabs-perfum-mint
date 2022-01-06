@@ -1,17 +1,17 @@
 import { CartProps, ProductStateProps, ProductProps } from '../types'
 import { BigNumber, utils } from 'ethers'
 
-export const PRODUCT = 'product'
-export const CART = 'cart'
-export const WHITEPAPER = 'whitepaper'
-export const LOGIN = 'login'
+export const PRODUCT_PAGE = 'product'
+export const CART_PAGE = 'cart'
+export const WHITEPAPER_PAGE = 'whitepaper'
+export const LOGIN_PAGE = 'login'
 
 export const TYPE_CYBER = 1
 export const TYPE_HOODIE = 2
 export const TYPE_NORMAL = 3
 
 export const initialCartState: CartProps = {
-    currentPage: LOGIN,
+    currentPage: LOGIN_PAGE,
     total: BigNumber.from("0"),
     items: [],
     ids: [],
@@ -45,9 +45,9 @@ export const initialProduct: ProductProps = {
     supply: 10,
     maxUnits: 10,
     // media: string;
-    mediaUrl: '/static.movies/cyber.mov',
-    qty: 10,
-    description: description[0][0],
+    mediaUrl: '',
+    qty: 0,
+    description: '',
     sale: true,
     category: BigNumber.from('1'),
 

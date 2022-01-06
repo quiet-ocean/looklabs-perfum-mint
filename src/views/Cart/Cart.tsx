@@ -20,7 +20,7 @@ import {
 import { CartItem } from "../../components";
 import { Context } from "../../state";
 import { useAppState } from "../../state";
-import { CART } from "../../state/constants";
+import { CART_PAGE } from "../../state/constants";
 
 const Cart = () => {
   const { checkout, discount } = useAppState();
@@ -32,7 +32,7 @@ const Cart = () => {
 
   useEffect(() => {
 
-  dispatch({ type: 'SET_NAV_TITLE', payload: CART })
+  dispatch({ type: 'SET_NAV_TITLE', payload: CART_PAGE })
     setIds(state.ids)
   }, []);
   useEffect(() => {

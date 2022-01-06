@@ -24,7 +24,6 @@ const AddProduct: React.FC<{setLoading: any}> = ({setLoading}) => {
         // setProduct({[e.target.name]: e.target.value})
         let key: string = e.target?.name || ''
         let value: string = e.target?.value || ''
-        console.log(key, value)
         setProduct({...product, [key]: value})
     }
     let addProducts = async () => {
@@ -35,10 +34,13 @@ const AddProduct: React.FC<{setLoading: any}> = ({setLoading}) => {
     }
     let addProduct = async (product: ProductProps) => {
 
-        
-
         setLoading(true)
         console.log('add a product')
+        if(contract === undefined || contract === null || !contract) {
+            setLoading(false)
+            console.error('contract is not defined')
+            return
+        }
         let tokenId = await contract?.addProduct(
                 product.name,
                 product.price,
@@ -66,7 +68,7 @@ const AddProduct: React.FC<{setLoading: any}> = ({setLoading}) => {
                     productId: productId,
                     mediaUrl: product.mediaUrl,
                     type: product.type,
-                    desciption: product.description,
+                    description: product.description,
                 })
                 .then(res => {
                     setLoading(false)
@@ -80,14 +82,6 @@ const AddProduct: React.FC<{setLoading: any}> = ({setLoading}) => {
             .catch((error: any) => {
                 setLoading(false)
             })
-        // api.post('/add-product', { ...product, tokenId })
-        // .then(res => {
-
-        // })
-        // .catch(err => {
-        //     console.log(err)
-        // })
-        // setLoading(false)
     }
     return (
         <>

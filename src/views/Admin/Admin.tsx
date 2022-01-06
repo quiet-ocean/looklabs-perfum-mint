@@ -1,4 +1,5 @@
 import React, { useContext, useEffect } from 'react'
+import { Link } from 'react-router-dom'
 import { BigNumber } from 'ethers'
 import { useProductState } from '../../hooks'
 
@@ -44,7 +45,8 @@ const AdminPage: React.FC = () => {
     return (
         <>
             <Container maxW='container.xl' mt='40px'>
-                <Table variant='simple' color='white' w='full'>
+                <Box><Link to='/add'><Text align='right'>add product</Text></Link></Box>
+                <Table variant='simple' color='white' w='full' mt='20px'>
                     <TableCaption>product list</TableCaption>
                     <Thead>
                     <Tr>

@@ -9,7 +9,7 @@ import { TextSlider } from "../TextSlider";
 import { ProductProps, StyleProps } from '../../types'
 import { ProductItem } from "./ProductItem";
 import { Container, Flex, Box, Text, useToast } from "@chakra-ui/react";
-import { PRODUCT, TYPE_HOODIE } from "../../state/constants";
+import { PRODUCT_PAGE, TYPE_HOODIE } from "../../state/constants";
 import { BigNumber } from "ethers";
 import { useProductState } from '../../hooks'
 
@@ -26,6 +26,10 @@ const ProductList: React.FC = () => {
   const setLoading = (flag: boolean) => {
     setAppState({...appState, loading: flag})
   }
+
+  useEffect(() => {
+    dispatch({type: 'SET_PAGE', payload: PRODUCT_PAGE})
+  }, [])
 
   useEffect(() => {
 
