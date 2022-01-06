@@ -1,38 +1,39 @@
-import React, { useState } from 'react'
-//import S3FileUpload from 'react-s3'
+import React, { useState, forwardRef, useImperativeHandle, Ref } from 'react'
+import { RefObject } from '../../types'
+import ReactS3Client from 'react-aws-s3-typescript';
 
 const config = {
-    bucketName: '',
-    dirName: '',
-    region: '',
-    accessKeyId: '',
-    secretAccessKey: ''
+    bucketName: process.env.AWS_BUCKET_NAME || 'cart-web-admin',
+    dirName: 'prev_images',
+    region: process.env.AWS_REGION || 'us-east-1',
+    accessKeyId: process.env.AWS_ACCESS_KEY_ID || 'AKIA56CGEHVGVGOU6BOF',
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY || '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'
 }
 
-const FileUpload: React.FC<{childFunc: any}> = ({childFunc}) => {
-    const [file, setFile] = useState('')
+const FileUpload = forwardRef((props: {name: string}, ref: Ref<RefObject>) => {
+    const [file, setFile] = useState<File>(new File(['10'],''))
 
-    const uploadImage = () => {
+    useImperativeHandle(ref, () => ({ uploadImage }))
+    const uploadImage = async (fileName: string) => {
         console.log('upload image')
-        // S3FileUpload.uploadFile(file, config)
-        // .then(data => {
-        //     console.log(data.location)
-        // })
-        // .catch(error => {
-        //     console.log(error)
-        // })
+        const s3 = new ReactS3Client(config)
+        console.log(file, fileName)
+        try{
+            const res = await s3.uploadFile(file, fileName)
+            console.log(res)
+        } catch(exception) {
+            console.log(exception)
+        }
     }
     const handleChange = (e: any) => {
+        console.log(e.target.files)
         setFile(e.target.files[0])
     }
-    React.useEffect(() => {
-        childFunc.current = uploadImage
-    })
     return (
         <>
             <input type='file' onChange={handleChange} />
         </>
     )
-}
+})
 
 export { FileUpload }

@@ -14,7 +14,7 @@ import {
 } from '@chakra-ui/react'
 import { TextInput } from '../../components'
 import { initialProduct, products, useAppState } from '../../state'
-import { ProductProps } from '../../types'
+import { ProductProps, RefObject } from '../../types'
 import { api } from '../../utils/api'
 import { FileUpload } from '../../components/FileUpload'
 
@@ -22,9 +22,14 @@ const AddProduct: React.FC<{setLoading: any}> = ({setLoading}) => {
 
     const { contract } = useAppState()
     const [product, setProduct] = useState<ProductProps>(initialProduct)
-    const childUploadFunc = useRef(null)
-    const uploadImage = () => {
-        
+    const ref = useRef<RefObject>(null)
+    const uploadImage = async (fileName: string) => {
+        console.log(ref)
+        let response
+        if(ref.current) {
+            response = await ref.current.uploadImage(fileName)
+        }
+        return response
     }
     const handleClick = (e: React.ChangeEvent<HTMLInputElement>) => {
         // setProduct({[e.target.name]: e.target.value})
@@ -40,8 +45,11 @@ const AddProduct: React.FC<{setLoading: any}> = ({setLoading}) => {
     }
     let addProduct = async (product: ProductProps) => {
 
+        // await uploadImage('asdief0sdf882f')
+        // return
         setLoading(true)
         console.log('add a product')
+        
         if(contract === undefined || contract === null || !contract) {
             setLoading(false)
             console.error('contract is not defined')
@@ -69,6 +77,9 @@ const AddProduct: React.FC<{setLoading: any}> = ({setLoading}) => {
                 // console.log(JSON.stringify(decodedParameters, null, 1));
                 let productId = decodedParameters[0]
                 console.log('new product id is ', productId)
+
+                let response = await uploadImage(productId.toString() + '.png')
+                console.log('image upload result', response)
 
                 api.post(`/product`, {
                     productId: productId,
@@ -173,7 +184,7 @@ const AddProduct: React.FC<{setLoading: any}> = ({setLoading}) => {
                         </Box>
                         <Box w='full'>
                             <Text>preview image</Text>
-                            <FileUpload childFunc = {childUploadFunc} />
+                            <FileUpload ref = {ref} name = 'name'/>
                         </Box>
                     </VStack>
                 </Box>

@@ -116,3 +116,7 @@ export type CartProps = {
 export interface GlobalStateInterface {
   cart: CartItemProps[];
 }
+
+export interface RefObject {
+  uploadImage: (fileName: string) => void
+}
