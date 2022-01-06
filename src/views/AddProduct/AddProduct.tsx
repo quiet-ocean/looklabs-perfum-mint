@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useRef } from 'react'
 import { utils, providers } from 'ethers'
 import Web3 from 'web3'
 import GenesisCart from '../../contracts/build/contracts/GenesisCart.json'
@@ -10,16 +10,22 @@ import {
     Container,
     Button,
     Text,
+    Input,
 } from '@chakra-ui/react'
 import { TextInput } from '../../components'
 import { initialProduct, products, useAppState } from '../../state'
 import { ProductProps } from '../../types'
 import { api } from '../../utils/api'
+import { FileUpload } from '../../components/FileUpload'
 
 const AddProduct: React.FC<{setLoading: any}> = ({setLoading}) => {
 
     const { contract } = useAppState()
-    const [product, setProduct] = useState(initialProduct) 
+    const [product, setProduct] = useState<ProductProps>(initialProduct)
+    const childUploadFunc = useRef(null)
+    const uploadImage = () => {
+        
+    }
     const handleClick = (e: React.ChangeEvent<HTMLInputElement>) => {
         // setProduct({[e.target.name]: e.target.value})
         let key: string = e.target?.name || ''
@@ -87,8 +93,8 @@ const AddProduct: React.FC<{setLoading: any}> = ({setLoading}) => {
         <>
             <Flex h='full' flexDirection={{base: 'column', md: 'row'}}>
                 <Box p='40px' w='full'>
-                    <VStack w='full'>
-                        <Box w='full'>
+                    <VStack w='full' spacing='12px'>
+                        <Box w='full'><Text>name</Text>
                             <TextInput
                             name='name'                            
                             value={product.name}
@@ -99,6 +105,7 @@ const AddProduct: React.FC<{setLoading: any}> = ({setLoading}) => {
                             />
                         </Box>
                         <Box w='full'>
+                            <Text>type</Text>
                             <TextInput
                             name='type'                            
                             value={product.type}
@@ -109,6 +116,7 @@ const AddProduct: React.FC<{setLoading: any}> = ({setLoading}) => {
                             />
                         </Box>
                         <Box w='full'>
+                            <Text>price</Text>
                             <TextInput
                             name='price'                            
                             value={product.price}
@@ -118,7 +126,9 @@ const AddProduct: React.FC<{setLoading: any}> = ({setLoading}) => {
                             placeholder='Price'
                             />
                         </Box>
+                        
                         <Box w='full'>
+                            <Text>media url</Text>
                             <TextInput
                             name='mediaUrl'                            
                             value={product.mediaUrl}
@@ -129,6 +139,7 @@ const AddProduct: React.FC<{setLoading: any}> = ({setLoading}) => {
                             />
                         </Box>
                         <Box w='full'>
+                            <Text>quantity</Text>
                             <TextInput
                             name='qty'                            
                             value={product.qty}
@@ -139,6 +150,7 @@ const AddProduct: React.FC<{setLoading: any}> = ({setLoading}) => {
                             />
                         </Box>
                         <Box w='full'>
+                            <Text>description</Text>
                             <TextInput
                             name='description'                            
                             value={product.description}
@@ -149,6 +161,7 @@ const AddProduct: React.FC<{setLoading: any}> = ({setLoading}) => {
                             />
                         </Box>
                         <Box w='full'>
+                            <Text>category</Text>
                             <TextInput
                             name='category'                            
                             value={product.category}
@@ -157,6 +170,10 @@ const AddProduct: React.FC<{setLoading: any}> = ({setLoading}) => {
                             onChange={handleClick}
                             placeholder='category'
                             />
+                        </Box>
+                        <Box w='full'>
+                            <Text>preview image</Text>
+                            <FileUpload childFunc = {childUploadFunc} />
                         </Box>
                     </VStack>
                 </Box>

@@ -48,7 +48,7 @@ describe('product api test', () => {
     beforeEach(() => {
 
     })
-    xit('get a product info', async () => {
+    xit('get a product info from backend api', async () => {
         // axios.get(`${url}/dev/product/2vqs4`)
         // .then(res => {
         //     console.log(res.data)
@@ -59,7 +59,7 @@ describe('product api test', () => {
         let response = await axios.get(`${url}/dev/product/2vqs4`)
         console.log(response)
     })
-    it('add a product', async () => {
+    it('add a product to backend database', async () => {
         let productId = Math.random().toString(36).replace(/[^a-z 0-9]+/g, '').substr(0, 5);
         let product = {
             productId: productId,
