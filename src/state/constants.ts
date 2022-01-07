@@ -6,9 +6,9 @@ export const CART_PAGE = 'cart'
 export const WHITEPAPER_PAGE = 'whitepaper'
 export const LOGIN_PAGE = 'login'
 
-export const TYPE_CYBER = 1
-export const TYPE_HOODIE = 2
-export const TYPE_NORMAL = 3
+export const TYPE_CYBER = BigNumber.from('1')
+export const TYPE_HOODIE = BigNumber.from('2')
+export const TYPE_NORMAL = BigNumber.from('3')
 
 export const initialCartState: CartProps = {
     currentPage: LOGIN_PAGE,
@@ -38,18 +38,19 @@ const description = [
 
 export const initialProduct: ProductProps = {
     id: BigNumber.from('0'),
-    url: '',
-    price: BigNumber.from(utils.parseEther('0.001').toString()),
     name: '',
-    type: 1,
+    price: BigNumber.from(utils.parseEther('0.001').toString()),    
+    qty: 0,
+    contractType: BigNumber.from('0'),
+    category: BigNumber.from('1'),
+    sale: true,
+    url: '',
+
+    type: BigNumber.from('0'),
     supply: 10,
     maxUnits: 10,
-    // media: string;
-    mediaUrl: '',
-    qty: 0,
+    mediaUrl: '',    
     description: '',
-    sale: true,
-    category: BigNumber.from('1'),
 
     ids: [BigNumber.from('0')],
     styleId: BigNumber.from('0'),
@@ -63,7 +64,7 @@ export const products: ProductProps[] = [
         url: URL + '/cyber/',
         price: BigNumber.from(utils.parseEther('0.001').toString()),
         name: 'cyber edp',
-        type: 1,
+        type: BigNumber.from('0'),
         mediaUrl: '/static.movies/cyber.mov',
         description: description[0][0],
         category: BigNumber.from('1')

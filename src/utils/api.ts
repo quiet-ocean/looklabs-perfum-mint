@@ -6,4 +6,10 @@ dotenv.config()
 
 export const api = axios.create({
   baseURL: env.API,
+  headers: {
+    'x-auth-token':'token1234567890'
+    // common: {
+    //   'x-auth-token':'token1234567890'
+    // }
+  }
 })

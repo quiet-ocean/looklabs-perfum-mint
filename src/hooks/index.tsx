@@ -2,6 +2,7 @@ import { useState, useEffect, useContext } from 'react'
 import { useAppState, Context, TYPE_HOODIE } from '../state'
 import { ProductProps, StyleProps } from '../types'
 import { BigNumber } from 'ethers'
+import { api } from '../utils'
 
 const uri = [
 'cyber_grid.mov',
@@ -49,8 +50,8 @@ const useProductState = () => {
         console.log(_products)
         if (_products && _products.length) {
         _products.forEach(async (item: any, key: number) => {
-            // TEST PRODUCT, TO REMOVE WHEN THE DB IS WORKING
-            // const response = await api.get(`/product/${item.id}`)
+            // TEST PRODUCT, TO REMOVE WHEN THE DB IS WORKING           
+
             if(item.name === undefined || item.name === '')
             return
             let newItem: ProductProps = {
@@ -58,21 +59,34 @@ const useProductState = () => {
                 name: item.name,
                 price: item.price,
                 qty: item.qty,
-                // contractType: item.contractType,
+                contractType: item.contractType,
+                category: item.category,
                 sale: item.sale,
                 url: item.url,
-                mediaUrl: "/static/movies/" + uri[item.id],
-                // description: data[item.id]['description'],
-                description: 'description' + item.id,
-                // type: data[item.id]['type'],
-                type: 3,
-                // type: item.contractType,
+
+                type: BigNumber.from('1'),
+                
                 supply: item.supply,
                 maxUnits: item.maxUnits,
+                mediaUrl: "/static/movies/" + uri[item.id],
+                description: 'description' + item.id,
+
                 ids: [],
                 styleId: BigNumber.from('1'),
-                category: item.category,
+                
             };
+            let id = item.id.toNumber()
+            console.log('prodcut id ', id)
+            const response = await api.get(`/product/${id}`)
+            console.log(response)
+            if(response.data !== null) {
+                let data = response.data
+                newItem =  {
+                    ...newItem,
+                    mediaUrl: data.mediaUrl,
+                    description: data.description,
+                }
+            }
             if(newItem.type === TYPE_HOODIE) {
             // if(newItem.name.toLowerCase() === 'comfy5042') {
                 productDispatch({ type: 'ADD_HOODIE', payload: newItem })

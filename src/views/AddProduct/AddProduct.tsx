@@ -1,7 +1,10 @@
 import React, { useState, useRef } from 'react'
-import { utils, providers } from 'ethers'
+import { utils, providers, BigNumber } from 'ethers'
 import Web3 from 'web3'
-import GenesisCart from '../../contracts/build/contracts/GenesisCart.json'
+import env from '../../config'
+import { initialProduct, products, useAppState } from '../../state'
+import { ProductProps, RefObject } from '../../types'
+import { api } from '../../utils/api'
 import {
     HStack,
     VStack,
@@ -13,9 +16,6 @@ import {
     Input,
 } from '@chakra-ui/react'
 import { TextInput } from '../../components'
-import { initialProduct, products, useAppState } from '../../state'
-import { ProductProps, RefObject } from '../../types'
-import { api } from '../../utils/api'
 import { FileUpload } from '../../components/FileUpload'
 
 const AddProduct: React.FC<{setLoading: any}> = ({setLoading}) => {
@@ -43,12 +43,29 @@ const AddProduct: React.FC<{setLoading: any}> = ({setLoading}) => {
             await addProduct(products[i])
         }
     }
+    const test = async () => {
+        let randomName =  Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 5);
+
+        let product: ProductProps = {
+            ...initialProduct,
+            name: randomName,
+            qty: 10,
+            contractType: BigNumber.from('1'),
+            
+            url: env.API + '/cyber/',
+            type: BigNumber.from('1'),
+            mediaUrl: '/static/movies/hoodie_v1.mov',
+            description: '<p>Cyber Eau de Parfume is the real taste of luxury in. Each Cyber comes with the digitalised version of the scent. The label is recoreded and customed on the blockchain. Each physical is matching the blockchain one.</p>',
+        }
+        await addProduct(product)
+        console.log('prodcut added')
+    }
     let addProduct = async (product: ProductProps) => {
 
         // await uploadImage('asdief0sdf882f')
         // return
         setLoading(true)
-        console.log('add a product')
+        console.log('add a product', product)
         
         if(contract === undefined || contract === null || !contract) {
             setLoading(false)
@@ -59,9 +76,9 @@ const AddProduct: React.FC<{setLoading: any}> = ({setLoading}) => {
                 product.name,
                 product.price,
                 product.qty,
-                product.type,
+                product.contractType,
                 product.category,
-                product.sale,
+                true,
                 product.url
             )
             .then(async (tx: any) => {
@@ -78,13 +95,13 @@ const AddProduct: React.FC<{setLoading: any}> = ({setLoading}) => {
                 let productId = decodedParameters[0]
                 console.log('new product id is ', productId)
 
-                let response = await uploadImage(productId.toString() + '.png')
-                console.log('image upload result', response)
+                // let response = await uploadImage(productId.toString() + '.png')
+                // console.log('image upload result', response)
 
                 api.post(`/product`, {
                     productId: productId,
                     mediaUrl: product.mediaUrl,
-                    type: product.type,
+                    type: product.type.toString(),
                     description: product.description,
                 })
                 .then(res => {
@@ -116,6 +133,28 @@ const AddProduct: React.FC<{setLoading: any}> = ({setLoading}) => {
                             />
                         </Box>
                         <Box w='full'>
+                            <Text>price</Text>
+                            <TextInput
+                            name='price'                            
+                            value={product.price}
+                            style={{border: '1px solid white'}} 
+                            color='white'
+                            onChange={handleClick}
+                            placeholder='Price'
+                            />
+                        </Box>
+                        <Box w='full'>
+                            <Text>url</Text>
+                            <TextInput
+                            name='type'                            
+                            value={product.url}
+                            style={{border: '1px solid white'}} 
+                            color='white'
+                            onChange={handleClick}
+                            placeholder=''
+                            />
+                        </Box>
+                        <Box w='full'>
                             <Text>type</Text>
                             <TextInput
                             name='type'                            
@@ -127,28 +166,27 @@ const AddProduct: React.FC<{setLoading: any}> = ({setLoading}) => {
                             />
                         </Box>
                         <Box w='full'>
-                            <Text>price</Text>
+                            <Text>supply</Text>
                             <TextInput
-                            name='price'                            
-                            value={product.price}
+                            name='supply'                            
+                            value={product.supply}
                             style={{border: '1px solid white'}} 
                             color='white'
                             onChange={handleClick}
-                            placeholder='Price'
+                            placeholder=''
                             />
                         </Box>
-                        
                         <Box w='full'>
-                            <Text>media url</Text>
+                            <Text>max units</Text>
                             <TextInput
-                            name='mediaUrl'                            
-                            value={product.mediaUrl}
+                            name='maxUnits'
+                            value={product.maxUnits}
                             style={{border: '1px solid white'}} 
                             color='white'
                             onChange={handleClick}
-                            placeholder='Media Url'
+                            placeholder=''
                             />
-                        </Box>
+                        </Box>                        
                         <Box w='full'>
                             <Text>quantity</Text>
                             <TextInput
@@ -157,18 +195,7 @@ const AddProduct: React.FC<{setLoading: any}> = ({setLoading}) => {
                             style={{border: '1px solid white'}} 
                             color='white'
                             onChange={handleClick}
-                            placeholder='Quantity'
-                            />
-                        </Box>
-                        <Box w='full'>
-                            <Text>description</Text>
-                            <TextInput
-                            name='description'                            
-                            value={product.description}
-                            style={{border: '1px solid white'}} 
-                            color='white'
-                            onChange={handleClick}
-                            placeholder='Description'
+                            placeholder=''
                             />
                         </Box>
                         <Box w='full'>
@@ -180,6 +207,17 @@ const AddProduct: React.FC<{setLoading: any}> = ({setLoading}) => {
                             color='white'
                             onChange={handleClick}
                             placeholder='category'
+                            />
+                        </Box>
+                        <Box w='full'>
+                            <Text>description</Text>
+                            <TextInput
+                            name='description'                            
+                            value={product.description}
+                            style={{border: '1px solid white'}} 
+                            color='white'
+                            onChange={handleClick}
+                            placeholder='Description'
                             />
                         </Box>
                         <Box w='full'>
@@ -216,6 +254,20 @@ const AddProduct: React.FC<{setLoading: any}> = ({setLoading}) => {
                         onClick = { () => addProducts() }
                     >
                         <Text>add default products</Text>
+                    </Button>
+                    <Button
+                        bgGradient="linear(to-tr, #fd06b1, #ef313e, #cc672a, #a4a02e, #7dd632, #60ff35)"
+                        borderRadius="0px"
+                        w="full"
+                        fontSize={{ base: '24px', md: '36px', lg: '42px' }}
+                        p="50px"
+                        mb="24px"
+                        _active={{ boxShadow: 'none', outline: 'none' }}
+                        fontFamily="IBM Plex Mono"
+                        colorScheme="red"
+                        onClick = { () => test() }
+                    >
+                        <Text>test a add product</Text>
                     </Button>
                 </Box>
             </Flex>
