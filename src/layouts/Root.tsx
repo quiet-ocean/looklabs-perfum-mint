@@ -8,14 +8,12 @@ import { Marketplace, Cart, Checkout, About, Whitepaper, AddProduct, AdminPage }
 import { Header, Footer, Navbar } from "../components";
 
 import { VStack, Box, Text } from "@chakra-ui/react";
+import { setAuthToken } from '../utils';
 // import { AnimatedSwitch } from 'react-router-transition'
 
 function AutoScrollToTop({ history }: { history: any }) {
     useEffect(() => {
       const unlisten = history.listen(() => {
-        //   setTimeout(() => {
-        //     window.scrollTo({top: 0, behavior: 'smooth'})
-        //   }, 1000)
         const scrollToTop = () => {
             const c = document.documentElement.scrollTop || document.body.scrollTop;
             if (c > 0) {
@@ -29,6 +27,7 @@ function AutoScrollToTop({ history }: { history: any }) {
         unlisten();
       }
     }, []);
+
   
     return (null);
 }
@@ -40,6 +39,20 @@ const Root: React.FC = () => {
     const { productDispatch, appState, setAppState } = useContext(Context)
     
     const loading = appState.loading
+
+    const loadUser = async () => {
+
+    }
+    useEffect(() => {
+        if(localStorage.token)  {
+            setAuthToken(localStorage.token)
+        }
+        loadUser()
+        // let user = await loadUser()
+        // setAppState({ ...appState, user: user})
+        
+    }, [])
+
     const setLoading = (flag: boolean) => {
         setAppState({...appState, loading: flag})
     }
