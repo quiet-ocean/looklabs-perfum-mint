@@ -1,5 +1,6 @@
 import { BigNumber } from 'ethers'
 import { isEmpty } from './isEmpty'
+import { api } from './api'
 
 const { REACT_APP_SERVICE_URL } = process.env
 
@@ -22,4 +23,14 @@ export const BN = (n: string) => {
         console.error('input param is not alphanumeric')
     }
     return BigNumber.from(n)
+}
+
+export const setAuthToken = (token: string) => {
+    if(token) {
+        api.defaults.headers.common['x-auth-token'] = token
+        localStorage.setItem('token', token) 
+    } else {
+        delete api.defaults.headers.common['x-auth-token'];
+        localStorage.removeItem('token')
+    }
 }
