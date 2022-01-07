@@ -76,7 +76,7 @@ const useProductState = () => {
                 
             };
             let id = item.id.toNumber()
-            console.log('prodcut id ', id)
+            console.log('product id ', id)
             const response = await api.get(`/product/${id}`)
             console.log(response)
             if(response.data !== null) {

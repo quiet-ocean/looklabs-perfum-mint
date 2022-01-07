@@ -1,9 +1,11 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { Redirect } from 'react-router-dom'
+import { Context } from '../state'
 
 const PrivateRoute: React.FC<{children: React.ReactNode}> = ({children}) => {
 
-    let isAuthenticated = true
+    const { appState, setAppState } = useContext(Context)
+    let isAuthenticated = appState.isAuthenticated
 
     return (
             isAuthenticated

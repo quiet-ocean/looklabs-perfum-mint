@@ -12,8 +12,6 @@ export * from './formatPriceEth'
 export * from './isEmpty'
 export * from './api'
 
-
-
 const isAlphaNumeric = function(s: string) {
     var regExp = /^[A-Za-z0-9]+$/;
     return (s.match(regExp));

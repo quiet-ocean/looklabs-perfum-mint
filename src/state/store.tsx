@@ -12,6 +12,8 @@ type AppStateProps = {
     contract: any,
     loading: boolean,
     user: any,
+    isAuthenticated: boolean,
+    token: any
 }
 interface ContextType {
     state: CartProps;
@@ -21,9 +23,10 @@ interface ContextType {
     productDispatch: Dispatch<ActionProps>;
     setAppState: any
 }
+const initialAppState = {contract: '', loading: false, user: '', isAuthenticated: false, token: ''}
 const Context = createContext<ContextType>({ 
-    state: initialCartState,   
-    appState: {contract: '', loading: false, user: ''},
+    state: initialCartState,
+    appState: initialAppState,
     productState: initialProductsState,
     dispatch: () => {},    
     productDispatch: () => {},
@@ -32,7 +35,7 @@ const Context = createContext<ContextType>({
 
 const Store = ({ children, value = {} as ContextType }: { children: React.ReactNode; value?: {} }) => {
     
-    const [appState, setAppState] = useState<AppStateProps>({contract: '', loading: false, user: ''})
+    const [appState, setAppState] = useState<AppStateProps>(initialAppState)
     const [state, dispatch] = useReducer(cartReducer, initialCartState)
     const [productState, productDispatch] = useReducer(productReducer, initialProductsState)
 

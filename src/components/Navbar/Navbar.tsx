@@ -19,11 +19,14 @@ import { ChevronUpIcon, ChevronDownIcon } from '@chakra-ui/icons'
 import { CART_PAGE, PRODUCT_PAGE, WHITEPAPER_PAGE } from "../../state/constants";
 
 const categories = ['all', 'perfum', 'clothing', 'membership', 'accessories']
-const Navbar: React.FC = () => {
+const Navbar: React.FC<{ onOpen: () => void }> = ({onOpen}) => {
 
   const history = useHistory()
   const { state } = useContext(Context)
 
+  const login = () => {
+    onOpen()
+  }
   return (
     <>
       <Flex
@@ -89,7 +92,7 @@ const Navbar: React.FC = () => {
 
         <Spacer />
         <Box  p='6px'>
-          <Link to='/admin'> <Text>admin</Text></Link>
+          <a href='javascript: #' onClick={login}><Text>admin</Text></a>
         </Box>
         <Box>
           { (state.currentPage === PRODUCT_PAGE || state.currentPage === CART_PAGE )

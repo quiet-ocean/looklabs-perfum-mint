@@ -12,3 +12,4 @@ export * from "./CartItem";
 export * from "./TextSlider";
 export * from "./Cart";
 export * from "./Infographic";
+export * from './LoginModal'
