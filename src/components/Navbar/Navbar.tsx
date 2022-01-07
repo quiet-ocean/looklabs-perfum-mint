@@ -22,10 +22,13 @@ const categories = ['all', 'perfum', 'clothing', 'membership', 'accessories']
 const Navbar: React.FC<{ onOpen: () => void }> = ({onOpen}) => {
 
   const history = useHistory()
-  const { state } = useContext(Context)
+  const { state, appState } = useContext(Context)
 
   const login = () => {
-    onOpen()
+    if(appState.isAuthenticated)
+      history.push('/admin')
+    else
+      onOpen()
   }
   return (
     <>
