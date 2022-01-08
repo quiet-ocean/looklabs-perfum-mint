@@ -50,7 +50,7 @@ const LoginModal: React.FC<{isOpen: boolean, onOpen: () => void, onClose: () => 
     }
     return (
       <>
-        <Modal isOpen={isOpen} onClose={onClose}>
+        <Modal isOpen={isOpen} onClose={onClose} >
           <ModalOverlay />
           <ModalContent p='10px'>
             <ModalHeader>Modal Title</ModalHeader>
