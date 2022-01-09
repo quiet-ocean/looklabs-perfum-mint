@@ -44,7 +44,6 @@ const useProductState = () => {
 
     const { contract } = useAppState()
     const { productState, productDispatch, appState, setAppState } = useContext(Context)
-    const [loading, setLoading] = useState<boolean>(false)
     const _loadProducts = async () => {
         
         let _products = await contract?.getProducts();

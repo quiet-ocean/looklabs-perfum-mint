@@ -6,7 +6,7 @@ export const CART_PAGE = 'cart'
 export const WHITEPAPER_PAGE = 'whitepaper'
 export const LOGIN_PAGE = 'login'
 
-export const TYPE_CYBER = BigNumber.from('1')
+export const TYPE_CYBER = BigNumber.from('5')
 export const TYPE_HOODIE = BigNumber.from('2')
 export const TYPE_NORMAL = BigNumber.from('3')
 

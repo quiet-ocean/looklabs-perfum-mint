@@ -4,7 +4,7 @@ import { Context } from '../state'
 
 const PrivateRoute: React.FC<{component: React.FC, path: string, exact: boolean}> = (props) => {
 
-    const { appState, setAppState } = useContext(Context)
+    const { appState } = useContext(Context)
     let isAuthenticated = appState.isAuthenticated
 
     return  isAuthenticated ? (<Route  path={props.path}  exact={props.exact} component={props.component} />) : 

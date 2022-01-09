@@ -59,6 +59,7 @@ const ProductItem = ({ product, setLoading }: {ProductProps, any}) => {
   const productPrice = Number(utils.formatEther(product.price))
   const [input, setInput] = useState('')
   const [count, setCount] = useState(1)
+  const [isCyber, setIsCyber] = useState(false)
   const toast = useToast()
   const { state, dispatch, productDispatch } = useContext(Context)
 
@@ -67,14 +68,19 @@ const ProductItem = ({ product, setLoading }: {ProductProps, any}) => {
 
   const history = useHistory()
   const ref = useRef(null)
-
+  
   const updateSupply = useAppState(
     useCallback(({ getSupply }) => getSupply, []),
   )
 
+  useEffect(()=>{
+    setIsCyber(product.type.eq(TYPE_CYBER))
+  }, [product])
   useEffect(() => {
     updateSupply()
   }, [updateSupply])
+
+  
 
   let gotoCart = (e: React.MouseEvent) => {
     e.stopPropagation()

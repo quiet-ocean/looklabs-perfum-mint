@@ -1,14 +1,12 @@
 import { useEffect, useContext } from 'react'
 import { Switch, Route, withRouter } from "react-router-dom";
 import { Connect } from "./";
-import { Context, useAppState } from '../state'
+import { Context } from '../state'
 import { Marketplace, Cart, Checkout, About, Whitepaper, AddProduct, AdminPage } from "../views";
 import { Header, Footer, Navbar, LoginModal } from "../components";
 import { PrivateRoute } from './PrivateRoute';
-
 import { VStack, Box, Text, useDisclosure } from "@chakra-ui/react";
-import { setAuthToken, api } from '../utils';
-// import { AnimatedSwitch } from 'react-router-transition'
+import { setAuthToken } from '../utils';
 
 function AutoScrollToTop({ history }: { history: any }) {
     useEffect(() => {
@@ -39,23 +37,10 @@ const Root: React.FC = () => {
     
     const loading = appState.loading
 
-    // const loadUser = async () => {
-    //     let res = await api.get('/auth')
-    //     if(res && res.data) {
-    //         let user: string = res.data
-    //         setAppState({...appState, isAuthenticated: true, user: user})
-    //     } else {
-
-    //     }
-    // }
     useEffect(() => {
         if(localStorage.token)  {
-            // setAppState({...appState, isAuthenticated: true})
             setAuthToken(localStorage.token)
         }
-        // loadUser()
-        // let user = await loadUser()
-        // setAppState({ ...appState, user: user})
     }, [])
 
     return (
