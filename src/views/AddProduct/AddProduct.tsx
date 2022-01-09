@@ -22,8 +22,8 @@ const AddProduct: React.FC = () => {
     const { appState, setAppState } = useContext(Context)
     const { contract } = useAppState()
     const [product, setProduct] = useState<ProductProps>(initialProduct)
-    const [imageSrc, setImageSrc] = useState('')
     const ref = useRef<RefObject>(null)
+
     const uploadImage = async (fileName: string) => {
         console.log(ref)
         let response
@@ -125,13 +125,7 @@ const AddProduct: React.FC = () => {
             <Flex h='full' flexDirection={{base: 'column', md: 'row'}}>
                 <Box p='40px' w='full'>
                     <VStack w='full' spacing='12px'>
-                        <Box w='full'>
-                            <Image src={imageSrc} />
-                        </Box>
-                        <Box w='full'>
-                            <Text>preview image</Text>
-                            <FileUpload ref = {ref} name = 'name'/>
-                        </Box>
+                        <FileUpload ref = {ref} name = 'name'/>
                         <Box w='full'><Text>name</Text>
                             <TextInput
                             name='name'                            

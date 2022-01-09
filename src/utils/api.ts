@@ -5,7 +5,7 @@ import env from '../config'
 dotenv.config()
 
 export const api = axios.create({
-  baseURL: env.API,
+  baseURL: process.env.REACT_APP_API_URL || env.API,
   headers: {
     'x-auth-token':'token1234567890'
     // common: {
