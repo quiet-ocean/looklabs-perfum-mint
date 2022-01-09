@@ -6,7 +6,6 @@ import { api, setAuthToken } from '../../utils'
 import {
     Button,
     Text,
-    Input,
     Modal,
     VStack,
     Box,
@@ -16,15 +15,13 @@ import {
     ModalFooter,
     ModalBody,
     ModalCloseButton,
-    Checkbox, CheckboxGroup,
-    useDisclosure,
+    Checkbox,
     useToast,
 } from '@chakra-ui/react'
 import { TextInput } from '../'
 
 const LoginModal: React.FC<{isOpen: boolean, onOpen: () => void, onClose: () => void}> = ({isOpen, onOpen, onClose}) => {
 
-    // const { isOpen, onOpen, onClose } = useDisclosure()
     const history = useHistory()
     const toast = useToast()
     const { appState, setAppState } = useContext(Context)

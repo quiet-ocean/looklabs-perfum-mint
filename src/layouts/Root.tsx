@@ -1,9 +1,7 @@
-import { useEffect, useState, useContext } from 'react'
-import { BigNumber } from 'ethers'
+import { useEffect, useContext } from 'react'
 import { Switch, Route, withRouter } from "react-router-dom";
 import { Connect } from "./";
-import { Context, useAppState,TYPE_HOODIE } from '../state'
-import { ProductProps, StyleProps } from '../types'
+import { Context, useAppState } from '../state'
 import { Marketplace, Cart, Checkout, About, Whitepaper, AddProduct, AdminPage } from "../views";
 import { Header, Footer, Navbar, LoginModal } from "../components";
 import { PrivateRoute } from './PrivateRoute';
@@ -37,20 +35,19 @@ const ST = withRouter(AutoScrollToTop)
 
 const Root: React.FC = () => {
     const { isOpen, onOpen, onClose } = useDisclosure()
-    const { contract } = useAppState()
-    const { productDispatch, appState, setAppState } = useContext(Context)
+    const { appState, setAppState } = useContext(Context)
     
     const loading = appState.loading
 
-    const loadUser = async () => {
-        let res = await api.get('/auth')
-        if(res && res.data) {
-            let user: string = res.data
-            setAppState({...appState, isAuthenticated: true, user: user})
-        } else {
+    // const loadUser = async () => {
+    //     let res = await api.get('/auth')
+    //     if(res && res.data) {
+    //         let user: string = res.data
+    //         setAppState({...appState, isAuthenticated: true, user: user})
+    //     } else {
 
-        }
-    }
+    //     }
+    // }
     useEffect(() => {
         if(localStorage.token)  {
             // setAppState({...appState, isAuthenticated: true})
@@ -60,10 +57,6 @@ const Root: React.FC = () => {
         // let user = await loadUser()
         // setAppState({ ...appState, user: user})
     }, [])
-
-    const setLoading = (flag: boolean) => {
-        setAppState({...appState, loading: flag})
-    }
 
     return (
         <div style={{height: '100vh'}}>

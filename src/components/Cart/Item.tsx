@@ -1,13 +1,12 @@
 import ReactPlayer from 'react-player'
 import { utils } from 'ethers'
 import {
-    Container,
     HStack,
     VStack,
     Box,
     Text,
     Flex,
-    Link, Image
+    Link,
 } from '@chakra-ui/react'
 
 const Item = (props: any) => {

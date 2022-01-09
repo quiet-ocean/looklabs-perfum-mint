@@ -23,7 +23,7 @@ import Model from '../Voxel/Model'
 import parse from 'html-react-parser'
 import env from '../../config'
 import { TYPE_CYBER, TYPE_HOODIE } from '../../state/constants'
-import { CartItemProps, ProductProps, StyleProps } from '../../types'
+import { CartItemProps, ProductProps } from '../../types'
 import { Context } from '../../state'
 import { useAppState } from '../../state'
 import { api } from '../../utils/api'
@@ -46,11 +46,6 @@ import {
 } from '@chakra-ui/react'
 import { ToastContent } from './ToastContent'
 
-// const hoodieAnimationUris = {
-//   'ver1': '/static/movies/hoodie_v1.mov',
-//   'ver2': '/static/movies/hoodie_v2.mov',
-
-
 const ProductItem = ({ product, setLoading }: {ProductProps, any}) => {
   const {
     boughtTokens,
@@ -60,37 +55,22 @@ const ProductItem = ({ product, setLoading }: {ProductProps, any}) => {
     user,
     checkout,
   } = useAppState()
+
   const productPrice = Number(utils.formatEther(product.price))
-  // const [order, setOrder] = useState<OrderProps>({
-  //   qty: 1,
-  //   productPrice: tokenPrice,
-  // });
   const [input, setInput] = useState('')
   const [count, setCount] = useState(1)
   const toast = useToast()
   const { state, dispatch, productDispatch } = useContext(Context)
-  const [isCyber, setIsCyber] = useState(false)
-  const [isHoodie, setIsHoodie] = useState(false)
 
   const cyberSupply = product.qty
   const maxUnits = product.maxUnits
 
   const history = useHistory()
   const ref = useRef(null)
-  let canvasWidht
 
   const updateSupply = useAppState(
     useCallback(({ getSupply }) => getSupply, []),
   )
-
-  useEffect(() => {
-
-    let _isCyber = product.type.eq(TYPE_CYBER) ? true : false
-    let _isHoodie = product.type.eq(TYPE_HOODIE) ? true : false
-
-    setIsHoodie(_isHoodie)
-    setIsCyber(_isCyber)
-  }, [])
 
   useEffect(() => {
     updateSupply()
@@ -269,7 +249,7 @@ const ProductItem = ({ product, setLoading }: {ProductProps, any}) => {
       <Flex direction={{ base: 'column', md: 'row' }}>
         <Box p="40px" w={{ base: '100%', md: '50%' }}>
           <Flex bg="" h="100%" ref={ref}>
-            {isCyber ? (
+            {product.type.eq(TYPE_CYBER) ? (
               <Canvas
                 camera
                 style={{

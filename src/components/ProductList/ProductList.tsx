@@ -1,9 +1,7 @@
 // @ts-nocheck
-import { useReducer, useEffect, useState, useContext } from "react";
+import { useEffect, useState, useContext } from "react";
 import { useHistory, useParams } from 'react-router-dom';
-import { productReducer } from "../../reducers";
-import { Context, useAppState } from "../../state";
-import { api } from "../../utils/api";
+import { Context } from "../../state";
 import * as dotenv from "dotenv";
 import { TextSlider } from "../TextSlider";
 import { ProductProps, StyleProps } from '../../types'

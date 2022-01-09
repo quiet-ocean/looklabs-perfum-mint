@@ -7,7 +7,6 @@ import {
     Container,
     Box,
     Text,
-
     Table,
     Thead,
     Tbody,
@@ -19,13 +18,13 @@ import {
     
 } from '@chakra-ui/react'
 import { ProductProps } from '../../types'
-import { Context, products, useAppState } from '../../state'
+import { Context, useAppState } from '../../state'
 import { api } from '../../utils/api'
 
 const AdminPage: React.FC = () => {
     const { productState, productDispatch, appState, setAppState } = useContext(Context)
     const { contract } = useAppState()
-    const products = useProductState()
+    useProductState()
 
     useEffect(() => {
         
@@ -41,7 +40,6 @@ const AdminPage: React.FC = () => {
             .then(async (tx: any) => {
                 productDispatch({type: 'REMOVE_PRODUCT', payload: productId})
                 let response = await api.get(`/product/del/${productId}`)
-                let body = response.data.body
                 console.log(response)
             })
         setLoading(false)

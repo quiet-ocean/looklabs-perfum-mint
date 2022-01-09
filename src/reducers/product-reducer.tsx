@@ -1,5 +1,5 @@
 import { initialProductsState } from '../state/constants';
-import { ActionProps, ProductProps, ProductStateProps, StyleProps } from '../types'
+import { ActionProps, ProductProps, ProductStateProps } from '../types'
 import { BigNumber } from 'ethers'
 
 const productReducer = (state: ProductStateProps = initialProductsState, action: ActionProps): ProductStateProps => {

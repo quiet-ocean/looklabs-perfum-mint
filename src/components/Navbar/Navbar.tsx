@@ -110,7 +110,7 @@ const Navbar: React.FC<{ onOpen: () => void }> = ({onOpen}) => {
                   ></Image>
                   <Text color={state.currentPage === CART_PAGE ? "white" : "gray"}
                     fontSize={{ base: "16px", lg: "24px" }}
-                    fontWeight="600">{state.items.length}&nbsp;{state.items.length == 1 ? 'ITEM' : 'ITEMS'}</Text>
+                    fontWeight="600">{state.items.length}&nbsp;{state.items.length === 1 ? 'ITEM' : 'ITEMS'}</Text>
                 </HStack>
               </Link>
             </>

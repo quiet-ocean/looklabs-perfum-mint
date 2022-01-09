@@ -6,7 +6,7 @@ import React, {
 } from 'react'
 import { cartReducer, productReducer } from '../reducers'
 import { initialCartState, initialProductsState } from './constants'
-import { CartProps, ActionProps, ProductProps, ProductStateProps } from '../types'
+import { CartProps, ActionProps, ProductStateProps } from '../types'
 
 type AppStateProps = {
     contract: any,

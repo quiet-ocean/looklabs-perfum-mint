@@ -1,20 +1,18 @@
 import React, { useState, useRef, useContext } from 'react'
-import { utils, providers, BigNumber } from 'ethers'
+import { BigNumber } from 'ethers'
 import Web3 from 'web3'
 import env from '../../config'
 import { Context, initialProduct, products, useAppState } from '../../state'
 import { ProductProps, RefObject } from '../../types'
 import { api } from '../../utils/api'
 import {
-    HStack,
     VStack,
     Box,    
     Flex,
-    Container,
     Button,
     Text,
-    Input,
 } from '@chakra-ui/react'
+
 import { TextInput } from '../../components'
 import { FileUpload } from '../../components/FileUpload'
 
@@ -76,7 +74,7 @@ const AddProduct: React.FC = () => {
             console.error('contract is not defined')
             return
         }
-        let tokenId = await contract?.addProduct(
+        await contract?.addProduct(
                 product.name,
                 product.price,
                 product.qty,
