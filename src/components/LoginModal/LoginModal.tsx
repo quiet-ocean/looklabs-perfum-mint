@@ -49,7 +49,7 @@ const LoginModal: React.FC<{isOpen: boolean, onOpen: () => void, onClose: () => 
                   position: 'top-right',
                   render: () => (
                     <Box color='white' p={3} bg='blue.500'>
-                      <Text>Login succeed!</Text>
+                      <Text color='white'>Login succeed!</Text>
                     </Box>
                   ),
                 })

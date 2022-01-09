@@ -46,8 +46,8 @@ const useProductState = () => {
     const { productState, productDispatch, appState, setAppState } = useContext(Context)
     const [loading, setLoading] = useState<boolean>(false)
     const _loadProducts = async () => {
+        
         let _products = await contract?.getProducts();
-        console.log(_products)
         if (_products && _products.length) {
         _products.forEach(async (item: any, key: number) => {
             // TEST PRODUCT, TO REMOVE WHEN THE DB IS WORKING           
@@ -75,10 +75,10 @@ const useProductState = () => {
                 styleId: BigNumber.from('1'),
                 
             };
+
             let id = item.id.toNumber()
-            console.log('product id ', id)
             const response = await api.get(`/product/${id}`)
-            console.log(response)
+
             if(response.data !== null) {
                 let data = response.data
                 newItem =  {
@@ -87,9 +87,10 @@ const useProductState = () => {
                     description: data.description,
                 }
             }
-            if(newItem.type === TYPE_HOODIE) {
-            // if(newItem.name.toLowerCase() === 'comfy5042') {
-                productDispatch({ type: 'ADD_HOODIE', payload: newItem })
+            // if(newItem.type === TYPE_HOODIE) {
+            if(newItem.name.toLowerCase() === 'comfy5402') {
+                newItem.type = TYPE_HOODIE
+                productDispatch({ type: 'ADD_HOODIE', payload: newItem });
             } else {
                 productDispatch({ type: "ADD_PRODUCT", payload: newItem });
             }

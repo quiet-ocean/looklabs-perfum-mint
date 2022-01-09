@@ -85,8 +85,8 @@ const ProductItem = ({ product, setLoading }: {ProductProps, any}) => {
 
   useEffect(() => {
 
-    let _isCyber = product.type === TYPE_CYBER ? true : false
-    let _isHoodie = product.type === TYPE_HOODIE ? true : false
+    let _isCyber = product.type.eq(TYPE_CYBER) ? true : false
+    let _isHoodie = product.type.eq(TYPE_HOODIE) ? true : false
 
     setIsHoodie(_isHoodie)
     setIsCyber(_isCyber)
@@ -104,15 +104,12 @@ const ProductItem = ({ product, setLoading }: {ProductProps, any}) => {
 
   let checkLabelExist = async (label: string) => {
     const response = await api.get(`/label?name=${label}`)
-    console.log(response)
     return response.data.exist
   }
   let addLabel = async (label: string, id: number) => {
     const ADDED = 1
     const MINTED = 2
     if (isEmpty(label)) {
-      
-      console.log('label is empty')
       return
     }
     let data = {
@@ -129,8 +126,6 @@ const ProductItem = ({ product, setLoading }: {ProductProps, any}) => {
   }
 
   let callback = (lastItem: CartItemProps, length: number) => {
-    console.log('callback function', lastItem, length)
-    
     toast({
       status: 'success',
       duration: 5000,
@@ -170,7 +165,6 @@ const ProductItem = ({ product, setLoading }: {ProductProps, any}) => {
         }
         setLoading(true)
         let labelExist = await checkLabelExist(cyberName)
-        console.log('label ', labelExist ? 'already exist' : 'not exist')
         setLoading(false)
         if (labelExist) {
           // window.alert('The label already exist')
@@ -185,7 +179,6 @@ const ProductItem = ({ product, setLoading }: {ProductProps, any}) => {
           return
         } else {
           setLoading(true)
-          console.log('add label ', cyberName)
           let productId = parseInt(product.id)
           let success = await addLabel(cyberName, productId)
           setLoading(false)
@@ -419,7 +412,7 @@ const ProductItem = ({ product, setLoading }: {ProductProps, any}) => {
               )}
               {/* hoodie choose option */}
               {
-                product.type === 2
+                product.type.eq(TYPE_HOODIE)
                 ?
                 <Box>
                   <Text

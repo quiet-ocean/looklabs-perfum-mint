@@ -44,7 +44,6 @@ const Root: React.FC = () => {
 
     const loadUser = async () => {
         let res = await api.get('/auth')
-        console.log(res)
         if(res && res.data) {
             let user: string = res.data
             setAppState({...appState, isAuthenticated: true, user: user})
