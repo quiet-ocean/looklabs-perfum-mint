@@ -21,16 +21,17 @@ const Checkout = () => {
     const PROCEEDING = 1
     const CONFIRMED = 2
 
-    const MIN_CONFIRMATIONS = 10
-
     const { state, dispatch } = useContext(Context)
-    const { transaction, setTransaction, cyberName, setCyberName } = useAppState()
+    const { transaction, cyberName, setCyberName } = useAppState()
     const history = useHistory()
     const subtitle = ['checkout','transction processing...', 'transaction confirmed']
     const [status, setStatus] = useState(1) // status - checkout, processing, confirmed
-    const [time, setTime] = useState('')
-    const [loading, setLoading] = useState<boolean>(false)
+    const [time] = useState('')
     const [fee, setFee] = useState<string>('0')
+
+    const setLoading = (flag: boolean) => {
+
+    }
 
     useEffect(() => {
         if(!transaction || transaction === undefined || transaction === '') {

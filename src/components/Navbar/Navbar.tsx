@@ -1,6 +1,6 @@
 import { Link, useHistory } from "react-router-dom";
 // import { utils } from "ethers";
-import { useContext, useState } from 'react'
+import { useContext } from 'react'
 import { Context } from '../../state'
 import {
   HStack,
@@ -13,9 +13,8 @@ import {
   MenuButton,
   MenuList,
   MenuItem,
-  Button,
 } from "@chakra-ui/react";
-import { ChevronUpIcon, ChevronDownIcon } from '@chakra-ui/icons'
+import { ChevronDownIcon } from '@chakra-ui/icons'
 import { CART_PAGE, PRODUCT_PAGE, WHITEPAPER_PAGE } from "../../state/constants";
 
 const categories = ['all', 'perfum', 'clothing', 'membership', 'accessories']

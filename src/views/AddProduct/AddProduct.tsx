@@ -126,6 +126,10 @@ const AddProduct: React.FC = () => {
             <Flex h='full' flexDirection={{base: 'column', md: 'row'}}>
                 <Box p='40px' w='full'>
                     <VStack w='full' spacing='12px'>
+                        <Box w='full'>
+                            <Text>preview image</Text>
+                            <FileUpload ref = {ref} name = 'name'/>
+                        </Box>
                         <Box w='full'><Text>name</Text>
                             <TextInput
                             name='name'                            
@@ -223,10 +227,6 @@ const AddProduct: React.FC = () => {
                             onChange={handleClick}
                             placeholder='Description'
                             />
-                        </Box>
-                        <Box w='full'>
-                            <Text>preview image</Text>
-                            <FileUpload ref = {ref} name = 'name'/>
                         </Box>
                     </VStack>
                 </Box>

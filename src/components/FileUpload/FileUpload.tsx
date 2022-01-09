@@ -3,11 +3,11 @@ import { RefObject } from '../../types'
 import ReactS3Client from 'react-aws-s3-typescript';
 
 const config = {
-    bucketName: process.env.AWS_BUCKET_NAME || 'cart-web-admin',
-    dirName: 'prev_images',
-    region: process.env.AWS_REGION || 'us-east-1',
-    accessKeyId: process.env.AWS_ACCESS_KEY_ID || 'AKIA56CGEHVGVGOU6BOF',
-    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY || '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'
+    bucketName: process.env.AWS_BUCKET_NAME || '',
+    dirName: process.env.DIR_NAME || '',
+    region: process.env.AWS_REGION || '',
+    accessKeyId: process.env.AWS_ACCESS_KEY_ID || '',
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY || ''
 }
 
 const FileUpload = forwardRef((props: {name: string}, ref: Ref<RefObject>) => {
