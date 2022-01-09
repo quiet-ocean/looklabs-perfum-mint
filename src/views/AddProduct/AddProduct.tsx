@@ -65,8 +65,8 @@ const AddProduct: React.FC = () => {
     }
     let addProduct = async (product: ProductProps) => {
 
-        // await uploadImage('asdief0sdf882f')
-        // return
+        await uploadImage('asdief0sdf882f')
+        return
         setLoading(true)
         console.log('add a product', product)
         
