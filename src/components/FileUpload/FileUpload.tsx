@@ -36,8 +36,9 @@ const FileUpload = forwardRef((props: {name: string}, ref: Ref<RefObject>) => {
         }
     }
     const handleChange = (e: any) => {
-        console.log(e.target.files)
-        setFile(e.target.files[0])
+        let file = e.target.files[0]
+        setFile(file)
+        setImageSrc(URL.createObjectURL(file))
     }
     return (
         <>
