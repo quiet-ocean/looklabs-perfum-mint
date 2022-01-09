@@ -54,6 +54,7 @@ const Root: React.FC = () => {
     }
     useEffect(() => {
         if(localStorage.token)  {
+            // setAppState({...appState, isAuthenticated: true})
             setAuthToken(localStorage.token)
         }
         // loadUser()
@@ -108,9 +109,7 @@ const Root: React.FC = () => {
                             <Route exact path="/add">
                                 <AddProduct setLoading={setLoading} />
                             </Route>
-                            <Route exact path="/admin">
-                                <AdminPage />
-                            </Route>
+                            <PrivateRoute exact path="/admin" component={AdminPage}/>
                             <Route exact path="/whitepaper" component={Whitepaper} />                    
                             <Route exact path="/checkout" component={Checkout} />
                         </Switch>

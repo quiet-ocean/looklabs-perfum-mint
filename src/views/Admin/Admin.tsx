@@ -36,7 +36,7 @@ const AdminPage: React.FC = () => {
     }
     const deleteProduct = async (productId: BigNumber) => {
         setLoading(true)
-        console.log('delee product ' + productId + ' in database')
+        console.log('delete product ' + productId + ' in database')
         await contract?.deleteProduct(productId)
             .then(async (tx: any) => {
                 productDispatch({type: 'REMOVE_PRODUCT', payload: productId})

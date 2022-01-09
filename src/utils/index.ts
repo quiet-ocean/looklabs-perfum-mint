@@ -24,6 +24,7 @@ export const BN = (n: string) => {
 }
 
 export const setAuthToken = (token: string) => {
+    console.log(token)
     if(token) {
         api.defaults.headers.common['x-auth-token'] = token
         localStorage.setItem('token', token) 

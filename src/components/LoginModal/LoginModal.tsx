@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
 import { Context } from '../../state'
 import { api, setAuthToken } from '../../utils'
@@ -8,6 +8,8 @@ import {
     Text,
     Input,
     Modal,
+    VStack,
+    Box,
     ModalOverlay,
     ModalContent,
     ModalHeader,
@@ -15,7 +17,9 @@ import {
     ModalBody,
     ModalCloseButton,
     useDisclosure,
+    Checkbox, CheckboxGroup,
 } from '@chakra-ui/react'
+import { TextInput } from '../'
 
 const LoginModal: React.FC<{isOpen: boolean, onOpen: () => void, onClose: () => void}> = ({isOpen, onOpen, onClose}) => {
 
@@ -23,11 +27,15 @@ const LoginModal: React.FC<{isOpen: boolean, onOpen: () => void, onClose: () => 
     const history = useHistory()
     const { appState, setAppState } = useContext(Context)
     const [user, setUser] = useState<{username: string, password: string}>({username: 'admin', password: 'admin'})
+    const [error, setError] = useState('')
 
+    useEffect(() => {
+      setError('')
+    }, [isOpen])
     const login = async () => {
         
         const body = { username: user.username, password: user.password }
-
+        
         let res = await api.post('/login', body)
         console.log(res)
         if(res && res.data) {
@@ -37,12 +45,11 @@ const LoginModal: React.FC<{isOpen: boolean, onOpen: () => void, onClose: () => 
                 history.push('/admin')
             } else {
                 console.log('login failed')
+                setError(res.data.message)
             }
         }
-        // let result = 
         console.log(res)
     }
-    // e: React.ChangeEvent<HTMLInputElement>
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         let key: string = e.target.name || ''
         let value: string = e.target.value || ''
@@ -52,22 +59,32 @@ const LoginModal: React.FC<{isOpen: boolean, onOpen: () => void, onClose: () => 
       <>
         <Modal isOpen={isOpen} onClose={onClose} >
           <ModalOverlay />
-          <ModalContent p='10px'>
-            <ModalHeader>Modal Title</ModalHeader>
+          <ModalContent p='10px' style={{borderRadius: '0px'}}>
+            <ModalHeader style={{border:'none'}}><Text color='black'>Login as Amin</Text></ModalHeader>
             <ModalCloseButton />
             <ModalBody>
-              <Text>modal</Text>
-            </ModalBody>
-                <div>
-                    <Input name='username' value={user.username} onChange={handleChange} />
-                    <Input name='password' value={user.password} onChange={handleChange} />
-                </div>                
+              <VStack>
+                <Box w='full'>
+                  <TextInput name='username' value={user.username} onChange={handleChange} />
+                </Box>
+                <Box w='full'>
+                  <TextInput name='password' value={user.password} onChange={handleChange} />
+                </Box>
+                <Box w='full'><Text>{error}</Text></Box>
+                <Box w='full'>
+                  <Checkbox defaultIsChecked>Checkbox</Checkbox>
+                </Box>                
+              </VStack>
+            </ModalBody>                                
             <ModalFooter>
-              <Button colorScheme='blue' mr={3} onClick={onClose}>
-                Close
-              </Button>
-              <Button variant='ghost' onClick={login}>Login</Button>
+              <Button colorScheme='blue' onClick={login}><Text>Login</Text></Button>
             </ModalFooter>
+            <ModalBody>
+              <VStack>
+                <Box></Box>
+                <Box></Box>
+              </VStack>
+            </ModalBody>
           </ModalContent>
         </Modal>
       </>

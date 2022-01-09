@@ -95,7 +95,7 @@ const Navbar: React.FC<{ onOpen: () => void }> = ({onOpen}) => {
 
         <Spacer />
         <Box  p='6px'>
-          <a href='javascript: #' onClick={login}><Text>admin</Text></a>
+          <span onClick={login}><Text>admin</Text></span>
         </Box>
         <Box>
           { (state.currentPage === PRODUCT_PAGE || state.currentPage === CART_PAGE )
