@@ -106,10 +106,8 @@ const Root: React.FC = () => {
                             <Route path="/about" component={About} />
                             <Route exact path="/cart" component={Cart} />                    
                             <Route exact path="/products/:category" component={Marketplace} />
-                            <Route exact path="/add">
-                                <AddProduct setLoading={setLoading} />
-                            </Route>
-                            <PrivateRoute exact path="/admin" component={AdminPage}/>
+                            <PrivateRoute exact path="/add" component={AddProduct} />
+                            <PrivateRoute exact path="/admin" component={AdminPage} />
                             <Route exact path="/whitepaper" component={Whitepaper} />                    
                             <Route exact path="/checkout" component={Checkout} />
                         </Switch>

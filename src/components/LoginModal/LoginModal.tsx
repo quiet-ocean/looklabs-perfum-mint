@@ -16,8 +16,9 @@ import {
     ModalFooter,
     ModalBody,
     ModalCloseButton,
-    useDisclosure,
     Checkbox, CheckboxGroup,
+    useDisclosure,
+    useToast,
 } from '@chakra-ui/react'
 import { TextInput } from '../'
 
@@ -25,6 +26,7 @@ const LoginModal: React.FC<{isOpen: boolean, onOpen: () => void, onClose: () => 
 
     // const { isOpen, onOpen, onClose } = useDisclosure()
     const history = useHistory()
+    const toast = useToast()
     const { appState, setAppState } = useContext(Context)
     const [user, setUser] = useState<{username: string, password: string}>({username: 'admin', password: 'admin'})
     const [error, setError] = useState('')
@@ -42,6 +44,15 @@ const LoginModal: React.FC<{isOpen: boolean, onOpen: () => void, onClose: () => 
             if(res.data.success) {
                 setAuthToken(res.data.token)
                 setAppState({...appState, token: res.data.token, isAuthenticated: true})
+                onClose()
+                toast({
+                  position: 'top-right',
+                  render: () => (
+                    <Box color='white' p={3} bg='blue.500'>
+                      <Text>Login succeed!</Text>
+                    </Box>
+                  ),
+                })
                 history.push('/admin')
             } else {
                 console.log('login failed')

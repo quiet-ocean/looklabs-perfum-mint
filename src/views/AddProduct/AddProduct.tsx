@@ -1,8 +1,8 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, useContext } from 'react'
 import { utils, providers, BigNumber } from 'ethers'
 import Web3 from 'web3'
 import env from '../../config'
-import { initialProduct, products, useAppState } from '../../state'
+import { Context, initialProduct, products, useAppState } from '../../state'
 import { ProductProps, RefObject } from '../../types'
 import { api } from '../../utils/api'
 import {
@@ -18,8 +18,9 @@ import {
 import { TextInput } from '../../components'
 import { FileUpload } from '../../components/FileUpload'
 
-const AddProduct: React.FC<{setLoading: any}> = ({setLoading}) => {
+const AddProduct: React.FC = () => {
 
+    const { appState, setAppState } = useContext(Context)
     const { contract } = useAppState()
     const [product, setProduct] = useState<ProductProps>(initialProduct)
     const ref = useRef<RefObject>(null)
@@ -42,6 +43,9 @@ const AddProduct: React.FC<{setLoading: any}> = ({setLoading}) => {
         for(let i = 0; i < length; i++) {
             await addProduct(products[i])
         }
+    }
+    const setLoading = (flag: boolean) => {
+        setAppState({...appState, loading: flag})
     }
     const test = async () => {
         let randomName =  Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 5);
