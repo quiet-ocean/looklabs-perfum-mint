@@ -14,7 +14,7 @@ import {
     Image,
 } from '@chakra-ui/react'
 
-import { TextInput } from '../../components'
+import { SelectInput, TextInput } from '../../components'
 import { FileUpload } from '../../components/FileUpload'
 
 const AddProduct: React.FC = () => {
@@ -160,11 +160,13 @@ const AddProduct: React.FC = () => {
                         </Box>
                         <Box w='full'>
                             <Text>type</Text>
-                            <TextInput
+                            <SelectInput
                             name='type'                            
                             value={product.type}
+                            options={['NONE', 'CYBER', 'HOODIE']}
                             style={{border: '1px solid white'}} 
                             color='white'
+                            bg='black'
                             onChange={handleClick}
                             placeholder='Type'
                             />
