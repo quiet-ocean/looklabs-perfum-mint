@@ -28,3 +28,4 @@ yarn-error.log*
 
 # package file
 package-lock.json
+src/contracts/package-lock.json
