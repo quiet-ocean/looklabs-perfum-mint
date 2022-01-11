@@ -12,11 +12,13 @@ import {
     Button,
     Text,
     Image,
+    useToast,
 } from '@chakra-ui/react'
 
 import { SelectInput, TextInput } from '../../components'
 import { FileUpload } from '../../components/FileUpload'
 import { RectAreaLight } from 'three'
+import { formatPriceEth, isEmpty } from '../../utils'
 
 const AddProduct: React.FC = () => {
 
@@ -24,6 +26,7 @@ const AddProduct: React.FC = () => {
     const { contract } = useAppState()
     const [product, setProduct] = useState<ProductProps>(initialProduct)
     const ref = useRef<RefObject>(null)
+    const toast = useToast()
 
     const uploadImage = async (fileName: string) => {
         console.log(ref)
@@ -96,9 +99,41 @@ const AddProduct: React.FC = () => {
             </Button>
         </>
     )
+    const validate = async (product: ProductProps) => {
+        return new Promise(resolve => {
+            if(
+                isEmpty(product.name) || 
+                product.price.eq(BigNumber.from('0')) || 
+                product.qty === 0 || 
+                product.contractType.eq(BigNumber.from('0')) ||
+                product.category.eq(BigNumber.from('0')) || 
+                isEmpty(product.url) ||
+
+                product.type.eq(BigNumber.from('0')) ||
+                // isEmpty(product.mediaUrl) ||
+                isEmpty(product.description)
+            )
+                resolve(false)
+            else
+                resolve(true)
+        })
+    }
     let addProduct = async (product: ProductProps) => {
 
         // await uploadImage('upload a image')
+        console.log(product)
+        let valid = await validate(product);
+        if(!valid) {
+            toast({
+                position: 'top-right',
+                render: () => (
+                    <Box color='white' p={3} bg='blue.500'>
+                    <Text color='white'>Input data correctly!</Text>
+                    </Box>
+                ),
+            })
+            return
+        }
         // return
         setLoading(true)
         console.log('add a product', product)

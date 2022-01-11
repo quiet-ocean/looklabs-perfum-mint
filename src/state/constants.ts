@@ -41,7 +41,7 @@ export const initialProduct: ProductProps = {
     name: '',
     price: BigNumber.from(utils.parseEther('0.001').toString()),    
     qty: 0,
-    contractType: BigNumber.from('0'),
+    contractType: BigNumber.from('1'),
     category: BigNumber.from('1'),
     sale: true,
     url: '',
