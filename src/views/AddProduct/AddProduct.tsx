@@ -16,6 +16,7 @@ import {
 
 import { SelectInput, TextInput } from '../../components'
 import { FileUpload } from '../../components/FileUpload'
+import { RectAreaLight } from 'three'
 
 const AddProduct: React.FC = () => {
 
@@ -61,12 +62,44 @@ const AddProduct: React.FC = () => {
             description: '<p>Cyber Eau de Parfume is the real taste of luxury in. Each Cyber comes with the digitalised version of the scent. The label is recoreded and customed on the blockchain. Each physical is matching the blockchain one.</p>',
         }
         await addProduct(product)
-        console.log('prodcut added')
+        console.log('a product added')
     }
+    const testingButtons:React.ReactNode = (
+        <>
+            <Button
+                bgGradient="linear(to-tr, #fd06b1, #ef313e, #cc672a, #a4a02e, #7dd632, #60ff35)"
+                borderRadius="0px"
+                w="full"
+                fontSize={{ base: '24px', md: '36px', lg: '42px' }}
+                p="50px"
+                mb="24px"
+                _active={{ boxShadow: 'none', outline: 'none' }}
+                fontFamily="IBM Plex Mono"
+                colorScheme="red"
+                onClick = { () => addProducts() }
+            >
+                <Text>add default products</Text>
+            </Button>
+            <Button
+                bgGradient="linear(to-tr, #fd06b1, #ef313e, #cc672a, #a4a02e, #7dd632, #60ff35)"
+                borderRadius="0px"
+                w="full"
+                fontSize={{ base: '24px', md: '36px', lg: '42px' }}
+                p="50px"
+                mb="24px"
+                _active={{ boxShadow: 'none', outline: 'none' }}
+                fontFamily="IBM Plex Mono"
+                colorScheme="red"
+                onClick = { () => test() }
+            >
+                <Text>test a add product</Text>
+            </Button>
+        </>
+    )
     let addProduct = async (product: ProductProps) => {
 
-        await uploadImage('asdief0sdf882f')
-        return
+        // await uploadImage('upload a image')
+        // return
         setLoading(true)
         console.log('add a product', product)
         
@@ -128,7 +161,7 @@ const AddProduct: React.FC = () => {
                         <FileUpload ref = {ref} name = 'name'/>
                         <Box w='full'><Text>name</Text>
                             <TextInput
-                            name='name'                            
+                            name='name'
                             value={product.name}
                             style={{border: '1px solid white'}} 
                             color='white'
@@ -150,7 +183,7 @@ const AddProduct: React.FC = () => {
                         <Box w='full'>
                             <Text>url</Text>
                             <TextInput
-                            name='type'                            
+                            name='url'                            
                             value={product.url}
                             style={{border: '1px solid white'}} 
                             color='white'
@@ -243,34 +276,7 @@ const AddProduct: React.FC = () => {
                     >
                         <Text>add a product</Text>
                     </Button>
-                    <Button
-                        bgGradient="linear(to-tr, #fd06b1, #ef313e, #cc672a, #a4a02e, #7dd632, #60ff35)"
-                        borderRadius="0px"
-                        w="full"
-                        fontSize={{ base: '24px', md: '36px', lg: '42px' }}
-                        p="50px"
-                        mb="24px"
-                        _active={{ boxShadow: 'none', outline: 'none' }}
-                        fontFamily="IBM Plex Mono"
-                        colorScheme="red"
-                        onClick = { () => addProducts() }
-                    >
-                        <Text>add default products</Text>
-                    </Button>
-                    <Button
-                        bgGradient="linear(to-tr, #fd06b1, #ef313e, #cc672a, #a4a02e, #7dd632, #60ff35)"
-                        borderRadius="0px"
-                        w="full"
-                        fontSize={{ base: '24px', md: '36px', lg: '42px' }}
-                        p="50px"
-                        mb="24px"
-                        _active={{ boxShadow: 'none', outline: 'none' }}
-                        fontFamily="IBM Plex Mono"
-                        colorScheme="red"
-                        onClick = { () => test() }
-                    >
-                        <Text>test a add product</Text>
-                    </Button>
+                    {}
                 </Box>
             </Flex>
         </>

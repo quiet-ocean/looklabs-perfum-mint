@@ -35,14 +35,18 @@ const AdminPage: React.FC = () => {
     }
     const deleteProduct = async (productId: BigNumber) => {
         setLoading(true)
-        console.log('delete product ' + productId + ' in database')
+        console.log('delete product ' + productId)
         await contract?.deleteProduct(productId)
             .then(async (tx: any) => {
                 productDispatch({type: 'REMOVE_PRODUCT', payload: productId})
                 let response = await api.get(`/product/del/${productId}`)
                 console.log(response)
+                setLoading(false)
             })
-        setLoading(false)
+            .catch((err: any) => {
+                console.log(err)
+                setLoading(false)
+            })        
     }
     return (
         <>
