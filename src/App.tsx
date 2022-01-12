@@ -31,7 +31,6 @@ const App = () => {
         <ChakraProvider theme={Theme}>
           <Store>
             <Root />
-
           </Store>
         </ChakraProvider>
       </Web3ReactProvider>
