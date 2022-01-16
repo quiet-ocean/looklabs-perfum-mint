@@ -4,12 +4,10 @@ import { useHistory } from 'react-router-dom'
 import { Item } from './Item'
 import { Context, useAppState } from '../../state'
 import { CartItemProps } from '../../types'
-
-import { utils, BigNumber, providers  } from "ethers";
-
+import { utils, BigNumber  } from "ethers";
 
 import {
-    VStack, Box, HStack, Text, Button, Flex, Spacer, useToast
+    VStack, Box, Text, Button, Flex, Spacer, useToast
 } from '@chakra-ui/react'
 
 // Mock data
@@ -28,7 +26,8 @@ import {
 const Cart = (props: any) => {
 
     const { checkout } = useAppState()
-    const { product, quantity, setLoading, close } = props
+    // const { product, quantity, setLoading, close } = props
+    const { setLoading, close } = props
     const [mockedItems, setMockedItems] = useState([])
     const [total, setTotal] = useState<BigNumber>(BigNumber.from(0))
     const { state } = useContext(Context)

@@ -1,5 +1,5 @@
 import { initialProductsState } from '../state/constants';
-import { ActionProps, ProductProps, ProductStateProps, StyleProps } from '../types'
+import { ActionProps, ProductProps, ProductStateProps } from '../types'
 import { BigNumber } from 'ethers'
 
 const productReducer = (state: ProductStateProps = initialProductsState, action: ActionProps): ProductStateProps => {
@@ -8,6 +8,17 @@ const productReducer = (state: ProductStateProps = initialProductsState, action:
     switch(action.type){
         case 'ADD_PRODUCT':
             return {...state, products: [...state.products, action.payload]}
+        case 'REMOVE_PRODUCT':
+            let removeId: BigNumber = payload
+            return {
+                ...state,
+                products: state.products.filter((item: ProductProps) => {
+                    if(item.id.eq(removeId)) {
+                        return false
+                    }
+                    return true
+                })
+            }
         case 'ADD_HOODIE':
             let hoodie: ProductProps = payload
             let newProducts: ProductProps[] = []

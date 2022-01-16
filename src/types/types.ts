@@ -47,22 +47,22 @@ export interface StyleListProps {
 }
 export type ProductProps = {
   id: BigNumber;
-  // url: string;
-  price: BigNumber;
   name: string;
-  type: number;
+  price: BigNumber;
+  qty: number;
+  contractType: BigNumber;
+  category: BigNumber;  
+  sale: boolean;
+  url: string;
+
+  type: BigNumber;
   supply: number;
   maxUnits: number;
-  // media: string;
   mediaUrl: string;
-  qty: number;
   description: string;
-  sale: boolean;
 
   ids: BigNumber[]
-  styleId: BigNumber
-
-  category: BigNumber
+  styleId: BigNumber  
 };
 export type ProductStateProps = {
   loaded: boolean;
@@ -115,4 +115,8 @@ export type CartProps = {
 // }
 export interface GlobalStateInterface {
   cart: CartItemProps[];
+}
+
+export interface RefObject {
+  uploadImage: (fileName: string) => void
 }

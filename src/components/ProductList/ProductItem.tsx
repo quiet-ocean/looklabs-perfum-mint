@@ -23,7 +23,7 @@ import Model from '../Voxel/Model'
 import parse from 'html-react-parser'
 import env from '../../config'
 import { TYPE_CYBER, TYPE_HOODIE } from '../../state/constants'
-import { CartItemProps, ProductProps, StyleProps } from '../../types'
+import { CartItemProps, ProductProps } from '../../types'
 import { Context } from '../../state'
 import { useAppState } from '../../state'
 import { api } from '../../utils/api'
@@ -46,11 +46,6 @@ import {
 } from '@chakra-ui/react'
 import { ToastContent } from './ToastContent'
 
-// const hoodieAnimationUris = {
-//   'ver1': '/static/movies/hoodie_v1.mov',
-//   'ver2': '/static/movies/hoodie_v2.mov',
-
-
 const ProductItem = ({ product, setLoading }: {ProductProps, any}) => {
   const {
     boughtTokens,
@@ -60,41 +55,32 @@ const ProductItem = ({ product, setLoading }: {ProductProps, any}) => {
     user,
     checkout,
   } = useAppState()
+
   const productPrice = Number(utils.formatEther(product.price))
-  // const [order, setOrder] = useState<OrderProps>({
-  //   qty: 1,
-  //   productPrice: tokenPrice,
-  // });
   const [input, setInput] = useState('')
   const [count, setCount] = useState(1)
+  const [isCyber, setIsCyber] = useState(false)
   const toast = useToast()
   const { state, dispatch, productDispatch } = useContext(Context)
-  const [isCyber, setIsCyber] = useState(false)
-  const [isHoodie, setIsHoodie] = useState(false)
 
   const cyberSupply = product.qty
   const maxUnits = product.maxUnits
 
   const history = useHistory()
   const ref = useRef(null)
-  let canvasWidht
-
+  
   const updateSupply = useAppState(
     useCallback(({ getSupply }) => getSupply, []),
   )
 
-  useEffect(() => {
-
-    let _isCyber = product.type === TYPE_CYBER ? true : false
-    let _isHoodie = product.type === TYPE_HOODIE ? true : false
-
-    setIsHoodie(_isHoodie)
-    setIsCyber(_isCyber)
-  }, [])
-
+  useEffect(()=>{
+    setIsCyber(product.type.eq(TYPE_CYBER))
+  }, [product])
   useEffect(() => {
     updateSupply()
   }, [updateSupply])
+
+  
 
   let gotoCart = (e: React.MouseEvent) => {
     e.stopPropagation()
@@ -104,15 +90,12 @@ const ProductItem = ({ product, setLoading }: {ProductProps, any}) => {
 
   let checkLabelExist = async (label: string) => {
     const response = await api.get(`/label?name=${label}`)
-    console.log(response)
     return response.data.exist
   }
   let addLabel = async (label: string, id: number) => {
     const ADDED = 1
     const MINTED = 2
     if (isEmpty(label)) {
-      
-      console.log('label is empty')
       return
     }
     let data = {
@@ -129,8 +112,6 @@ const ProductItem = ({ product, setLoading }: {ProductProps, any}) => {
   }
 
   let callback = (lastItem: CartItemProps, length: number) => {
-    console.log('callback function', lastItem, length)
-    
     toast({
       status: 'success',
       duration: 5000,
@@ -170,7 +151,6 @@ const ProductItem = ({ product, setLoading }: {ProductProps, any}) => {
         }
         setLoading(true)
         let labelExist = await checkLabelExist(cyberName)
-        console.log('label ', labelExist ? 'already exist' : 'not exist')
         setLoading(false)
         if (labelExist) {
           // window.alert('The label already exist')
@@ -185,7 +165,6 @@ const ProductItem = ({ product, setLoading }: {ProductProps, any}) => {
           return
         } else {
           setLoading(true)
-          console.log('add label ', cyberName)
           let productId = parseInt(product.id)
           let success = await addLabel(cyberName, productId)
           setLoading(false)
@@ -276,7 +255,7 @@ const ProductItem = ({ product, setLoading }: {ProductProps, any}) => {
       <Flex direction={{ base: 'column', md: 'row' }}>
         <Box p="40px" w={{ base: '100%', md: '50%' }}>
           <Flex bg="" h="100%" ref={ref}>
-            {isCyber ? (
+            {product.type.eq(TYPE_CYBER) ? (
               <Canvas
                 camera
                 style={{
@@ -419,7 +398,7 @@ const ProductItem = ({ product, setLoading }: {ProductProps, any}) => {
               )}
               {/* hoodie choose option */}
               {
-                product.type === 2
+                product.type.eq(TYPE_HOODIE)
                 ?
                 <Box>
                   <Text

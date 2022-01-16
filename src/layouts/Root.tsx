@@ -1,18 +1,16 @@
-import { useEffect } from 'react'
+import { useEffect, useContext } from 'react'
 import { Switch, Route, withRouter } from "react-router-dom";
 import { Connect } from "./";
-import { Marketplace, Cart, Checkout, About, Whitepaper } from "../views";
-import { Header, Footer, Navbar } from "../components";
-
-import { VStack, Box } from "@chakra-ui/react";
-import { AnimatedSwitch } from 'react-router-transition'
+import { Context } from '../state'
+import { Marketplace, Cart, Checkout, About, Whitepaper, AddProduct, AdminPage } from "../views";
+import { Header, Footer, Navbar, LoginModal } from "../components";
+import { PrivateRoute } from './PrivateRoute';
+import { VStack, Box, Text, useDisclosure } from "@chakra-ui/react";
+import { setAuthToken } from '../utils';
 
 function AutoScrollToTop({ history }: { history: any }) {
     useEffect(() => {
       const unlisten = history.listen(() => {
-        //   setTimeout(() => {
-        //     window.scrollTo({top: 0, behavior: 'smooth'})
-        //   }, 1000)
         const scrollToTop = () => {
             const c = document.documentElement.scrollTop || document.body.scrollTop;
             if (c > 0) {
@@ -26,64 +24,96 @@ function AutoScrollToTop({ history }: { history: any }) {
         unlisten();
       }
     }, []);
+
   
     return (null);
-  }
+}
 
-  const ST = withRouter(AutoScrollToTop)
+const ST = withRouter(AutoScrollToTop)
 
 const Root: React.FC = () => {
+    const { isOpen, onOpen, onClose } = useDisclosure()
+    const { appState, setAppState } = useContext(Context)
     
+    const loading = appState.loading
+
+    useEffect(() => {
+        if(localStorage.token)  {
+            setAuthToken(localStorage.token)
+        }
+    }, [])
+
     return (
         <div style={{height: '100vh'}}>
-        <VStack
-            align="stretch"
-            justify={"space-between"}            
-            spacing={"0px"}
-            // overflowY="auto"
-            h='100%'
-            css={{
-            "&::-webkit-scrollbar": {
-                width: "6px",
-            },
-            "&::-webkit-scrollbar-track": {
-                width: "8px",
-            },
-            "&::-webkit-scrollbar-thumb": {
-                background: "#eee",
-                borderRadius: "24px",
-            },
-            }}
-        >
-            <Box>
-                <Header />
-            </Box>
-            <Box>
-                <Navbar />
-            </Box>
-            <Box
-            
-            flexGrow={10}
-            
-            fontFamily='-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji"'
+            <VStack
+                align="stretch"
+                justify={"space-between"}            
+                spacing={"0px"}
+                // overflowY="auto"
+                h='100%'
+                css={{
+                "&::-webkit-scrollbar": {
+                    width: "6px",
+                },
+                "&::-webkit-scrollbar-track": {
+                    width: "8px",
+                },
+                "&::-webkit-scrollbar-thumb": {
+                    background: "#eee",
+                    borderRadius: "24px",
+                },
+                }}
             >
-                <Connect>
-                    <ST />
-                    <Switch>
-                        <Route exact path="/" component={Marketplace} />
-                        <Route path="/about" component={About} />
-                        <Route exact path="/cart" component={Cart} />                    
-                        <Route exact path="/token" component={Marketplace} />
-                        <Route exact path="/whitepaper" component={Whitepaper} />                    
-                        <Route exact path="/checkout" component={Checkout} />
-                    </Switch>
-                </Connect>
+                <Box>
+                    <Header />
+                </Box>
+                <Box>
+                    <Navbar onOpen={onOpen}/>
+                </Box>
+                <Box
+                
+                flexGrow={10}
+                
+                fontFamily='-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji"'
+                >
+                    <Connect>
+                        <ST />
+                        <Switch>
+                            <Route exact path="/" component={Marketplace} />
+                            <Route path="/about" component={About} />
+                            <Route exact path="/cart" component={Cart} />                    
+                            <Route exact path="/products/:category" component={Marketplace} />
+                            <PrivateRoute exact path="/add" component={AddProduct} />
+                            <PrivateRoute exact path="/admin" component={AdminPage} />
+                            <Route exact path="/whitepaper" component={Whitepaper} />                    
+                            <Route exact path="/checkout" component={Checkout} />
+                        </Switch>
+                    </Connect>
+                </Box>
+                <Box>
+                    <Footer />
+                </Box>
+                
+            </VStack>
+            {loading
+            ?
+            <Box
+                style={{
+                position: 'fixed',
+                top: '0px',
+                bottom: '0px',
+                right: '0px',
+                left: '0px',
+                background: 'black',
+                opacity: '0.5',
+                }}
+            >
+                <Text color='white' zIndex={'2'} fontSize='22px' textAlign='center' marginTop='30%'>Loading...</Text>
             </Box>
-            <Box>
-                <Footer />
-            </Box>
-            
-        </VStack>
+            :
+            ''
+            }
+            <LoginModal isOpen = {isOpen} onOpen={onOpen} onClose={onClose} />
         </div>
     )
 }

@@ -1,4 +1,4 @@
-import { useContext, useEffect } from 'react'
+import { useContext } from 'react'
 import { utils } from 'ethers'
 import ReactPlayer from 'react-player'
 import { Context, useAppState } from '../../state'

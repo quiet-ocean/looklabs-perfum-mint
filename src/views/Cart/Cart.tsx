@@ -20,24 +20,19 @@ import {
 import { CartItem } from "../../components";
 import { Context } from "../../state";
 import { useAppState } from "../../state";
-import { CART } from "../../state/constants";
+import { CART_PAGE } from "../../state/constants";
 
 const Cart = () => {
   const { checkout, discount } = useAppState();
   const { state, dispatch } = useContext(Context);
-  const [ids, setIds] = useState<number[]>([]);
   const [loading, setLoading] = useState<boolean>(false)
   const toast = useToast();
   const history = useHistory()
 
   useEffect(() => {
-
-  dispatch({ type: 'SET_NAV_TITLE', payload: CART })
-    setIds(state.ids)
+    dispatch({ type: 'SET_NAV_TITLE', payload: CART_PAGE })    
   }, []);
   useEffect(() => {
-    console.log(state)
-    // console.log("ids ", ids);
     let effect = async () => {
       let dstate = await discount(state)
       if (dstate.discount) {
@@ -48,16 +43,15 @@ const Cart = () => {
         dispatch({ type: 'SET_DISCOUNT_AMOUNT', payload: BigNumber.from('0') })
       }
     }
-
     effect()
-
   }, [state.items]);
 
   let deleteProduct = (id: BigNumber) => {
-    console.log('deleteProduct', id)
+
     dispatch({ type: 'DELETE_PRODUCT', payload: id })
   }
   let checkoutTransfer = async () => {
+    
     checkout(state, toast, history, dispatch, setLoading)
   };
 
@@ -179,7 +173,7 @@ const Cart = () => {
             <Box p='40px' mt="72px" alignItems="center" textAlign="center"><Text textTransform="uppercase" fontWeight="600" fontSize="56px" color="white" >NO ITEMS IN CART.ART</Text>
             </Box>
             <Box textAlign="center">
-              <Link to='/token' >
+              <Link to='/products' >
                 <Text textAlign="center" textDecoration="underline" mt="72px" fontSize="24px" textTransform="uppercase">
                   Go to products
                 </Text>

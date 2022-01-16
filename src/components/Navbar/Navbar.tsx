@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 // import { utils } from "ethers";
 import { useContext } from 'react'
 import { Context } from '../../state'
@@ -8,13 +8,27 @@ import {
   Text,
   Image,
   Spacer,
-  Flex
+  Flex,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
 } from "@chakra-ui/react";
-import { CART, PRODUCT, WHITEPAPER } from "../../state/constants";
+import { ChevronDownIcon } from '@chakra-ui/icons'
+import { CART_PAGE, PRODUCT_PAGE, WHITEPAPER_PAGE } from "../../state/constants";
 
-const Navbar: React.FC = () => {
+const categories = ['all', 'perfum', 'clothing', 'membership', 'accessories']
+const Navbar: React.FC<{ onOpen: () => void }> = ({onOpen}) => {
 
-  const { state } = useContext(Context)
+  const history = useHistory()
+  const { state, appState } = useContext(Context)
+
+  const login = () => {
+    if(appState.isAuthenticated)
+      history.push('/admin')
+    else
+      onOpen()
+  }
   return (
     <>
       <Flex
@@ -27,15 +41,31 @@ const Navbar: React.FC = () => {
       >
         <HStack>
           <Box>
-            <Link to="/token">
-              <Text
-                color={state.currentPage === PRODUCT ? "white" : "gray"}
-                fontSize={{ base: "16px", lg: "24px" }}
-                fontWeight="600"
-              >
-                Products
-              </Text>
-            </Link>
+            <Menu>
+              {({ isOpen }) => (
+                <>
+                  <MenuButton>
+                    <HStack>
+                      <Text
+                        color={state.currentPage === PRODUCT_PAGE ? "white" : "gray"}
+                        fontSize={{ base: "16px", lg: "24px" }}
+                        fontWeight="600"
+                        >
+                        products
+                      </Text>
+                      <ChevronDownIcon />
+                    </HStack>
+                  </MenuButton>
+                  <MenuList style={{background: 'black', borderRadius: '0px', padding: '0px', marginTop: '16px'}}>
+                    {
+                        categories.map((item: any, key: number) => (
+                            <MenuItem style={{borderTop: '1px solid'}} key={key}><Link to={`/products/${key}`}><Text>{item}</Text></Link></MenuItem>
+                        ))   
+                    }
+                  </MenuList>
+                </>
+              )}
+            </Menu>
           </Box>
           <Box>
             <Text
@@ -50,7 +80,7 @@ const Navbar: React.FC = () => {
           <Box>
             <Link to="/whitepaper">
               <Text
-                color={state.currentPage === WHITEPAPER ? "white" : "gray"}
+                color={state.currentPage === WHITEPAPER_PAGE ? "white" : "gray"}
                 fontSize={{ base: "16px", lg: "24px" }}
                 _hover={{
                   color: "white",
@@ -63,8 +93,11 @@ const Navbar: React.FC = () => {
         </HStack>
 
         <Spacer />
+        <Box  p='6px'>
+          <span onClick={login}><Text>admin</Text></span>
+        </Box>
         <Box>
-          { (state.currentPage === PRODUCT || state.currentPage === CART )
+          { (state.currentPage === PRODUCT_PAGE || state.currentPage === CART_PAGE )
             ?
             <>
               <Link to="/cart">
@@ -75,9 +108,9 @@ const Navbar: React.FC = () => {
                     w={{ base: "150px", lg: "48px" }}
                     h={{ base: "32px", lg: "32px" }}
                   ></Image>
-                  <Text color={state.currentPage === CART ? "white" : "gray"}
+                  <Text color={state.currentPage === CART_PAGE ? "white" : "gray"}
                     fontSize={{ base: "16px", lg: "24px" }}
-                    fontWeight="600">{state.items.length}&nbsp;{state.items.length == 1 ? 'ITEM' : 'ITEMS'}</Text>
+                    fontWeight="600">{state.items.length}&nbsp;{state.items.length === 1 ? 'ITEM' : 'ITEMS'}</Text>
                 </HStack>
               </Link>
             </>

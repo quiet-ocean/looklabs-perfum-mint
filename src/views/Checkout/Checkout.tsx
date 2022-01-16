@@ -7,47 +7,35 @@ import {
     Flex,
     Box,
     Text,
-    Heading,
     Button,
-    Progress,
-    useToast,
     Spinner,
 } from '@chakra-ui/react'
-import { TextInput, AutoCompleteField } from '../../components'
 
 import { useAppState, Context } from '../../state'
 
-const countries = [
-    { value: "ghana", label: "Ghana" },
-    { value: "nigeria", label: "Nigeria" },
-    { value: "kenya", label: "Kenya" },
-    { value: "southAfrica", label: "South Africa" },
-    { value: "unitedStates", label: "United States" },
-    { value: "canada", label: "Canada" },
-    { value: "germany", label: "Germany" }
-]
-
 type ReceiptProps = {confirmations: number, tokenId: number}
+
 const Checkout = () => {
 
     const CHECKOUT = 0
     const PROCEEDING = 1
     const CONFIRMED = 2
 
-    const MIN_CONFIRMATIONS = 10
-
     const { state, dispatch } = useContext(Context)
-    const { transaction, setTransaction, cyberName, setCyberName } = useAppState()
+    const { transaction, cyberName, setCyberName } = useAppState()
     const history = useHistory()
     const subtitle = ['checkout','transction processing...', 'transaction confirmed']
     const [status, setStatus] = useState(1) // status - checkout, processing, confirmed
-    const [time, setTime] = useState('')
-    const [loading, setLoading] = useState<boolean>(false)
+    const [time] = useState('')
     const [fee, setFee] = useState<string>('0')
+
+    const setLoading = (flag: boolean) => {
+
+    }
 
     useEffect(() => {
         if(!transaction || transaction === undefined || transaction === '') {
-            history.push('/token')
+            history.push('/products')
         } else {
             setLoading(true)
             let getTransactionConfirmations = async (): Promise<ReceiptProps> => {

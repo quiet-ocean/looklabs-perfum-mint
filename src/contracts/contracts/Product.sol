@@ -21,7 +21,7 @@ contract Product is Ownable {
   mapping(uint256 => Product) public products;
   Counters.Counter private _productIds;
 
-  struct Product {
+struct Product {
     uint256 id;
     string name;
     uint256 price;

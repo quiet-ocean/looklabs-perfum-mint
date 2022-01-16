@@ -131,7 +131,6 @@ const cartReducer = (state: CartProps = initialCartState, action: ActionProps): 
             let ___newItems: CartItemProps[] = []
             
             state.items.forEach((item: CartItemProps) => {
-                let _item: CartItemProps
                 let quantity: number = item.quantity
                 let id: BigNumber = item.product.id
                 
