@@ -1,5 +1,5 @@
 
-# ELITE DROP WEB FRONT END
+# Look Labs perfum mint
 ```
 npm run start
 ```
